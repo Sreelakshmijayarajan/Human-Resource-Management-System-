@@ -47,3 +47,54 @@ export interface Notification {
   read: boolean;
   type: 'leave' | 'payroll' | 'announcement' | 'attendance';
 }
+
+export interface EmployeeDocument {
+  id: string;
+  name: string;
+  type: 'pdf' | 'doc' | 'image';
+  size: string;
+  uploadedAt: string;
+}
+
+export interface Employee {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  department: 'Engineering' | 'Product & Design' | 'Human Resources' | 'Finance' | string;
+  designation: string;
+  employmentType: 'Full-time' | 'Part-time' | 'Contract' | 'Intern' | string;
+  status: 'active' | 'on_leave' | 'inactive';
+  dateOfJoining: string;
+  avatarInitials: string;
+  avatarColor: string;
+  address?: string;
+  gender?: 'Male' | 'Female' | 'Other';
+  documents: EmployeeDocument[];
+}
+
+export interface CorrectionEntry {
+  id: string;
+  correctedBy: string;
+  correctedAt: string;
+  oldStatus: string;
+  newStatus: string;
+  reason: string;
+  oldCheckIn?: string | null;
+  oldCheckOut?: string | null;
+}
+
+export interface AttendanceRecord {
+  id: string;
+  employeeId: string;
+  employeeName: string;
+  employeeInitials: string;
+  avatarColor: string;
+  department: string;
+  date: string;
+  checkIn: string | null;
+  checkOut: string | null;
+  totalHours: string | null; // Using string for "9h 13m" format for display
+  status: 'present' | 'absent' | 'half_day' | 'on_leave' | 'holiday' | 'late';
+  correctionHistory: CorrectionEntry[];
+}
