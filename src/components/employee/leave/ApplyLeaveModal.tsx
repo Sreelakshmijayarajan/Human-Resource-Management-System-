@@ -111,16 +111,17 @@ export const ApplyLeaveModal: React.FC<ApplyLeaveModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs animate-fade-in">
-      <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden">
-        <div className="flex items-center justify-between p-5 border-b border-slate-100">
+      <div className="relative w-full max-w-md bg-white dark:bg-[#161E28] rounded-2xl shadow-2xl border border-slate-100 dark:border-white/[0.08] overflow-hidden">
+        {/* Modal Header */}
+        <div className="flex items-center justify-between p-5 border-b border-slate-100 dark:border-white/[0.06]">
           <div>
-            <h3 className="text-base font-bold text-slate-900">Apply for Time Off</h3>
-            <p className="text-xs text-slate-500 mt-0.5">Submit a leave request for HR approval</p>
+            <h3 className="text-base font-bold text-slate-900 dark:text-[#F5F7FA]">Apply for Leave</h3>
+            <p className="text-xs text-slate-500 dark:text-[#707A87] mt-0.5">Submit time off request for manager approval.</p>
           </div>
           <button
             onClick={onClose}
             disabled={isSubmitting}
-            className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors"
+            className="p-1.5 text-slate-400 hover:text-slate-600 dark:text-[#707A87] dark:hover:text-[#E5E7EB] rounded-lg hover:bg-slate-100 dark:hover:bg-[#1B2531] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -128,7 +129,7 @@ export const ApplyLeaveModal: React.FC<ApplyLeaveModalProps> = ({
 
         <form onSubmit={handleSubmit} className="p-5 space-y-4">
           {error && (
-            <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl flex items-center gap-2">
+            <div className="p-3 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-700 dark:text-red-400 text-xs rounded-xl flex items-center gap-2">
               <AlertTriangle className="w-4 h-4 text-red-500 shrink-0" />
               <span>{error}</span>
             </div>
@@ -137,8 +138,8 @@ export const ApplyLeaveModal: React.FC<ApplyLeaveModalProps> = ({
           {/* Leave Type Selector */}
           <div>
             <div className="flex items-center justify-between mb-1">
-              <label className="block text-xs font-semibold text-slate-700">Leave Category</label>
-              <span className="text-xs font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-md border border-teal-100">
+              <label className="block text-xs font-semibold text-slate-700 dark:text-[#E5E7EB]">Leave Category</label>
+              <span className="text-xs font-bold text-[#0c8fe9] dark:text-[#36abf8] bg-[#0c8fe9]/10 px-2 py-0.5 rounded-md border border-[#0c8fe9]/20">
                 {selectedBalance?.remaining || 0} Days Available
               </span>
             </div>
@@ -148,7 +149,7 @@ export const ApplyLeaveModal: React.FC<ApplyLeaveModalProps> = ({
                 setLeaveType(e.target.value as LeaveType);
                 setError('');
               }}
-              className="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 outline-none"
+              className="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-[#121821] text-slate-900 dark:text-[#E5E7EB] focus:ring-2 focus:ring-[#0c8fe9]/20 focus:border-[#0c8fe9] outline-none"
             >
               <option value="casual">Casual Leave ({balances.find(b => b.type === 'casual')?.remaining} left)</option>
               <option value="sick">Sick Leave ({balances.find(b => b.type === 'sick')?.remaining} left)</option>
@@ -160,7 +161,7 @@ export const ApplyLeaveModal: React.FC<ApplyLeaveModalProps> = ({
           {/* Date Pickers */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">Start Date</label>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-[#E5E7EB] mb-1">Start Date</label>
               <input
                 type="date"
                 value={startDate}
@@ -168,11 +169,11 @@ export const ApplyLeaveModal: React.FC<ApplyLeaveModalProps> = ({
                   setStartDate(e.target.value);
                   setError('');
                 }}
-                className="w-full px-3 py-2 text-sm rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 outline-none"
+                className="w-full px-3 py-2 text-sm rounded-xl border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-[#121821] text-slate-900 dark:text-[#E5E7EB] focus:ring-2 focus:ring-[#0c8fe9]/20 focus:border-[#0c8fe9] outline-none"
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">End Date</label>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-[#E5E7EB] mb-1">End Date</label>
               <input
                 type="date"
                 value={endDate}
@@ -180,21 +181,21 @@ export const ApplyLeaveModal: React.FC<ApplyLeaveModalProps> = ({
                   setEndDate(e.target.value);
                   setError('');
                 }}
-                className="w-full px-3 py-2 text-sm rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 outline-none"
+                className="w-full px-3 py-2 text-sm rounded-xl border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-[#121821] text-slate-900 dark:text-[#E5E7EB] focus:ring-2 focus:ring-[#0c8fe9]/20 focus:border-[#0c8fe9] outline-none"
               />
             </div>
           </div>
 
           {/* Duration Badge & Live Warning */}
           {requestedDays > 0 && (
-            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 space-y-1">
+            <div className="p-3 bg-slate-50 dark:bg-[#121821] rounded-xl border border-slate-100 dark:border-white/[0.06] space-y-1">
               <div className="flex items-center justify-between text-xs">
-                <span className="text-slate-500 font-medium">Calculated Duration:</span>
-                <span className="font-extrabold text-slate-900">{requestedDays} Working Day{requestedDays > 1 ? 's' : ''}</span>
+                <span className="text-slate-500 dark:text-[#707A87] font-medium">Calculated Duration:</span>
+                <span className="font-extrabold text-slate-900 dark:text-[#F5F7FA]">{requestedDays} Working Day{requestedDays > 1 ? 's' : ''}</span>
               </div>
               {isExceedingQuota && (
-                <p className="text-[11px] text-amber-700 font-semibold flex items-center gap-1 pt-1">
-                  <AlertTriangle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                <p className="text-[11px] text-amber-700 dark:text-amber-400 font-semibold flex items-center gap-1 pt-1">
+                  <AlertTriangle className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
                   Warning: Requested days exceed remaining quota ({selectedBalance?.remaining} left). Extra days may be converted to Loss of Pay.
                 </p>
               )}
@@ -203,7 +204,7 @@ export const ApplyLeaveModal: React.FC<ApplyLeaveModalProps> = ({
 
           {/* Reason Input */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <label className="block text-xs font-semibold text-slate-700 dark:text-[#E5E7EB] mb-1">
               Reason for Leave <span className="text-red-500">*</span>
             </label>
             <textarea
@@ -214,18 +215,18 @@ export const ApplyLeaveModal: React.FC<ApplyLeaveModalProps> = ({
                 setError('');
               }}
               placeholder="e.g. Doctor appointment, family function out of station..."
-              className="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 outline-none"
+              className="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-[#121821] text-slate-900 dark:text-[#E5E7EB] focus:ring-2 focus:ring-[#0c8fe9]/20 focus:border-[#0c8fe9] outline-none"
             />
           </div>
 
           {/* Optional Attachment */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <label className="block text-xs font-semibold text-slate-700 dark:text-[#E5E7EB] mb-1">
               Document Attachment (Optional)
             </label>
             <div className="flex items-center gap-3">
-              <label className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl cursor-pointer transition-colors border border-slate-200">
-                <Upload className="w-4 h-4 text-slate-500" />
+              <label className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-slate-700 dark:text-[#E5E7EB] bg-slate-100 dark:bg-[#121821] hover:bg-slate-200 dark:hover:bg-[#1B2531] rounded-xl cursor-pointer transition-colors border border-slate-200 dark:border-white/[0.08]">
+                <Upload className="w-4 h-4 text-slate-500 dark:text-[#707A87]" />
                 <span>{attachment ? attachment.name : 'Choose File'}</span>
                 <input
                   type="file"
@@ -237,7 +238,7 @@ export const ApplyLeaveModal: React.FC<ApplyLeaveModalProps> = ({
                 <button
                   type="button"
                   onClick={() => setAttachment(null)}
-                  className="text-xs text-red-600 hover:underline font-semibold"
+                  className="text-xs text-red-600 dark:text-red-400 hover:underline font-semibold"
                 >
                   Remove
                 </button>
@@ -246,21 +247,21 @@ export const ApplyLeaveModal: React.FC<ApplyLeaveModalProps> = ({
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+          <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100 dark:border-white/[0.06]">
             <button
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="px-4 py-2 text-xs font-semibold text-slate-600 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors"
+              className="px-4 py-2 text-xs font-semibold text-slate-600 dark:text-[#E5E7EB] border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-[#121821] rounded-xl hover:bg-slate-50 dark:hover:bg-[#1B2531] transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-4 py-2 text-xs font-semibold text-white bg-teal-600 hover:bg-teal-700 rounded-xl shadow-xs transition-colors disabled:opacity-50"
+              className="px-4 py-2 text-xs font-semibold text-white bg-[#0c8fe9] hover:bg-[#0070c7] rounded-xl shadow-xs transition-colors disabled:opacity-60 flex items-center gap-1.5"
             >
-              {isSubmitting ? 'Submitting...' : 'Submit Request'}
+              {isSubmitting ? 'Submitting...' : 'Submit Application'}
             </button>
           </div>
         </form>

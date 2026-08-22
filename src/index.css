@@ -2,11 +2,51 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   DAYFLOW DESIGN SYSTEM — DARK MODE TOKENS
+   Premium, futuristic enterprise AI aesthetic
+   ============================================================ */
+
+:root {
+  /* Light mode surfaces */
+  --surface-app:     #f8fafd;
+  --surface-card:    #ffffff;
+  --surface-raised:  #f1f5f9;
+  --surface-border:  rgba(15, 23, 42, 0.08);
+
+  /* Dayflow brand blue */
+  --brand-500: #0c8fe9;
+  --brand-600: #0070c7;
+
+  /* Typography */
+  --text-primary:   #1e293b;
+  --text-secondary: #475569;
+  --text-muted:     #94a3b8;
+}
+
+/* ── DARK MODE SURFACE TOKENS ─────────────────────────── */
+html.dark {
+  /* Core dark palette — layered, NOT pure black */
+  --surface-app:     #0B0F14;
+  --surface-sidebar: #0E131A;
+  --surface-topbar:  #0E131A;
+  --surface-card:    #121821;
+  --surface-raised:  #161E28;
+  --surface-hover:   #1B2531;
+  --surface-border:  rgba(255, 255, 255, 0.08);
+
+  /* Typography for dark mode */
+  --text-primary:   #F5F7FA;
+  --text-secondary: #A7B0BC;
+  --text-muted:     #707A87;
+  --text-card:      #E5E7EB;
+}
+
 @layer base {
   * {
     box-sizing: border-box;
   }
-  
+
   html, body {
     font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     color: #1e293b;
@@ -17,17 +57,33 @@
   }
 
   html.dark body {
-    color: #f1f5f9;
-    background-color: #0b0f17;
+    color: #E5E7EB;
+    background-color: #0B0F14;
   }
 
-  /* Custom smooth focus ring */
+  /* Focus ring */
   input:focus-visible, button:focus-visible {
     outline: none;
   }
 }
 
-/* Subtle custom scrollbar */
+/* ============================================================
+   DARK MODE GLOBAL OVERRIDES
+   Eliminates white surfaces without touching light mode
+   ============================================================ */
+
+/* Scrollbar — dark variant */
+html.dark ::-webkit-scrollbar-thumb {
+  background: #2a3545;
+}
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #3a4a5e;
+}
+html.dark ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Scrollbar — light */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -41,4 +97,216 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
+}
+
+/* ── DARK: select / option dropdowns ─────────────────── */
+html.dark select {
+  background-color: #161E28;
+  color: #E5E7EB;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+html.dark select option {
+  background-color: #161E28;
+  color: #E5E7EB;
+}
+
+/* ── DARK: recharts chart backgrounds ────────────────── */
+html.dark .recharts-wrapper,
+html.dark .recharts-surface {
+  background: transparent !important;
+}
+html.dark .recharts-cartesian-grid-horizontal line,
+html.dark .recharts-cartesian-grid-vertical line {
+  stroke: rgba(255, 255, 255, 0.05) !important;
+}
+html.dark .recharts-text,
+html.dark .recharts-legend-item-text {
+  fill: #A7B0BC !important;
+}
+html.dark .recharts-tooltip-wrapper .recharts-default-tooltip {
+  background-color: #161E28 !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  border-radius: 12px !important;
+  color: #E5E7EB !important;
+}
+
+/* ── DARK: table ──────────────────────────────────────── */
+html.dark table {
+  background-color: #121821;
+}
+html.dark thead {
+  background-color: #161E28;
+}
+html.dark thead th {
+  color: #A7B0BC;
+}
+html.dark tbody tr {
+  border-color: rgba(255, 255, 255, 0.05);
+}
+html.dark tbody tr:hover {
+  background-color: #1B2531;
+}
+html.dark tbody td {
+  color: #E5E7EB;
+}
+
+/* ── DARK: modal/dialog overlays ─────────────────────── */
+html.dark [role="dialog"],
+html.dark dialog {
+  background-color: #161E28;
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #E5E7EB;
+}
+
+/* ── DARK: input fields ───────────────────────────────── */
+html.dark input:not([type="checkbox"]):not([type="radio"]) {
+  background-color: #161E28;
+  color: #E5E7EB;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+html.dark input::placeholder {
+  color: #707A87;
+}
+html.dark textarea {
+  background-color: #161E28;
+  color: #E5E7EB;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+html.dark textarea::placeholder {
+  color: #707A87;
+}
+
+/* ── DARK: borders ────────────────────────────────────── */
+html.dark .border-slate-100,
+html.dark .border-slate-200 {
+  border-color: rgba(255, 255, 255, 0.07) !important;
+}
+html.dark .border-gray-100,
+html.dark .border-gray-200 {
+  border-color: rgba(255, 255, 255, 0.07) !important;
+}
+
+/* ── DARK: Recharts legend text ───────────────────────── */
+html.dark .recharts-legend-item .recharts-legend-item-text {
+  color: #A7B0BC !important;
+}
+
+/* ── DARK: utility class overrides for "white card" problem ── */
+/* These translate bg-white and bg-slate-50 surfaces to dark tokens in dark mode */
+html.dark .dark\:bg-surface-card {
+  background-color: #121821 !important;
+}
+
+/* ── Status badge bg overrides for dark ──────────────── */
+html.dark .bg-emerald-50 { background-color: rgba(16, 185, 129, 0.12) !important; }
+html.dark .bg-amber-50   { background-color: rgba(245, 158, 11, 0.12) !important; }
+html.dark .bg-red-50     { background-color: rgba(239, 68, 68, 0.12)  !important; }
+html.dark .bg-rose-50    { background-color: rgba(244, 63, 94, 0.12)  !important; }
+html.dark .bg-blue-50    { background-color: rgba(59, 130, 246, 0.12) !important; }
+html.dark .bg-indigo-50  { background-color: rgba(99, 102, 241, 0.12) !important; }
+html.dark .bg-purple-50  { background-color: rgba(168, 85, 247, 0.12) !important; }
+html.dark .bg-teal-50    { background-color: rgba(20, 184, 166, 0.12) !important; }
+html.dark .bg-orange-50  { background-color: rgba(249, 115, 22, 0.12) !important; }
+html.dark .bg-green-50   { background-color: rgba(34, 197, 94, 0.12)  !important; }
+html.dark .bg-gray-100   { background-color: rgba(255, 255, 255, 0.06) !important; }
+html.dark .bg-slate-50   { background-color: #161E28 !important; }
+html.dark .bg-slate-100  { background-color: #1B2531 !important; }
+
+/* WHITE CARD KILLER — the main dark mode fix */
+html.dark .bg-white {
+  background-color: #121821 !important;
+}
+html.dark .bg-white\/50 {
+  background-color: rgba(18, 24, 33, 0.5) !important;
+}
+html.dark .bg-white\/95 {
+  background-color: rgba(14, 19, 26, 0.97) !important;
+}
+
+/* Text overrides in dark */
+html.dark .text-gray-900  { color: #F5F7FA !important; }
+html.dark .text-gray-800  { color: #E5E7EB !important; }
+html.dark .text-gray-700  { color: #D1D5DB !important; }
+html.dark .text-gray-600  { color: #A7B0BC !important; }
+html.dark .text-gray-500  { color: #707A87 !important; }
+html.dark .text-gray-400  { color: #6B7280 !important; }
+html.dark .text-slate-900 { color: #F5F7FA !important; }
+html.dark .text-slate-800 { color: #E5E7EB !important; }
+html.dark .text-slate-700 { color: #D1D5DB !important; }
+html.dark .text-slate-600 { color: #A7B0BC !important; }
+
+/* Hover overrides in dark */
+html.dark .hover\:bg-slate-50:hover  { background-color: #1B2531 !important; }
+html.dark .hover\:bg-slate-100:hover { background-color: #1B2531 !important; }
+html.dark .hover\:bg-gray-50:hover   { background-color: #1B2531 !important; }
+html.dark .hover\:border-indigo-200:hover { border-color: rgba(99, 102, 241, 0.3) !important; }
+
+/* Divide lines in dark */
+html.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]) {
+  border-color: rgba(255, 255, 255, 0.05);
+}
+html.dark .divide-y > :not([hidden]) ~ :not([hidden]) {
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+/* ── DARK: drag & drop zone ───────────────────────────── */
+html.dark .border-dashed {
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+html.dark .border-dashed:hover {
+  border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+/* ── DARK: gradient backgrounds ───────────────────────── */
+html.dark [class*="from-indigo-50"] {
+  --tw-gradient-from: rgba(99, 102, 241, 0.06) !important;
+}
+html.dark [class*="from-blue-50"] {
+  --tw-gradient-from: rgba(59, 130, 246, 0.06) !important;
+}
+
+/* ── DARK: premium sidebar indicator ─────────────────── */
+html.dark .sidebar-active-indicator {
+  background: linear-gradient(135deg, #0c8fe9, #0070c7);
+  box-shadow: 0 0 12px rgba(12, 143, 233, 0.3);
+}
+
+/* ── DARK: AI/Copilot elevated surface ───────────────── */
+html.dark .ai-surface {
+  background: #161E28;
+  border: 1px solid rgba(12, 143, 233, 0.2);
+}
+
+/* ── DARK: topbar border ──────────────────────────────── */
+html.dark .border-slate-100\/90 {
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
+html.dark .border-b {
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+/* ── DARK: footer ─────────────────────────────────────── */
+html.dark footer {
+  background-color: rgba(14, 19, 26, 0.5) !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* ── DARK: shadow reset (remove glowing blue shadows) ── */
+html.dark .shadow-btn-glow,
+html.dark [class*="shadow-indigo"],
+html.dark [class*="shadow-blue"] {
+  box-shadow: none !important;
+}
+
+/* ── Primary buttons — keep blue, remove neon glow ────── */
+html.dark .bg-indigo-600 {
+  background-color: #0c8fe9 !important;
+}
+html.dark .hover\:bg-indigo-700:hover {
+  background-color: #0070c7 !important;
+}
+
+/* ── DARK: ring / focus ───────────────────────────────── */
+html.dark .focus\:ring-indigo-500\/30:focus {
+  --tw-ring-color: rgba(12, 143, 233, 0.25) !important;
 }

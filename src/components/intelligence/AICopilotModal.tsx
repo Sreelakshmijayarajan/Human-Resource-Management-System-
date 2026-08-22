@@ -126,27 +126,27 @@ export const AICopilotModal: React.FC<AICopilotModalProps> = ({ isOpen, onClose 
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/40 backdrop-blur-xs animate-fade-in">
-      <div className="w-full max-w-2xl bg-white rounded-2xl border border-slate-200/80 shadow-elevated overflow-hidden flex flex-col h-[640px] max-h-[90vh] animate-slide-up">
+      <div className="w-full max-w-2xl bg-white dark:bg-[#121821] rounded-2xl border border-slate-200/80 dark:border-white/[0.08] shadow-elevated overflow-hidden flex flex-col h-[640px] max-h-[90vh] animate-slide-up">
         {/* Header */}
-        <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+        <div className="px-5 py-4 border-b border-slate-100 dark:border-white/[0.06] flex items-center justify-between bg-slate-50/50 dark:bg-[#161E28]">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold shadow-2xs">
+            <div className="w-8 h-8 rounded-xl bg-[#0c8fe9]/10 text-[#0c8fe9] flex items-center justify-center font-bold shadow-2xs">
               <Sparkles className="w-4 h-4" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="font-bold text-slate-900 text-sm">Dayflow AI Copilot</h3>
-                <span className="text-[10px] font-mono font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">
+                <h3 className="font-bold text-slate-900 dark:text-[#F5F7FA] text-sm">Dayflow AI Copilot</h3>
+                <span className="text-[10px] font-mono font-bold text-[#0070c7] dark:text-[#36abf8] bg-[#0c8fe9]/10 dark:bg-[#0c8fe9]/10 px-2 py-0.5 rounded border border-[#0c8fe9]/20">
                   Decision Engine v2.6
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400">Context: Enterprise Workforce Telemetry</p>
+              <p className="text-[11px] text-slate-400 dark:text-[#707A87]">Context: Enterprise Workforce Telemetry</p>
             </div>
           </div>
 
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+            className="p-1.5 text-slate-400 hover:text-slate-600 dark:text-[#707A87] dark:hover:text-[#E5E7EB] hover:bg-slate-100 dark:hover:bg-[#1B2531] rounded-lg transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -160,7 +160,7 @@ export const AICopilotModal: React.FC<AICopilotModalProps> = ({ isOpen, onClose 
               className={`flex items-start gap-2.5 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               {msg.sender === 'ai' && (
-                <div className="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-7 h-7 rounded-lg bg-[#0c8fe9]/10 text-[#0c8fe9] flex items-center justify-center shrink-0 mt-0.5">
                   <Bot className="w-4 h-4" />
                 </div>
               )}
@@ -168,54 +168,54 @@ export const AICopilotModal: React.FC<AICopilotModalProps> = ({ isOpen, onClose 
               <div
                 className={`max-w-[85%] rounded-2xl p-4 space-y-2.5 ${
                   msg.sender === 'user'
-                    ? 'bg-slate-900 text-white rounded-tr-xs'
-                    : 'bg-slate-50 border border-slate-200/80 text-slate-800 rounded-tl-xs'
+                    ? 'bg-[#0c8fe9] dark:bg-[#0070c7] text-white rounded-tr-xs'
+                    : 'bg-slate-50 dark:bg-[#161E28] border border-slate-200/80 dark:border-white/[0.07] text-slate-800 dark:text-[#E5E7EB] rounded-tl-xs'
                 }`}
               >
                 <p className="leading-relaxed font-medium">{msg.text}</p>
 
                 {/* Structured AI Decision Card */}
                 {msg.structuredInsight && (
-                  <div className="bg-white rounded-xl p-3.5 border border-slate-200 shadow-2xs space-y-2.5 text-xs text-slate-800">
-                    <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                      <span className="font-bold text-indigo-900 flex items-center gap-1.5">
-                        <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
+                  <div className="bg-white dark:bg-[#121821] rounded-xl p-3.5 border border-slate-200 dark:border-white/[0.07] shadow-2xs space-y-2.5 text-xs text-slate-800 dark:text-[#E5E7EB]">
+                    <div className="flex items-center justify-between border-b border-slate-100 dark:border-white/[0.06] pb-2">
+                      <span className="font-bold text-[#0070c7] dark:text-[#36abf8] flex items-center gap-1.5">
+                        <Sparkles className="w-3.5 h-3.5 text-[#0c8fe9]" />
                         AI INSIGHT
                       </span>
-                      <span className="text-[10px] font-mono font-semibold text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">
+                      <span className="text-[10px] font-mono font-semibold text-slate-500 dark:text-[#707A87] bg-slate-100 dark:bg-white/[0.06] px-1.5 py-0.5 rounded">
                         Confidence {msg.structuredInsight.confidence}%
                       </span>
                     </div>
 
-                    <p className="text-slate-800 font-semibold leading-relaxed">
+                    <p className="text-slate-800 dark:text-[#E5E7EB] font-semibold leading-relaxed">
                       {msg.structuredInsight.insight}
                     </p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] pt-1">
-                      <div className="bg-slate-50 p-2 rounded-lg border border-slate-100">
-                        <span className="font-bold text-slate-400 uppercase tracking-wider block text-[9px]">WHY</span>
-                        <p className="text-slate-600 mt-0.5">{msg.structuredInsight.why}</p>
+                      <div className="bg-slate-50 dark:bg-[#161E28] p-2 rounded-lg border border-slate-100 dark:border-white/[0.06]">
+                        <span className="font-bold text-slate-400 dark:text-[#707A87] uppercase tracking-wider block text-[9px]">WHY</span>
+                        <p className="text-slate-600 dark:text-[#A7B0BC] mt-0.5">{msg.structuredInsight.why}</p>
                       </div>
-                      <div className="bg-slate-50 p-2 rounded-lg border border-slate-100">
-                        <span className="font-bold text-slate-400 uppercase tracking-wider block text-[9px]">IMPACT</span>
-                        <p className="text-slate-600 mt-0.5">{msg.structuredInsight.impact}</p>
+                      <div className="bg-slate-50 dark:bg-[#161E28] p-2 rounded-lg border border-slate-100 dark:border-white/[0.06]">
+                        <span className="font-bold text-slate-400 dark:text-[#707A87] uppercase tracking-wider block text-[9px]">IMPACT</span>
+                        <p className="text-slate-600 dark:text-[#A7B0BC] mt-0.5">{msg.structuredInsight.impact}</p>
                       </div>
                     </div>
 
-                    <div className="p-2.5 bg-emerald-50 border border-emerald-200 rounded-lg text-[11px]">
-                      <span className="font-bold text-emerald-800 uppercase tracking-wider block text-[9px]">RECOMMENDATION</span>
-                      <p className="text-emerald-950 font-medium mt-0.5">{msg.structuredInsight.recommendation}</p>
+                    <div className="p-2.5 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 rounded-lg text-[11px]">
+                      <span className="font-bold text-emerald-800 dark:text-emerald-400 uppercase tracking-wider block text-[9px]">RECOMMENDATION</span>
+                      <p className="text-emerald-950 dark:text-emerald-300 font-medium mt-0.5">{msg.structuredInsight.recommendation}</p>
                     </div>
                   </div>
                 )}
 
-                <div className="flex justify-end text-[10px] text-slate-400 font-mono">
+                <div className="flex justify-end text-[10px] text-slate-400 dark:text-[#707A87] font-mono">
                   {msg.timestamp}
                 </div>
               </div>
 
               {msg.sender === 'user' && (
-                <div className="w-7 h-7 rounded-lg bg-slate-900 text-white flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold">
+                <div className="w-7 h-7 rounded-lg bg-[#0070c7] text-white flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold">
                   U
                 </div>
               )}
@@ -224,8 +224,8 @@ export const AICopilotModal: React.FC<AICopilotModalProps> = ({ isOpen, onClose 
 
           {/* AI Thinking Animation */}
           {isThinking && (
-            <div className="flex items-center gap-2 p-3 bg-indigo-50/50 border border-indigo-100 rounded-xl text-xs text-indigo-700 animate-pulse">
-              <Sparkles className="w-4 h-4 text-indigo-600 animate-spin" />
+            <div className="flex items-center gap-2 p-3 bg-[#0c8fe9]/8 dark:bg-[#0c8fe9]/10 border border-[#0c8fe9]/20 rounded-xl text-xs text-[#0070c7] dark:text-[#36abf8] animate-pulse">
+              <Sparkles className="w-4 h-4 text-[#0c8fe9] animate-spin" />
               <span>Synthesizing workforce telemetry & policy evidence...</span>
             </div>
           )}
@@ -234,12 +234,12 @@ export const AICopilotModal: React.FC<AICopilotModalProps> = ({ isOpen, onClose 
         </div>
 
         {/* Suggestion Chips */}
-        <div className="px-5 py-2 border-t border-slate-100 bg-slate-50/50 flex flex-wrap gap-1.5">
+        <div className="px-5 py-2 border-t border-slate-100 dark:border-white/[0.06] bg-slate-50/50 dark:bg-[#161E28] flex flex-wrap gap-1.5">
           {samplePrompts.map((p, idx) => (
             <button
               key={idx}
               onClick={() => handleSend(p)}
-              className="text-[11px] font-medium text-slate-600 bg-white border border-slate-200 hover:border-slate-300 hover:text-slate-900 px-2.5 py-1 rounded-lg transition-colors"
+              className="text-[11px] font-medium text-slate-600 dark:text-[#A7B0BC] bg-white dark:bg-[#121821] border border-slate-200 dark:border-white/[0.08] hover:border-slate-300 dark:hover:border-white/[0.15] hover:text-slate-900 dark:hover:text-[#F5F7FA] px-2.5 py-1 rounded-lg transition-colors"
             >
               {p}
             </button>
@@ -247,7 +247,7 @@ export const AICopilotModal: React.FC<AICopilotModalProps> = ({ isOpen, onClose 
         </div>
 
         {/* Input Bar */}
-        <div className="p-4 border-t border-slate-100 bg-white">
+        <div className="p-4 border-t border-slate-100 dark:border-white/[0.06] bg-white dark:bg-[#161E28]">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -260,12 +260,12 @@ export const AICopilotModal: React.FC<AICopilotModalProps> = ({ isOpen, onClose 
               placeholder="Ask Copilot about workforce decisions, leave impact, or skill coverage..."
               value={inputQuery}
               onChange={(e) => setInputQuery(e.target.value)}
-              className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition"
+              className="flex-1 bg-slate-50 dark:bg-[#121821] border border-slate-200 dark:border-white/[0.08] rounded-xl px-3.5 py-2.5 text-xs text-slate-800 dark:text-[#E5E7EB] placeholder-slate-400 dark:placeholder-[#707A87] focus:outline-none focus:ring-2 focus:ring-[#0c8fe9]/20 focus:border-[#0c8fe9]/40 transition"
             />
             <button
               type="submit"
               disabled={!inputQuery.trim() || isThinking}
-              className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-bold text-xs rounded-xl shadow-subtle transition-colors flex items-center gap-1.5"
+              className="px-4 py-2.5 bg-[#0c8fe9] hover:bg-[#0070c7] disabled:opacity-50 text-white font-bold text-xs rounded-xl shadow-subtle transition-colors flex items-center gap-1.5"
             >
               <span>Ask</span>
               <Send className="w-3.5 h-3.5" />

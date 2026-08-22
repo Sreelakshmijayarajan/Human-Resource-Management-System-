@@ -61,21 +61,21 @@ export const CopilotPage: React.FC = () => {
 
   return (
     <div className="space-y-6 animate-fade-in max-w-4xl mx-auto pb-8">
-      <div className="pb-2 border-b border-slate-200/80">
+      <div className="pb-2 border-b border-slate-200/80 dark:border-white/[0.06]">
         <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+          <h1 className="text-2xl font-extrabold text-slate-900 dark:text-[#F5F7FA] tracking-tight">
             Dayflow AI Copilot
           </h1>
-          <span className="text-[10px] font-mono font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">
+          <span className="text-[10px] font-mono font-bold text-[#0070c7] dark:text-[#36abf8] bg-[#0c8fe9]/10 dark:bg-[#0c8fe9]/10 px-2 py-0.5 rounded border border-[#0c8fe9]/20">
             Decision Assistant
           </span>
         </div>
-        <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+        <p className="text-xs sm:text-sm text-slate-500 dark:text-[#707A87] mt-0.5">
           Conversational workforce intelligence and prescriptive decision analysis.
         </p>
       </div>
 
-      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-card flex flex-col h-[580px] overflow-hidden">
+      <div className="bg-white dark:bg-[#121821] rounded-2xl border border-slate-200/80 dark:border-white/[0.07] shadow-card flex flex-col h-[580px] overflow-hidden">
         {/* Messages */}
         <div className="flex-1 overflow-y-auto p-6 space-y-4 text-xs">
           {messages.map((msg: any) => (
@@ -84,32 +84,32 @@ export const CopilotPage: React.FC = () => {
               className={`flex items-start gap-2.5 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               {msg.sender === 'ai' && (
-                <div className="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0 shadow-2xs">
+                <div className="w-8 h-8 rounded-xl bg-[#0c8fe9]/10 text-[#0c8fe9] flex items-center justify-center shrink-0 shadow-2xs">
                   <Bot className="w-4 h-4" />
                 </div>
               )}
               <div
                 className={`max-w-[85%] rounded-2xl p-4 space-y-2.5 ${msg.sender === 'user'
-                    ? 'bg-slate-900 text-white rounded-tr-xs'
-                    : 'bg-slate-50 border border-slate-200/80 text-slate-800 rounded-tl-xs'
+                    ? 'bg-[#0c8fe9] dark:bg-[#0070c7] text-white rounded-tr-xs'
+                    : 'bg-slate-50 dark:bg-[#161E28] border border-slate-200/80 dark:border-white/[0.07] text-slate-800 dark:text-[#E5E7EB] rounded-tl-xs'
                   }`}
               >
                 <p className="leading-relaxed font-medium">{msg.text}</p>
 
                 {msg.insight && (
-                  <div className="bg-white rounded-xl p-3.5 border border-slate-200 shadow-2xs space-y-2 text-slate-800">
-                    <div className="flex items-center gap-1.5 font-bold text-indigo-900">
-                      <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
+                  <div className="bg-white dark:bg-[#121821] rounded-xl p-3.5 border border-slate-200 dark:border-white/[0.07] shadow-2xs space-y-2 text-slate-800 dark:text-[#E5E7EB]">
+                    <div className="flex items-center gap-1.5 font-bold text-[#0070c7] dark:text-[#36abf8]">
+                      <Sparkles className="w-3.5 h-3.5 text-[#0c8fe9]" />
                       <span>{msg.insight.title}</span>
                     </div>
-                    <p className="text-slate-600 leading-relaxed">{msg.insight.detail}</p>
-                    <div className="p-2 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-950 font-medium">
+                    <p className="text-slate-600 dark:text-[#A7B0BC] leading-relaxed">{msg.insight.detail}</p>
+                    <div className="p-2 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 rounded-lg text-emerald-950 dark:text-emerald-400 font-medium">
                       <strong>Recommendation:</strong> {msg.insight.action}
                     </div>
                   </div>
                 )}
 
-                <div className="flex justify-end text-[10px] text-slate-400 font-mono">
+                <div className="flex justify-end text-[10px] text-slate-400 dark:text-[#707A87] font-mono">
                   {msg.timestamp}
                 </div>
               </div>
@@ -117,15 +117,15 @@ export const CopilotPage: React.FC = () => {
           ))}
 
           {isThinking && (
-            <div className="flex items-center gap-2 p-3 bg-indigo-50/50 border border-indigo-100 rounded-xl text-xs text-indigo-700 animate-pulse">
-              <Sparkles className="w-4 h-4 text-indigo-600 animate-spin" />
+            <div className="flex items-center gap-2 p-3 bg-[#0c8fe9]/6 dark:bg-[#0c8fe9]/8 border border-[#0c8fe9]/15 rounded-xl text-xs text-[#0070c7] dark:text-[#36abf8] animate-pulse">
+              <Sparkles className="w-4 h-4 text-[#0c8fe9] animate-spin" />
               <span>Analyzing organizational telemetry...</span>
             </div>
           )}
         </div>
 
         {/* Input bar */}
-        <div className="p-4 border-t border-slate-100 bg-white">
+        <div className="p-4 border-t border-slate-100 dark:border-white/[0.06] bg-white dark:bg-[#0E131A]">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -138,12 +138,12 @@ export const CopilotPage: React.FC = () => {
               placeholder="Ask Copilot about workforce decisions, leave impacts, capacity..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+              className="flex-1 bg-slate-50 dark:bg-[#161E28] border border-slate-200 dark:border-white/[0.08] rounded-xl px-3.5 py-2.5 text-xs text-slate-800 dark:text-[#E5E7EB] placeholder-slate-400 dark:placeholder-[#707A87] focus:outline-none focus:ring-2 focus:ring-[#0c8fe9]/20"
             />
             <button
               type="submit"
               disabled={!query.trim() || isThinking}
-              className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-subtle flex items-center gap-1.5"
+              className="px-5 py-2.5 bg-[#0c8fe9] hover:bg-[#0070c7] text-white font-bold text-xs rounded-xl shadow-subtle flex items-center gap-1.5 transition-colors disabled:opacity-50"
             >
               <span>Ask</span>
               <Send className="w-3.5 h-3.5" />

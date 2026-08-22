@@ -21,6 +21,15 @@ export default {
           900: '#0b3f6f',
           950: '#07284a',
         },
+        // Dark mode surface palette
+        dark: {
+          app:     '#0B0F14',
+          sidebar: '#0E131A',
+          topbar:  '#0E131A',
+          card:    '#121821',
+          raised:  '#161E28',
+          hover:   '#1B2531',
+        },
       },
       fontFamily: {
         sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
@@ -29,7 +38,7 @@ export default {
         'subtle': '0 2px 10px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02)',
         'card': '0 10px 35px -5px rgba(15, 23, 42, 0.06), 0 4px 12px -2px rgba(15, 23, 42, 0.03)',
         'card-hover': '0 20px 40px -10px rgba(15, 23, 42, 0.1), 0 8px 16px -4px rgba(15, 23, 42, 0.04)',
-        'btn-glow': '0 4px 14px 0 rgba(12, 143, 233, 0.39)',
+        'btn-glow': '0 4px 14px 0 rgba(12, 143, 233, 0.25)',
       },
       animation: {
         'fade-in': 'fadeIn 0.3s ease-in-out',

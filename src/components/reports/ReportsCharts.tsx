@@ -22,6 +22,15 @@ import {
   PayrollCostTrendPoint,
 } from '../../types/reports';
 
+// Shared dark tooltip style
+const darkTooltipStyle = {
+  backgroundColor: '#161E28',
+  borderRadius: '12px',
+  border: '1px solid rgba(255,255,255,0.08)',
+  color: '#E5E7EB',
+  fontSize: '12px',
+};
+
 interface ChartCardProps {
   title: string;
   subtitle: string;
@@ -36,15 +45,15 @@ export const ChartCard: React.FC<ChartCardProps> = ({
   children,
 }) => {
   return (
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-xs hover:shadow-md transition-all duration-200 p-5 flex flex-col justify-between">
+    <div className="bg-white dark:bg-[#121821] rounded-2xl border border-slate-100 dark:border-white/[0.07] shadow-xs hover:shadow-md dark:hover:shadow-none dark:hover:border-white/[0.1] transition-all duration-200 p-5 flex flex-col justify-between">
       <div className="flex items-start justify-between gap-4 mb-4">
         <div>
-          <h3 className="text-base font-bold text-slate-900">{title}</h3>
-          <p className="text-xs text-slate-500 mt-0.5">{subtitle}</p>
+          <h3 className="text-base font-bold text-slate-900 dark:text-[#E5E7EB]">{title}</h3>
+          <p className="text-xs text-slate-500 dark:text-[#707A87] mt-0.5">{subtitle}</p>
         </div>
         <button
           onClick={onExportCSV}
-          className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold text-slate-600 hover:text-indigo-600 bg-slate-50 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-200 rounded-xl transition-all"
+          className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold text-slate-600 dark:text-[#A7B0BC] hover:text-[#0c8fe9] dark:hover:text-[#36abf8] bg-slate-50 dark:bg-[#161E28] hover:bg-[#0c8fe9]/5 dark:hover:bg-[#0c8fe9]/10 border border-slate-200 dark:border-white/[0.07] hover:border-[#0c8fe9]/30 rounded-xl transition-all"
           title="Export CSV dataset"
         >
           <Download className="w-3.5 h-3.5" /> Export CSV
@@ -68,19 +77,19 @@ export const AttendanceTrendChart: React.FC<{
     >
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-          <XAxis dataKey="date" tick={{ fontSize: 11, fill: '#64748b' }} axisLine={false} tickLine={false} />
-          <YAxis domain={[80, 100]} tick={{ fontSize: 11, fill: '#64748b' }} axisLine={false} tickLine={false} unit="%" />
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
+          <XAxis dataKey="date" tick={{ fontSize: 11, fill: '#A7B0BC' }} axisLine={false} tickLine={false} />
+          <YAxis domain={[80, 100]} tick={{ fontSize: 11, fill: '#A7B0BC' }} axisLine={false} tickLine={false} unit="%" />
           <Tooltip
-            contentStyle={{ backgroundColor: '#0f172a', borderRadius: '12px', border: 'none', color: '#fff', fontSize: '12px' }}
+            contentStyle={darkTooltipStyle}
             formatter={(val: any) => [`${val}%`, 'Attendance Rate']}
           />
           <Line
             type="monotone"
             dataKey="attendancePercentage"
-            stroke="#4f46e5"
+            stroke="#0c8fe9"
             strokeWidth={3}
-            dot={{ r: 4, fill: '#4f46e5', strokeWidth: 2, stroke: '#fff' }}
+            dot={{ r: 4, fill: '#0c8fe9', strokeWidth: 2, stroke: '#0B0F14' }}
             activeDot={{ r: 6 }}
           />
         </LineChart>
@@ -117,7 +126,7 @@ export const LeaveDistributionChart: React.FC<{
             ))}
           </Pie>
           <Tooltip
-            contentStyle={{ backgroundColor: '#0f172a', borderRadius: '12px', border: 'none', color: '#fff', fontSize: '12px' }}
+            contentStyle={darkTooltipStyle}
             formatter={(value: any, _name: any, props: any) => [
               `${value} days (${props.payload.percentage}%)`,
               props.payload.leaveType,
@@ -128,7 +137,7 @@ export const LeaveDistributionChart: React.FC<{
             layout="horizontal"
             verticalAlign="bottom"
             align="center"
-            wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }}
+            wrapperStyle={{ fontSize: '11px', paddingTop: '10px', color: '#A7B0BC' }}
           />
         </PieChart>
       </ResponsiveContainer>
@@ -149,13 +158,13 @@ export const DepartmentHeadcountChart: React.FC<{
     >
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-          <XAxis dataKey="department" tick={{ fontSize: 10, fill: '#64748b' }} axisLine={false} tickLine={false} />
-          <YAxis tick={{ fontSize: 11, fill: '#64748b' }} axisLine={false} tickLine={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
+          <XAxis dataKey="department" tick={{ fontSize: 10, fill: '#A7B0BC' }} axisLine={false} tickLine={false} />
+          <YAxis tick={{ fontSize: 11, fill: '#A7B0BC' }} axisLine={false} tickLine={false} />
           <Tooltip
-            contentStyle={{ backgroundColor: '#0f172a', borderRadius: '12px', border: 'none', color: '#fff', fontSize: '12px' }}
+            contentStyle={darkTooltipStyle}
           />
-          <Bar dataKey="count" name="Total Headcount" fill="#3b82f6" radius={[6, 6, 0, 0]} />
+          <Bar dataKey="count" name="Total Headcount" fill="#0c8fe9" radius={[6, 6, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </ChartCard>
@@ -177,16 +186,16 @@ export const PayrollCostChart: React.FC<{
     >
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-          <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#64748b' }} axisLine={false} tickLine={false} />
-          <YAxis tickFormatter={formatK} tick={{ fontSize: 11, fill: '#64748b' }} axisLine={false} tickLine={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
+          <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#A7B0BC' }} axisLine={false} tickLine={false} />
+          <YAxis tickFormatter={formatK} tick={{ fontSize: 11, fill: '#A7B0BC' }} axisLine={false} tickLine={false} />
           <Tooltip
-            contentStyle={{ backgroundColor: '#0f172a', borderRadius: '12px', border: 'none', color: '#fff', fontSize: '12px' }}
+            contentStyle={darkTooltipStyle}
             formatter={(val: any) => [`₹${Number(val).toLocaleString('en-IN')}`, 'Amount']}
           />
-          <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '8px' }} />
-          <Line type="monotone" dataKey="grossTotal" name="Gross Payroll Spend" stroke="#10b981" strokeWidth={3} dot={{ r: 4 }} />
-          <Line type="monotone" dataKey="netTotal" name="Net Salary Payout" stroke="#6366f1" strokeWidth={2} strokeDasharray="4 4" dot={{ r: 3 }} />
+          <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '8px', color: '#A7B0BC' }} />
+          <Line type="monotone" dataKey="grossTotal" name="Gross Payroll Spend" stroke="#10b981" strokeWidth={3} dot={{ r: 4, stroke: '#0B0F14', strokeWidth: 2 }} />
+          <Line type="monotone" dataKey="netTotal" name="Net Salary Payout" stroke="#0c8fe9" strokeWidth={2} strokeDasharray="4 4" dot={{ r: 3 }} />
         </LineChart>
       </ResponsiveContainer>
     </ChartCard>

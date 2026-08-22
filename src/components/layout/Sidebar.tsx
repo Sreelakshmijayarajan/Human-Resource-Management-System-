@@ -10,10 +10,10 @@ interface SidebarProps {
   onCloseMobile?: () => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ 
-  role = 'hr_admin', 
-  isMobileOpen = false, 
-  onCloseMobile = () => {} 
+export const Sidebar: React.FC<SidebarProps> = ({
+  role = 'hr_admin',
+  isMobileOpen = false,
+  onCloseMobile = () => {}
 }) => {
   const location = useLocation();
   const navItems = getNavItemsByRole(role);
@@ -22,9 +22,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
     <div className="flex flex-col h-full justify-between p-4 sm:p-5">
       <div className="space-y-6">
         {/* Mobile Header with close button */}
-        <div className="flex items-center justify-between md:hidden px-2 pb-2 border-b border-slate-100 dark:border-slate-800">
+        <div className="flex items-center justify-between md:hidden px-2 pb-2 border-b border-slate-100 dark:border-white/[0.06]">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-sm">
+            <div className="w-8 h-8 rounded-xl bg-[#0c8fe9] flex items-center justify-center text-white font-bold text-sm shadow-sm">
               D
             </div>
             <span className="font-bold text-slate-900 dark:text-white text-base tracking-tight">Dayflow</span>
@@ -32,7 +32,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
           <button
             onClick={onCloseMobile}
-            className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg"
+            className="p-1.5 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-200 rounded-lg"
             aria-label="Close menu"
           >
             <X className="w-5 h-5" />
@@ -40,7 +40,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* Navigation items list */}
-        <nav className="space-y-1.5 pt-1">
+        <nav className="space-y-1 pt-1">
           {navItems.map((item) => {
             const Icon = item.icon;
             // Check active (for /hr dashboard, handle /hr and /hr/dashboard)
@@ -54,17 +54,21 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 key={item.id}
                 to={item.route}
                 onClick={onCloseMobile}
-                className={`flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 group ${
+                className={`relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 group ${
                   isActive
-                    ? 'bg-indigo-50/80 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 font-semibold shadow-2xs'
-                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100'
+                    ? 'bg-[rgba(12,143,233,0.12)] dark:bg-[rgba(12,143,233,0.12)] text-[#0070c7] dark:text-[#36abf8] font-semibold'
+                    : 'text-slate-600 dark:text-[#707A87] hover:bg-slate-50 dark:hover:bg-[#1B2531] hover:text-slate-900 dark:hover:text-[#E5E7EB]'
                 }`}
               >
+                {/* Active indicator bar */}
+                {isActive && (
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 rounded-full bg-[#0c8fe9] dark:bg-[#36abf8]" />
+                )}
                 <Icon
                   className={`w-4 h-4 shrink-0 transition-colors ${
                     isActive
-                      ? 'text-indigo-600 dark:text-indigo-400'
-                      : 'text-slate-400 dark:text-slate-500 group-hover:text-slate-600 dark:group-hover:text-slate-300'
+                      ? 'text-[#0c8fe9] dark:text-[#36abf8]'
+                      : 'text-slate-400 dark:text-[#4A5568] group-hover:text-slate-600 dark:group-hover:text-[#A7B0BC]'
                   }`}
                 />
                 <span className="truncate">{item.label}</span>
@@ -75,7 +79,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Footer info */}
-      <div className="pt-4 border-t border-slate-100/80 dark:border-slate-800 px-2 text-xs text-slate-400 dark:text-slate-500 font-medium">
+      <div className="pt-4 border-t border-slate-100/80 dark:border-white/[0.06] px-2 text-xs text-slate-400 dark:text-[#707A87] font-medium">
         © 2026 Dayflow HRMS
       </div>
     </div>
@@ -84,7 +88,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   return (
     <>
       {/* Desktop Sidebar (Persistent) */}
-      <aside className="hidden md:block w-64 bg-white dark:bg-slate-900 border-r border-slate-100/90 dark:border-slate-800 shrink-0 h-screen sticky top-0 z-20 transition-colors duration-200">
+      <aside className="hidden md:block w-64 bg-white dark:bg-[#0E131A] border-r border-slate-100/90 dark:border-white/[0.06] shrink-0 h-screen sticky top-0 z-20 transition-colors duration-200">
         {renderNavContent()}
       </aside>
 
@@ -99,7 +103,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Mobile Sidebar Drawer */}
       <aside
-        className={`fixed top-0 left-0 bottom-0 w-72 bg-white dark:bg-slate-900 z-50 md:hidden shadow-2xl transition-transform duration-300 ease-out ${
+        className={`fixed top-0 left-0 bottom-0 w-72 bg-white dark:bg-[#0E131A] z-50 md:hidden shadow-2xl transition-transform duration-300 ease-out ${
           isMobileOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >

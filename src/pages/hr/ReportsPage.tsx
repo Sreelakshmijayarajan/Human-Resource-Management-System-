@@ -129,38 +129,38 @@ export const ReportsPage: React.FC = () => {
       {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
-            Reports & Analytics <Sparkles className="w-5 h-5 text-indigo-500 fill-indigo-500/20" />
+          <h1 className="text-2xl font-extrabold text-slate-900 dark:text-[#F5F7FA] tracking-tight flex items-center gap-2">
+            Reports & Analytics <Sparkles className="w-5 h-5 text-indigo-500 dark:text-[#36abf8] fill-indigo-500/20" />
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-[#707A87] mt-1">
             Data-driven HR insights on attendance rates, leave distribution, headcount growth, and payroll expenditure.
           </p>
         </div>
 
         <button
           onClick={handleExportFullReport}
-          className="flex items-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl shadow-sm transition-all"
+          className="flex items-center gap-2 px-4 py-2.5 bg-[#0c8fe9] hover:bg-[#0070c7] text-white text-xs font-semibold rounded-xl shadow-sm transition-all"
         >
           <Download className="w-4 h-4" /> Export Full Report (.CSV)
         </button>
       </div>
 
       {/* Filter Bar */}
-      <div className="bg-white rounded-2xl border border-slate-100/90 shadow-xs p-4 flex flex-col md:flex-row items-center justify-between gap-3">
-        <div className="flex items-center gap-2 text-xs font-bold text-slate-800">
-          <Filter className="w-4 h-4 text-indigo-600" />
+      <div className="bg-white dark:bg-[#121821] rounded-2xl border border-slate-100/90 dark:border-white/[0.07] shadow-xs p-4 flex flex-col md:flex-row items-center justify-between gap-3">
+        <div className="flex items-center gap-2 text-xs font-bold text-slate-800 dark:text-[#E5E7EB]">
+          <Filter className="w-4 h-4 text-[#0c8fe9]" />
           <span>Report Dashboard Filters:</span>
         </div>
 
         <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
           {/* Date Range Picker */}
-          <div className="flex items-center gap-1.5 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200 text-xs">
-            <Calendar className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-            <span className="text-slate-500 font-medium">Period:</span>
+          <div className="flex items-center gap-1.5 bg-slate-50 dark:bg-[#161E28] px-3 py-1.5 rounded-xl border border-slate-200 dark:border-white/[0.07] text-xs">
+            <Calendar className="w-3.5 h-3.5 text-slate-400 dark:text-[#707A87] shrink-0" />
+            <span className="text-slate-500 dark:text-[#707A87] font-medium">Period:</span>
             <select
               value={dateRange}
               onChange={(e) => setDateRange(e.target.value)}
-              className="bg-transparent text-slate-800 font-semibold focus:outline-none text-xs cursor-pointer"
+              className="bg-transparent text-slate-800 dark:text-[#E5E7EB] font-semibold focus:outline-none text-xs cursor-pointer"
             >
               <option value="month">This Month (Aug 2026)</option>
               <option value="quarter">Last Quarter (Q2 2026)</option>
@@ -170,13 +170,13 @@ export const ReportsPage: React.FC = () => {
           </div>
 
           {/* Department Filter */}
-          <div className="flex items-center gap-1.5 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200 text-xs">
-            <Users className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-            <span className="text-slate-500 font-medium">Department:</span>
+          <div className="flex items-center gap-1.5 bg-slate-50 dark:bg-[#161E28] px-3 py-1.5 rounded-xl border border-slate-200 dark:border-white/[0.07] text-xs">
+            <Users className="w-3.5 h-3.5 text-slate-400 dark:text-[#707A87] shrink-0" />
+            <span className="text-slate-500 dark:text-[#707A87] font-medium">Department:</span>
             <select
               value={selectedDept}
               onChange={(e) => setSelectedDept(e.target.value)}
-              className="bg-transparent text-slate-800 font-semibold focus:outline-none text-xs cursor-pointer"
+              className="bg-transparent text-slate-800 dark:text-[#E5E7EB] font-semibold focus:outline-none text-xs cursor-pointer"
             >
               {departments.map((d) => (
                 <option key={d} value={d}>
@@ -187,13 +187,13 @@ export const ReportsPage: React.FC = () => {
           </div>
 
           {/* Report Type Selector */}
-          <div className="flex items-center gap-1.5 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200 text-xs">
-            <BarChart3 className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-            <span className="text-slate-500 font-medium">Category:</span>
+          <div className="flex items-center gap-1.5 bg-slate-50 dark:bg-[#161E28] px-3 py-1.5 rounded-xl border border-slate-200 dark:border-white/[0.07] text-xs">
+            <BarChart3 className="w-3.5 h-3.5 text-slate-400 dark:text-[#707A87] shrink-0" />
+            <span className="text-slate-500 dark:text-[#707A87] font-medium">Category:</span>
             <select
               value={reportType}
               onChange={(e) => setReportType(e.target.value)}
-              className="bg-transparent text-slate-800 font-semibold focus:outline-none text-xs cursor-pointer capitalize"
+              className="bg-transparent text-slate-800 dark:text-[#E5E7EB] font-semibold focus:outline-none text-xs cursor-pointer capitalize"
             >
               <option value="all">All Metrics</option>
               <option value="attendance">Attendance</option>
@@ -207,42 +207,46 @@ export const ReportsPage: React.FC = () => {
 
       {/* Summary Stat Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white rounded-2xl border border-slate-100/90 shadow-xs p-4 flex items-center justify-between">
+        <div className="bg-white dark:bg-[#121821] rounded-2xl border border-slate-100/90 dark:border-white/[0.07] shadow-xs p-4 flex items-center justify-between">
           <div>
-            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Avg Attendance Rate</span>
-            <p className="text-2xl font-extrabold text-slate-900 mt-1">{mockSummaryStats.avgAttendance}%</p>
+            <span className="text-xs font-semibold text-slate-400 dark:text-[#707A87] uppercase tracking-wider">Avg Attendance Rate</span>
+            <p className="text-2xl font-extrabold text-slate-900 dark:text-[#F5F7FA] mt-1">{mockSummaryStats.avgAttendance}%</p>
+            <p className="text-[11px] text-slate-400 dark:text-[#707A87] mt-0.5">Stable this month</p>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
             <Clock className="w-5 h-5" />
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-100/90 shadow-xs p-4 flex items-center justify-between">
+        <div className="bg-white dark:bg-[#121821] rounded-2xl border border-slate-100/90 dark:border-white/[0.07] shadow-xs p-4 flex items-center justify-between">
           <div>
-            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Leave Days Taken</span>
-            <p className="text-2xl font-extrabold text-purple-600 mt-1">{mockSummaryStats.totalLeaveDaysTaken} Days</p>
+            <span className="text-xs font-semibold text-slate-400 dark:text-[#707A87] uppercase tracking-wider">Leave Days Taken</span>
+            <p className="text-2xl font-extrabold text-purple-600 dark:text-purple-400 mt-1">{mockSummaryStats.totalLeaveDaysTaken} Days</p>
+            <p className="text-[11px] text-slate-400 dark:text-[#707A87] mt-0.5">This period</p>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0">
             <PieIcon className="w-5 h-5" />
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-100/90 shadow-xs p-4 flex items-center justify-between">
+        <div className="bg-white dark:bg-[#121821] rounded-2xl border border-slate-100/90 dark:border-white/[0.07] shadow-xs p-4 flex items-center justify-between">
           <div>
-            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Monthly Payroll</span>
-            <p className="text-2xl font-extrabold text-emerald-600 mt-1">{formatCurrency(mockSummaryStats.totalPayrollCost)}</p>
+            <span className="text-xs font-semibold text-slate-400 dark:text-[#707A87] uppercase tracking-wider">Total Monthly Payroll</span>
+            <p className="text-2xl font-extrabold text-emerald-600 dark:text-emerald-400 mt-1">{formatCurrency(mockSummaryStats.totalPayrollCost)}</p>
+            <p className="text-[11px] text-slate-400 dark:text-[#707A87] mt-0.5">Aug 2026</p>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
             <DollarSign className="w-5 h-5" />
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-100/90 shadow-xs p-4 flex items-center justify-between">
+        <div className="bg-white dark:bg-[#121821] rounded-2xl border border-slate-100/90 dark:border-white/[0.07] shadow-xs p-4 flex items-center justify-between">
           <div>
-            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Headcount Growth</span>
-            <p className="text-2xl font-extrabold text-indigo-600 mt-1">+{mockSummaryStats.headcountGrowth}%</p>
+            <span className="text-xs font-semibold text-slate-400 dark:text-[#707A87] uppercase tracking-wider">Headcount Growth</span>
+            <p className="text-2xl font-extrabold text-[#0c8fe9] dark:text-[#36abf8] mt-1">+{mockSummaryStats.headcountGrowth}%</p>
+            <p className="text-[11px] text-slate-400 dark:text-[#707A87] mt-0.5">YTD growth</p>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-500/10 text-[#0c8fe9] dark:text-[#36abf8] flex items-center justify-center shrink-0">
             <TrendingUp className="w-5 h-5" />
           </div>
         </div>

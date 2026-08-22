@@ -138,10 +138,10 @@ export const LeaveApprovalsPage: React.FC = () => {
       {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
+          <h1 className="text-2xl font-extrabold text-slate-900 dark:text-[#F5F7FA] tracking-tight flex items-center gap-2">
             Leave Management <Sparkles className="w-5 h-5 text-amber-500 fill-amber-500/20" />
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-[#707A87] mt-1">
             Review employee leave requests, approve workflow, and manage organizational leave policies.
           </p>
         </div>
@@ -152,7 +152,7 @@ export const LeaveApprovalsPage: React.FC = () => {
               setEditingPolicy(null);
               setPolicyModalOpen(true);
             }}
-            className="flex items-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl shadow-sm transition-all"
+            className="flex items-center gap-2 px-4 py-2.5 bg-[#0c8fe9] hover:bg-[#0070c7] text-white text-xs font-semibold rounded-xl shadow-sm transition-all"
           >
             <Plus className="w-4 h-4" /> Add Leave Policy
           </button>
@@ -161,49 +161,49 @@ export const LeaveApprovalsPage: React.FC = () => {
 
       {/* Top Stat Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white rounded-2xl border border-slate-100/90 shadow-xs p-4 flex items-center justify-between">
+        <div className="bg-white dark:bg-[#121821] rounded-2xl border border-slate-100/90 dark:border-white/[0.07] shadow-xs p-4 flex items-center justify-between">
           <div>
-            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Pending Requests</span>
-            <p className="text-2xl font-extrabold text-amber-600 mt-1">{pendingCount}</p>
+            <span className="text-xs font-semibold text-slate-400 dark:text-[#707A87] uppercase tracking-wider">Pending Requests</span>
+            <p className="text-2xl font-extrabold text-amber-600 dark:text-amber-400 mt-1">{pendingCount}</p>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
             <Clock className="w-5 h-5" />
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-100/90 shadow-xs p-4 flex items-center justify-between">
+        <div className="bg-white dark:bg-[#121821] rounded-2xl border border-slate-100/90 dark:border-white/[0.07] shadow-xs p-4 flex items-center justify-between">
           <div>
-            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Approved This Month</span>
-            <p className="text-2xl font-extrabold text-emerald-600 mt-1">{approvedThisMonth}</p>
+            <span className="text-xs font-semibold text-slate-400 dark:text-[#707A87] uppercase tracking-wider">Approved This Month</span>
+            <p className="text-2xl font-extrabold text-emerald-600 dark:text-emerald-400 mt-1">{approvedThisMonth}</p>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
             <CheckCircle2 className="w-5 h-5" />
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-100/90 shadow-xs p-4 flex items-center justify-between">
+        <div className="bg-white dark:bg-[#121821] rounded-2xl border border-slate-100/90 dark:border-white/[0.07] shadow-xs p-4 flex items-center justify-between">
           <div>
-            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Rejected Requests</span>
-            <p className="text-2xl font-extrabold text-red-600 mt-1">{rejectedThisMonth}</p>
+            <span className="text-xs font-semibold text-slate-400 dark:text-[#707A87] uppercase tracking-wider">Rejected Requests</span>
+            <p className="text-2xl font-extrabold text-red-600 dark:text-red-400 mt-1">{rejectedThisMonth}</p>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 flex items-center justify-center">
             <XCircle className="w-5 h-5" />
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-100/90 shadow-xs p-4 flex items-center justify-between">
+        <div className="bg-white dark:bg-[#121821] rounded-2xl border border-slate-100/90 dark:border-white/[0.07] shadow-xs p-4 flex items-center justify-between">
           <div>
-            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">On Leave Today</span>
-            <p className="text-2xl font-extrabold text-indigo-600 mt-1">{onLeaveToday}</p>
+            <span className="text-xs font-semibold text-slate-400 dark:text-[#707A87] uppercase tracking-wider">On Leave Today</span>
+            <p className="text-2xl font-extrabold text-[#0c8fe9] dark:text-[#36abf8] mt-1">{onLeaveToday}</p>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-500/10 text-[#0c8fe9] dark:text-[#36abf8] flex items-center justify-center">
             <UserCheck className="w-5 h-5" />
           </div>
         </div>
       </div>
 
       {/* Main Navigation Tabs */}
-      <div className="border-b border-slate-200 flex items-center gap-1 sm:gap-4 overflow-x-auto">
+      <div className="border-b border-slate-200 dark:border-white/[0.06] flex items-center gap-1 sm:gap-4 overflow-x-auto">
         {(['pending', 'approved', 'rejected', 'all', 'policies'] as ActiveTab[]).map((tab) => {
           const isActive = activeTab === tab;
           const labels: Record<ActiveTab, string> = {
@@ -222,8 +222,8 @@ export const LeaveApprovalsPage: React.FC = () => {
               }}
               className={`py-3 px-3.5 text-xs sm:text-sm font-semibold transition-all border-b-2 whitespace-nowrap capitalize ${
                 isActive
-                  ? 'border-indigo-600 text-indigo-600 font-bold'
-                  : 'border-transparent text-slate-500 hover:text-slate-900 hover:border-slate-300'
+                  ? 'border-[#0c8fe9] text-[#0c8fe9] dark:text-[#36abf8] font-bold'
+                  : 'border-transparent text-slate-500 dark:text-[#707A87] hover:text-slate-900 dark:hover:text-[#E5E7EB] hover:border-slate-300 dark:hover:border-white/[0.12]'
               }`}
             >
               {labels[tab]}
@@ -236,7 +236,7 @@ export const LeaveApprovalsPage: React.FC = () => {
       {activeTab === 'policies' ? (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-500 dark:text-[#707A87]">
               Configure organizational leave allocations, carry-forward caps, and accrual types.
             </p>
           </div>
@@ -258,10 +258,10 @@ export const LeaveApprovalsPage: React.FC = () => {
       ) : (
         <div className="space-y-4">
           {/* Filter Bar */}
-          <div className="bg-white rounded-2xl border border-slate-100/90 shadow-xs p-4 flex flex-col md:flex-row items-center justify-between gap-3">
+          <div className="bg-white dark:bg-[#121821] rounded-2xl border border-slate-100/90 dark:border-white/[0.07] shadow-xs p-4 flex flex-col md:flex-row items-center justify-between gap-3">
             {/* Search Input */}
             <div className="relative w-full md:w-80">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+              <Search className="w-4 h-4 text-slate-400 dark:text-[#707A87] absolute left-3 top-2.5" />
               <input
                 type="text"
                 placeholder="Search employee name or department..."
@@ -270,22 +270,22 @@ export const LeaveApprovalsPage: React.FC = () => {
                   setSearchQuery(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="w-full pl-9 pr-3 py-2 text-xs sm:text-sm bg-slate-50 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+                className="w-full pl-9 pr-3 py-2 text-xs sm:text-sm bg-slate-50 dark:bg-[#161E28] text-slate-900 dark:text-[#E5E7EB] placeholder-slate-400 dark:placeholder-[#707A87] rounded-xl border border-slate-200 dark:border-white/[0.08] focus:outline-none focus:ring-2 focus:ring-[#0c8fe9]/20 focus:border-[#0c8fe9]/40 transition-all"
               />
             </div>
 
             {/* Filter Dropdowns */}
             <div className="flex items-center gap-2 w-full md:w-auto overflow-x-auto">
-              <div className="flex items-center gap-1.5 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200 text-xs">
-                <Filter className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                <span className="text-slate-500 font-medium shrink-0">Dept:</span>
+              <div className="flex items-center gap-1.5 bg-slate-50 dark:bg-[#161E28] px-3 py-1.5 rounded-xl border border-slate-200 dark:border-white/[0.08] text-xs">
+                <Filter className="w-3.5 h-3.5 text-slate-400 dark:text-[#707A87] shrink-0" />
+                <span className="text-slate-500 dark:text-[#707A87] font-medium shrink-0">Dept:</span>
                 <select
                   value={selectedDept}
                   onChange={(e) => {
                     setSelectedDept(e.target.value);
                     setCurrentPage(1);
                   }}
-                  className="bg-transparent text-slate-800 font-semibold focus:outline-none text-xs cursor-pointer"
+                  className="bg-transparent text-slate-800 dark:text-[#E5E7EB] font-semibold focus:outline-none text-xs cursor-pointer"
                 >
                   {departments.map((d) => (
                     <option key={d} value={d}>
@@ -295,15 +295,15 @@ export const LeaveApprovalsPage: React.FC = () => {
                 </select>
               </div>
 
-              <div className="flex items-center gap-1.5 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200 text-xs">
-                <span className="text-slate-500 font-medium shrink-0">Type:</span>
+              <div className="flex items-center gap-1.5 bg-slate-50 dark:bg-[#161E28] px-3 py-1.5 rounded-xl border border-slate-200 dark:border-white/[0.08] text-xs">
+                <span className="text-slate-500 dark:text-[#707A87] font-medium shrink-0">Type:</span>
                 <select
                   value={selectedLeaveType}
                   onChange={(e) => {
                     setSelectedLeaveType(e.target.value);
                     setCurrentPage(1);
                   }}
-                  className="bg-transparent text-slate-800 font-semibold focus:outline-none text-xs cursor-pointer capitalize"
+                  className="bg-transparent text-slate-800 dark:text-[#E5E7EB] font-semibold focus:outline-none text-xs cursor-pointer capitalize"
                 >
                   <option value="all">All Leave Types</option>
                   <option value="sick">Sick Leave</option>
@@ -317,14 +317,14 @@ export const LeaveApprovalsPage: React.FC = () => {
           </div>
 
           {/* Requests Table */}
-          <div className="bg-white rounded-2xl border border-slate-100/90 shadow-xs overflow-hidden">
+          <div className="bg-white dark:bg-[#121821] rounded-2xl border border-slate-100/90 dark:border-white/[0.07] shadow-xs overflow-hidden">
             {isLoading ? (
               <TableSkeleton rows={6} />
             ) : paginatedRequests.length > 0 ? (
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
-                    <tr className="bg-slate-50/80 border-b border-slate-100 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                    <tr className="bg-slate-50/80 dark:bg-[#161E28] border-b border-slate-100 dark:border-white/[0.06] text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-[#707A87]">
                       <th className="py-3.5 px-4">Employee</th>
                       <th className="py-3.5 px-4">Leave Type</th>
                       <th className="py-3.5 px-4">Dates</th>
@@ -334,18 +334,18 @@ export const LeaveApprovalsPage: React.FC = () => {
                       <th className="py-3.5 px-4 text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 text-xs text-slate-700 font-medium">
+                  <tbody className="divide-y divide-slate-100 dark:divide-white/[0.04] text-xs text-slate-700 dark:text-[#A7B0BC] font-medium">
                     {paginatedRequests.map((req) => (
-                      <tr key={req.id} className="hover:bg-slate-50/60 transition-colors">
+                      <tr key={req.id} className="hover:bg-slate-50/60 dark:hover:bg-[#1B2531]/60 transition-colors">
                         {/* Employee Avatar + Name */}
                         <td className="py-3.5 px-4">
                           <div className="flex items-center gap-3">
-                            <div className="w-9 h-9 rounded-xl bg-indigo-600 text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs">
+                            <div className="w-9 h-9 rounded-xl bg-[#0070c7] text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs">
                               {req.employeeAvatar}
                             </div>
                             <div>
-                              <p className="font-bold text-slate-900">{req.employeeName}</p>
-                              <p className="text-[11px] text-slate-400">{req.department}</p>
+                              <p className="font-bold text-slate-900 dark:text-[#E5E7EB]">{req.employeeName}</p>
+                              <p className="text-[11px] text-slate-400 dark:text-[#707A87]">{req.department}</p>
                             </div>
                           </div>
                         </td>
@@ -356,19 +356,19 @@ export const LeaveApprovalsPage: React.FC = () => {
                         </td>
 
                         {/* Dates */}
-                        <td className="py-3.5 px-4 whitespace-nowrap text-slate-800">
+                        <td className="py-3.5 px-4 whitespace-nowrap text-slate-800 dark:text-[#E5E7EB]">
                           <p className="font-semibold">{req.startDate}</p>
-                          <p className="text-[11px] text-slate-400">to {req.endDate}</p>
+                          <p className="text-[11px] text-slate-400 dark:text-[#707A87]">to {req.endDate}</p>
                         </td>
 
                         {/* Days */}
                         <td className="py-3.5 px-4 whitespace-nowrap">
-                          <span className="font-bold text-slate-900">{req.days} Day{req.days > 1 ? 's' : ''}</span>
+                          <span className="font-bold text-slate-900 dark:text-[#F5F7FA]">{req.days} Day{req.days > 1 ? 's' : ''}</span>
                         </td>
 
                         {/* Reason */}
                         <td className="py-3.5 px-4 max-w-xs">
-                          <p className="line-clamp-1 text-slate-600" title={req.reason}>
+                          <p className="line-clamp-1 text-slate-600 dark:text-[#A7B0BC]" title={req.reason}>
                             {req.reason}
                           </p>
                         </td>
@@ -390,7 +390,7 @@ export const LeaveApprovalsPage: React.FC = () => {
                               </button>
                               <button
                                 onClick={() => setRejectingRequest(req)}
-                                className="flex items-center gap-1 px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-semibold rounded-xl transition-all"
+                                className="flex items-center gap-1 px-3 py-1.5 bg-red-50 dark:bg-red-500/10 hover:bg-red-100 dark:hover:bg-red-500/20 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-500/20 text-xs font-semibold rounded-xl transition-all"
                               >
                                 <XCircle className="w-3.5 h-3.5" /> Reject
                               </button>
@@ -398,7 +398,7 @@ export const LeaveApprovalsPage: React.FC = () => {
                           ) : (
                             <button
                               onClick={() => setDetailRequest(req)}
-                              className="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-indigo-600 bg-slate-100 hover:bg-indigo-50 rounded-xl transition-all ml-auto"
+                              className="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-slate-600 dark:text-[#A7B0BC] hover:text-[#0c8fe9] dark:hover:text-[#36abf8] bg-slate-100 dark:bg-[#161E28] hover:bg-[#0c8fe9]/10 rounded-xl transition-all ml-auto"
                             >
                               <Eye className="w-3.5 h-3.5" /> Details
                             </button>
@@ -411,12 +411,12 @@ export const LeaveApprovalsPage: React.FC = () => {
               </div>
             ) : (
               /* Empty State */
-              <div className="py-16 text-center text-slate-400 space-y-3">
-                <div className="w-14 h-14 mx-auto rounded-2xl bg-slate-50 flex items-center justify-center">
-                  <CalendarDays className="w-8 h-8 text-slate-300" />
+              <div className="py-16 text-center text-slate-400 dark:text-[#707A87] space-y-3">
+                <div className="w-14 h-14 mx-auto rounded-2xl bg-slate-50 dark:bg-[#161E28] flex items-center justify-center">
+                  <CalendarDays className="w-8 h-8 text-slate-300 dark:text-[#4A5568]" />
                 </div>
-                <h4 className="text-sm font-bold text-slate-700">No leave requests found</h4>
-                <p className="text-xs text-slate-400 max-w-sm mx-auto">
+                <h4 className="text-sm font-bold text-slate-700 dark:text-[#E5E7EB]">No leave requests found</h4>
+                <p className="text-xs text-slate-400 dark:text-[#707A87] max-w-sm mx-auto">
                   {activeTab === 'pending'
                     ? 'All leave applications have been reviewed. High five!'
                     : 'Try clearing your search query or department filter.'}
@@ -426,7 +426,7 @@ export const LeaveApprovalsPage: React.FC = () => {
 
             {/* Pagination Controls */}
             {filteredRequests.length > itemsPerPage && (
-              <div className="p-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+              <div className="p-4 border-t border-slate-100 dark:border-white/[0.06] flex items-center justify-between text-xs text-slate-500 dark:text-[#707A87]">
                 <span>
                   Showing {Math.min((currentPage - 1) * itemsPerPage + 1, filteredRequests.length)} to{' '}
                   {Math.min(currentPage * itemsPerPage, filteredRequests.length)} of {filteredRequests.length} requests
@@ -435,17 +435,17 @@ export const LeaveApprovalsPage: React.FC = () => {
                   <button
                     disabled={currentPage === 1}
                     onClick={() => setCurrentPage((p) => p - 1)}
-                    className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-40"
+                    className="p-1.5 rounded-lg border border-slate-200 dark:border-white/[0.08] text-slate-600 dark:text-[#A7B0BC] hover:bg-slate-50 dark:hover:bg-[#161E28] disabled:opacity-40"
                   >
                     <ChevronLeft className="w-4 h-4" />
                   </button>
-                  <span className="px-3 font-semibold text-slate-800">
+                  <span className="px-3 font-semibold text-slate-800 dark:text-[#E5E7EB]">
                     {currentPage} / {totalPages}
                   </span>
                   <button
                     disabled={currentPage === totalPages}
                     onClick={() => setCurrentPage((p) => p + 1)}
-                    className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-40"
+                    className="p-1.5 rounded-lg border border-slate-200 dark:border-white/[0.08] text-slate-600 dark:text-[#A7B0BC] hover:bg-slate-50 dark:hover:bg-[#161E28] disabled:opacity-40"
                   >
                     <ChevronRight className="w-4 h-4" />
                   </button>
@@ -455,6 +455,7 @@ export const LeaveApprovalsPage: React.FC = () => {
           </div>
         </div>
       )}
+
 
       {/* Modals */}
       <ConfirmDialog

@@ -33,23 +33,23 @@ export const AttendanceCalendarView: React.FC<AttendanceCalendarViewProps> = ({ 
   // Color mappings
   const getDayStyle = (status?: string, isWeekend?: boolean) => {
     if (isWeekend || status === 'weekend') {
-      return 'bg-slate-100/70 text-slate-400 border-slate-200 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:8px_8px]';
+      return 'bg-slate-100/70 dark:bg-[#161E28]/40 text-slate-400 dark:text-[#707A87] border-slate-200 dark:border-white/[0.04]';
     }
     switch (status) {
       case 'present':
-        return 'bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100/80';
+        return 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-500/20 hover:bg-emerald-100/80 dark:hover:bg-emerald-500/20';
       case 'absent':
-        return 'bg-red-50 text-red-800 border-red-200 hover:bg-red-100/80';
+        return 'bg-red-50 dark:bg-red-500/10 text-red-800 dark:text-red-300 border-red-200 dark:border-red-500/20 hover:bg-red-100/80 dark:hover:bg-red-500/20';
       case 'half_day':
-        return 'bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100/80';
+        return 'bg-amber-50 dark:bg-amber-500/10 text-amber-800 dark:text-amber-300 border-amber-200 dark:border-amber-500/20 hover:bg-amber-100/80 dark:hover:bg-amber-500/20';
       case 'late':
-        return 'bg-amber-50 text-amber-800 border-amber-300 hover:bg-amber-100/80';
+        return 'bg-amber-50 dark:bg-amber-500/10 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-500/30 hover:bg-amber-100/80 dark:hover:bg-amber-500/20';
       case 'on_leave':
-        return 'bg-blue-50 text-blue-800 border-blue-200 hover:bg-blue-100/80';
+        return 'bg-blue-50 dark:bg-[#0c8fe9]/10 text-blue-800 dark:text-[#36abf8] border-blue-200 dark:border-[#0c8fe9]/20 hover:bg-blue-100/80 dark:hover:bg-[#0c8fe9]/20';
       case 'holiday':
-        return 'bg-purple-50 text-purple-800 border-purple-200 hover:bg-purple-100/80';
+        return 'bg-purple-50 dark:bg-purple-500/10 text-purple-800 dark:text-purple-300 border-purple-200 dark:border-purple-500/20 hover:bg-purple-100/80 dark:hover:bg-purple-500/20';
       default:
-        return 'bg-white text-slate-600 border-slate-100 hover:bg-slate-50';
+        return 'bg-white dark:bg-[#121821] text-slate-600 dark:text-[#A7B0BC] border-slate-100 dark:border-white/[0.06] hover:bg-slate-50 dark:hover:bg-[#161E28]';
     }
   };
 
@@ -61,7 +61,7 @@ export const AttendanceCalendarView: React.FC<AttendanceCalendarViewProps> = ({ 
       case 'late': return 'bg-amber-500';
       case 'on_leave': return 'bg-blue-500';
       case 'holiday': return 'bg-purple-500';
-      default: return 'bg-slate-300';
+      default: return 'bg-slate-300 dark:bg-slate-600';
     }
   };
 
@@ -80,7 +80,7 @@ export const AttendanceCalendarView: React.FC<AttendanceCalendarViewProps> = ({ 
   const calendarCells = [];
   // Empty padding cells before 1st day of month
   for (let i = 0; i < firstDayOfWeek; i++) {
-    calendarCells.push(<div key={`pad-${i}`} className="h-20 bg-slate-50/40 rounded-xl border border-transparent" />);
+    calendarCells.push(<div key={`pad-${i}`} className="h-20 bg-slate-50/40 dark:bg-white/[0.02] rounded-xl border border-transparent" />);
   }
 
   // Month days
@@ -122,9 +122,9 @@ export const AttendanceCalendarView: React.FC<AttendanceCalendarViewProps> = ({ 
             </span>
           </div>
         ) : isWeekend ? (
-          <span className="text-[10px] font-bold text-slate-400 block">Off</span>
+          <span className="text-[10px] font-bold text-slate-400 dark:text-[#707A87] block">Off</span>
         ) : (
-          <span className="text-[10px] text-slate-300 block">—</span>
+          <span className="text-[10px] text-slate-300 dark:text-[#707A87] block">—</span>
         )}
       </button>
     );
@@ -133,23 +133,23 @@ export const AttendanceCalendarView: React.FC<AttendanceCalendarViewProps> = ({ 
   return (
     <div className="space-y-4">
       {/* Month Selector Bar */}
-      <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm flex items-center justify-between">
+      <div className="bg-white dark:bg-[#121821] rounded-2xl p-4 border border-slate-100 dark:border-white/[0.07] shadow-xs flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <CalendarIcon className="w-5 h-5 text-teal-600" />
-          <h3 className="text-base font-extrabold text-slate-900">{monthName}</h3>
+          <CalendarIcon className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+          <h3 className="text-base font-extrabold text-slate-900 dark:text-[#F5F7FA]">{monthName}</h3>
         </div>
 
         <div className="flex items-center gap-2">
           <button
             onClick={handlePrevMonth}
-            className="p-2 border border-slate-200 rounded-xl hover:bg-slate-50 text-slate-600 transition-colors"
+            className="p-2 border border-slate-200 dark:border-white/[0.08] rounded-xl hover:bg-slate-50 dark:hover:bg-[#161E28] text-slate-600 dark:text-[#A7B0BC] transition-colors"
             aria-label="Previous Month"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
           <button
             onClick={handleNextMonth}
-            className="p-2 border border-slate-200 rounded-xl hover:bg-slate-50 text-slate-600 transition-colors"
+            className="p-2 border border-slate-200 dark:border-white/[0.08] rounded-xl hover:bg-slate-50 dark:hover:bg-[#161E28] text-slate-600 dark:text-[#A7B0BC] transition-colors"
             aria-label="Next Month"
           >
             <ChevronRight className="w-4 h-4" />
@@ -158,7 +158,7 @@ export const AttendanceCalendarView: React.FC<AttendanceCalendarViewProps> = ({ 
       </div>
 
       {/* Days of Week Header */}
-      <div className="grid grid-cols-7 gap-2.5 text-center font-bold text-xs text-slate-400 uppercase tracking-wider px-1">
+      <div className="grid grid-cols-7 gap-2.5 text-center font-bold text-xs text-slate-400 dark:text-[#707A87] uppercase tracking-wider px-1">
         <span>Sun</span>
         <span>Mon</span>
         <span>Tue</span>
@@ -174,7 +174,7 @@ export const AttendanceCalendarView: React.FC<AttendanceCalendarViewProps> = ({ 
       </div>
 
       {/* Legend Footer */}
-      <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm flex flex-wrap items-center justify-center gap-5 text-xs font-semibold text-slate-600">
+      <div className="bg-white dark:bg-[#121821] rounded-2xl p-4 border border-slate-100 dark:border-white/[0.07] shadow-xs flex flex-wrap items-center justify-center gap-5 text-xs font-semibold text-slate-600 dark:text-[#A7B0BC]">
         <span className="flex items-center gap-1.5">
           <span className="w-3 h-3 rounded-full bg-emerald-500" /> Present
         </span>
@@ -191,7 +191,7 @@ export const AttendanceCalendarView: React.FC<AttendanceCalendarViewProps> = ({ 
           <span className="w-3 h-3 rounded-full bg-purple-500" /> Holiday
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="w-3 h-3 rounded-sm bg-slate-200" /> Weekend Off
+          <span className="w-3 h-3 rounded-sm bg-slate-200 dark:bg-white/[0.12]" /> Weekend Off
         </span>
       </div>
 

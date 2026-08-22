@@ -132,9 +132,9 @@ export const WorkforceRadar: React.FC = () => {
   };
 
   const severityBadge = {
-    stable: 'bg-emerald-50 text-emerald-700 border-emerald-200/80',
-    attention: 'bg-amber-50 text-amber-700 border-amber-200/80',
-    high: 'bg-rose-50 text-rose-700 border-rose-200/80',
+    stable: 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-200/80 dark:border-emerald-500/20',
+    attention: 'bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-200/80 dark:border-amber-500/20',
+    high: 'bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 border-rose-200/80 dark:border-rose-500/20',
   };
 
   return (
@@ -143,21 +143,21 @@ export const WorkforceRadar: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+            <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-[#F5F7FA] tracking-tight">
               Workforce Intelligence Radar
             </h2>
-            <span className="flex items-center gap-1 text-[10px] uppercase font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+            <span className="flex items-center gap-1 text-[10px] uppercase font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-500/20">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               Live Telemetry
             </span>
           </div>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-[#707A87] mt-1">
             Real-time attention signals, attendance deviations, and capacity bottleneck surveillance.
           </p>
         </div>
 
         {/* Severity Filter Tabs */}
-        <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl">
+        <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-[#161E28] p-1 rounded-xl border border-slate-200/60 dark:border-white/[0.06]">
           {[
             { id: 'all', label: 'All Signals' },
             { id: 'high', label: 'High Attention' },
@@ -168,8 +168,8 @@ export const WorkforceRadar: React.FC = () => {
               key={tab.id}
               onClick={() => setFilterSeverity(tab.id)}
               className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${filterSeverity === tab.id
-                  ? 'bg-white text-slate-900 shadow-2xs'
-                  : 'text-slate-500 hover:text-slate-900'
+                  ? 'bg-white dark:bg-[#1B2531] text-slate-900 dark:text-[#F5F7FA] shadow-2xs'
+                  : 'text-slate-500 dark:text-[#707A87] hover:text-slate-900 dark:hover:text-[#E5E7EB]'
                 }`}
             >
               {tab.label}
@@ -183,7 +183,7 @@ export const WorkforceRadar: React.FC = () => {
         {filtered.map((sig) => (
           <div
             key={sig.id}
-            className="bg-white rounded-2xl border border-slate-200/80 shadow-card p-5 flex flex-col justify-between hover:border-slate-300 transition-all group"
+            className="bg-white dark:bg-[#121821] rounded-2xl border border-slate-200/80 dark:border-white/[0.07] shadow-card p-5 flex flex-col justify-between hover:border-slate-300 dark:hover:border-white/[0.12] transition-all group"
           >
             <div className="space-y-3">
               {/* Header with Title & Badge */}
@@ -191,17 +191,17 @@ export const WorkforceRadar: React.FC = () => {
                 <div className="flex items-center gap-2.5">
                   <div
                     className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-xs shrink-0 ${sig.severity === 'high'
-                        ? 'bg-rose-50 text-rose-600'
+                        ? 'bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400'
                         : sig.severity === 'attention'
-                          ? 'bg-amber-50 text-amber-600'
-                          : 'bg-emerald-50 text-emerald-600'
+                          ? 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400'
+                          : 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
                       }`}
                   >
                     <Activity className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 text-sm">{sig.title}</h3>
-                    <p className="text-[11px] text-slate-400 font-mono">
+                    <h3 className="font-bold text-slate-900 dark:text-[#E5E7EB] text-sm">{sig.title}</h3>
+                    <p className="text-[11px] text-slate-400 dark:text-[#707A87] font-mono">
                       {sig.employeeName} ({sig.employeeRole})
                     </p>
                   </div>
@@ -215,25 +215,25 @@ export const WorkforceRadar: React.FC = () => {
               </div>
 
               {/* Metric & Reason */}
-              <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 space-y-1 text-xs">
+              <div className="p-3 bg-slate-50 dark:bg-[#161E28] rounded-xl border border-slate-100 dark:border-white/[0.06] space-y-1 text-xs">
                 <div className="flex items-center justify-between text-[11px]">
-                  <span className="text-slate-400 font-medium">Observed Metric:</span>
-                  <span className="font-bold text-slate-900 font-mono">{sig.metric}</span>
+                  <span className="text-slate-400 dark:text-[#707A87] font-medium">Observed Metric:</span>
+                  <span className="font-bold text-slate-900 dark:text-[#F5F7FA] font-mono">{sig.metric}</span>
                 </div>
-                <p className="text-slate-600 text-[11px] leading-relaxed pt-1 border-t border-slate-200/60">
+                <p className="text-slate-600 dark:text-[#A7B0BC] text-[11px] leading-relaxed pt-1 border-t border-slate-200/60 dark:border-white/[0.06]">
                   {sig.reason}
                 </p>
               </div>
             </div>
 
             {/* Footer Action */}
-            <div className="pt-4 mt-2 border-t border-slate-100 flex items-center justify-between">
-              <span className="text-[10px] text-slate-400 font-mono">
+            <div className="pt-4 mt-2 border-t border-slate-100 dark:border-white/[0.06] flex items-center justify-between">
+              <span className="text-[10px] text-slate-400 dark:text-[#707A87] font-mono">
                 AI Confidence: {sig.confidenceScore}%
               </span>
               <button
                 onClick={() => handleOpenInvestigate(sig)}
-                className="px-3.5 py-1.5 text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 hover:text-indigo-800 active:scale-[0.98] rounded-xl transition-all flex items-center gap-1.5"
+                className="px-3.5 py-1.5 text-xs font-bold text-[#0c8fe9] dark:text-[#36abf8] bg-[#0c8fe9]/10 hover:bg-[#0c8fe9]/20 active:scale-[0.98] rounded-xl transition-all flex items-center gap-1.5"
               >
                 <span>Investigate Signal</span>
                 <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />

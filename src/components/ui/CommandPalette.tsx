@@ -228,12 +228,12 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 px-4 bg-slate-950/40 backdrop-blur-sm animate-fade-in">
       <div
-        className="w-full max-w-2xl bg-white rounded-2xl border border-slate-200/80 shadow-elevated overflow-hidden animate-slide-up flex flex-col max-h-[80vh]"
+        className="w-full max-w-2xl bg-white dark:bg-[#161E28] rounded-2xl border border-slate-200/80 dark:border-white/[0.08] shadow-elevated overflow-hidden animate-slide-up flex flex-col max-h-[80vh]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Search Header */}
-        <div className="flex items-center px-4 py-3.5 border-b border-slate-100 gap-3 bg-white">
-          <Search className="w-5 h-5 text-slate-400 shrink-0" />
+        <div className="flex items-center px-4 py-3.5 border-b border-slate-100 dark:border-white/[0.06] gap-3 bg-white dark:bg-[#161E28]">
+          <Search className="w-5 h-5 text-slate-400 dark:text-[#707A87] shrink-0" />
           <input
             ref={inputRef}
             type="text"
@@ -243,25 +243,25 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
               setQuery(e.target.value);
               setSelectedIndex(0);
             }}
-            className="flex-1 bg-transparent text-sm text-slate-900 placeholder-slate-400 focus:outline-none"
+            className="flex-1 bg-transparent text-sm text-slate-900 dark:text-[#F5F7FA] placeholder-slate-400 dark:placeholder-[#707A87] focus:outline-none"
           />
           {query && (
             <button
               onClick={() => setQuery('')}
-              className="p-1 text-slate-400 hover:text-slate-600 rounded-md text-xs"
+              className="p-1 text-slate-400 hover:text-slate-600 dark:text-[#707A87] dark:hover:text-[#E5E7EB] rounded-md text-xs"
             >
               Clear
             </button>
           )}
-          <div className="flex items-center gap-1 text-[11px] text-slate-400 bg-slate-100 px-2 py-0.5 rounded-md font-mono">
+          <div className="flex items-center gap-1 text-[11px] text-slate-400 dark:text-[#707A87] bg-slate-100 dark:bg-white/[0.06] px-2 py-0.5 rounded-md font-mono">
             <span>ESC</span>
           </div>
         </div>
 
         {/* Results List */}
-        <div className="overflow-y-auto p-2 divide-y divide-slate-50 flex-1">
+        <div className="overflow-y-auto p-2 divide-y divide-slate-50 dark:divide-white/[0.04] flex-1">
           {filteredCommands.length === 0 ? (
-            <div className="py-12 text-center text-xs text-slate-400">
+            <div className="py-12 text-center text-xs text-slate-400 dark:text-[#707A87]">
               No matching commands or actions found for "{query}".
             </div>
           ) : (
@@ -273,41 +273,41 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                   key={cmd.id}
                   onClick={cmd.action}
                   onMouseEnter={() => setSelectedIndex(idx)}
-                  className={`w-full flex items-center justify-between p-3 rounded-xl text-left transition-colors ${isSelected ? 'bg-slate-50 text-slate-900 ring-1 ring-slate-200/80' : 'text-slate-700 hover:bg-slate-50/60'
+                  className={`w-full flex items-center justify-between p-3 rounded-xl text-left transition-colors ${isSelected ? 'bg-slate-50 dark:bg-[#1B2531] text-slate-900 dark:text-[#F5F7FA] ring-1 ring-slate-200/80 dark:ring-white/[0.08]' : 'text-slate-700 dark:text-[#A7B0BC] hover:bg-slate-50/60 dark:hover:bg-[#1B2531]/60'
                     }`}
                 >
                   <div className="flex items-center gap-3 min-w-0">
                     <div
                       className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${cmd.category === 'Intelligence'
-                          ? 'bg-indigo-50 text-indigo-600'
+                          ? 'bg-[#0c8fe9]/10 text-[#0c8fe9]'
                           : cmd.category === 'Workforce'
-                            ? 'bg-blue-50 text-blue-600'
+                            ? 'bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400'
                             : cmd.category === 'Operations'
-                              ? 'bg-emerald-50 text-emerald-600'
-                              : 'bg-slate-100 text-slate-600'
+                              ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
+                              : 'bg-slate-100 dark:bg-white/[0.06] text-slate-600 dark:text-[#A7B0BC]'
                         }`}
                     >
                       <Icon className="w-4 h-4" />
                     </div>
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-semibold text-slate-900 truncate">{cmd.title}</span>
-                        <span className="text-[10px] font-medium text-slate-400 uppercase tracking-wider bg-slate-100 px-1.5 py-0.2 rounded">
+                        <span className="text-xs font-semibold text-slate-900 dark:text-[#E5E7EB] truncate">{cmd.title}</span>
+                        <span className="text-[10px] font-medium text-slate-400 dark:text-[#707A87] uppercase tracking-wider bg-slate-100 dark:bg-white/[0.06] px-1.5 py-0.2 rounded">
                           {cmd.category}
                         </span>
                       </div>
-                      <p className="text-[11px] text-slate-400 truncate mt-0.5">{cmd.subtitle}</p>
+                      <p className="text-[11px] text-slate-400 dark:text-[#707A87] truncate mt-0.5">{cmd.subtitle}</p>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-2 pl-2">
                     {cmd.shortcut && (
-                      <span className="text-[10px] font-mono text-slate-400 bg-slate-100 border border-slate-200 px-1.5 py-0.5 rounded">
+                      <span className="text-[10px] font-mono text-slate-400 dark:text-[#707A87] bg-slate-100 dark:bg-white/[0.06] border border-slate-200 dark:border-white/[0.08] px-1.5 py-0.5 rounded">
                         {cmd.shortcut}
                       </span>
                     )}
                     <ArrowRight
-                      className={`w-3.5 h-3.5 transition-transform ${isSelected ? 'text-indigo-600 translate-x-0.5' : 'text-slate-300'
+                      className={`w-3.5 h-3.5 transition-transform ${isSelected ? 'text-[#0c8fe9] translate-x-0.5' : 'text-slate-300 dark:text-[#4A5568]'
                         }`}
                     />
                   </div>
@@ -318,17 +318,17 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         </div>
 
         {/* Footer Navigation Hints */}
-        <div className="px-4 py-2.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400 font-medium">
+        <div className="px-4 py-2.5 bg-slate-50 dark:bg-[#121821] border-t border-slate-100 dark:border-white/[0.06] flex items-center justify-between text-[11px] text-slate-400 dark:text-[#707A87] font-medium">
           <div className="flex items-center gap-3">
             <span>
-              <kbd className="font-mono bg-white border border-slate-200 px-1.5 py-0.5 rounded text-[10px] text-slate-600 shadow-2xs">↑</kbd>{' '}
-              <kbd className="font-mono bg-white border border-slate-200 px-1.5 py-0.5 rounded text-[10px] text-slate-600 shadow-2xs">↓</kbd> Navigate
+              <kbd className="font-mono bg-white dark:bg-[#161E28] border border-slate-200 dark:border-white/[0.08] px-1.5 py-0.5 rounded text-[10px] text-slate-600 dark:text-[#A7B0BC] shadow-2xs">↑</kbd>{' '}
+              <kbd className="font-mono bg-white dark:bg-[#161E28] border border-slate-200 dark:border-white/[0.08] px-1.5 py-0.5 rounded text-[10px] text-slate-600 dark:text-[#A7B0BC] shadow-2xs">↓</kbd> Navigate
             </span>
             <span>
-              <kbd className="font-mono bg-white border border-slate-200 px-1.5 py-0.5 rounded text-[10px] text-slate-600 shadow-2xs">↵</kbd> Select
+              <kbd className="font-mono bg-white dark:bg-[#161E28] border border-slate-200 dark:border-white/[0.08] px-1.5 py-0.5 rounded text-[10px] text-slate-600 dark:text-[#A7B0BC] shadow-2xs">↵</kbd> Select
             </span>
           </div>
-          <span className="text-slate-400 font-mono">Dayflow Intelligence OS</span>
+          <span className="text-slate-400 dark:text-[#707A87] font-mono">Dayflow Intelligence OS</span>
         </div>
       </div>
     </div>

@@ -131,18 +131,18 @@ export const SalaryStructureModal: React.FC<SalaryStructureModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs animate-fade-in">
-      <div className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="relative w-full max-w-2xl bg-white dark:bg-[#161E28] rounded-2xl shadow-2xl border border-slate-100 dark:border-white/[0.08] overflow-hidden flex flex-col max-h-[90vh]">
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-slate-100 bg-white sticky top-0 z-10">
+        <div className="flex items-center justify-between p-5 border-b border-slate-100 dark:border-white/[0.06] bg-white dark:bg-[#161E28] sticky top-0 z-10">
           <div>
-            <h3 className="text-base font-bold text-slate-900">Edit Salary Structure</h3>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Employee: <span className="font-semibold text-slate-700">{record.employeeName}</span> ({record.designation})
+            <h3 className="text-base font-bold text-slate-900 dark:text-[#F5F7FA]">Edit Salary Structure</h3>
+            <p className="text-xs text-slate-500 dark:text-[#707A87] mt-0.5">
+              Employee: <span className="font-semibold text-slate-700 dark:text-[#E5E7EB]">{record.employeeName}</span> ({record.designation})
             </p>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors"
+            className="p-1.5 text-slate-400 hover:text-slate-600 dark:text-[#707A87] dark:hover:text-[#E5E7EB] rounded-lg hover:bg-slate-100 dark:hover:bg-[#1B2531] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -151,7 +151,7 @@ export const SalaryStructureModal: React.FC<SalaryStructureModalProps> = ({
         {/* Content Body */}
         <form onSubmit={handleSubmit} className="p-5 space-y-6 overflow-y-auto flex-1">
           {errors && (
-            <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl flex items-center gap-2">
+            <div className="p-3 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-700 dark:text-red-400 text-xs rounded-xl flex items-center gap-2">
               <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
               <span>{errors}</span>
             </div>
@@ -159,12 +159,12 @@ export const SalaryStructureModal: React.FC<SalaryStructureModalProps> = ({
 
           {/* Core Salary Section */}
           <div>
-            <h4 className="text-xs font-bold text-indigo-900 uppercase tracking-wider mb-3">
+            <h4 className="text-xs font-bold text-[#0070c7] dark:text-[#36abf8] uppercase tracking-wider mb-3">
               1. Base Compensation
             </h4>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-700 dark:text-[#E5E7EB] mb-1">
                   Basic Pay (₹ / month)
                 </label>
                 <input
@@ -175,12 +175,12 @@ export const SalaryStructureModal: React.FC<SalaryStructureModalProps> = ({
                     setBasicPay(Math.max(0, Number(e.target.value)));
                     setErrors('');
                   }}
-                  className="w-full px-3 py-2 text-sm rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none"
+                  className="w-full px-3 py-2 text-sm rounded-xl border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-[#121821] text-slate-900 dark:text-[#E5E7EB] focus:ring-2 focus:ring-[#0c8fe9]/20 focus:border-[#0c8fe9]/40 outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-700 dark:text-[#E5E7EB] mb-1">
                   House Rent Allowance (HRA) (₹ / month)
                 </label>
                 <input
@@ -191,22 +191,22 @@ export const SalaryStructureModal: React.FC<SalaryStructureModalProps> = ({
                     setHra(Math.max(0, Number(e.target.value)));
                     setErrors('');
                   }}
-                  className="w-full px-3 py-2 text-sm rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none"
+                  className="w-full px-3 py-2 text-sm rounded-xl border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-[#121821] text-slate-900 dark:text-[#E5E7EB] focus:ring-2 focus:ring-[#0c8fe9]/20 focus:border-[#0c8fe9]/40 outline-none"
                 />
               </div>
             </div>
           </div>
 
           {/* Allowances Section */}
-          <div className="pt-4 border-t border-slate-100">
+          <div className="pt-4 border-t border-slate-100 dark:border-white/[0.06]">
             <div className="flex items-center justify-between mb-3">
-              <h4 className="text-xs font-bold text-emerald-900 uppercase tracking-wider">
+              <h4 className="text-xs font-bold text-emerald-900 dark:text-emerald-400 uppercase tracking-wider">
                 2. Itemized Allowances
               </h4>
               <button
                 type="button"
                 onClick={handleAddAllowance}
-                className="flex items-center gap-1 px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-semibold rounded-lg transition-colors"
+                className="flex items-center gap-1 px-2.5 py-1 bg-emerald-50 dark:bg-emerald-500/10 hover:bg-emerald-100 dark:hover:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-xs font-semibold rounded-lg transition-colors"
               >
                 <Plus className="w-3.5 h-3.5" /> Add Allowance
               </button>
@@ -220,43 +220,43 @@ export const SalaryStructureModal: React.FC<SalaryStructureModalProps> = ({
                     value={item.label}
                     onChange={(e) => handleUpdateAllowance(item.id, 'label', e.target.value)}
                     placeholder="Allowance Title"
-                    className="flex-1 px-3 py-1.5 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none"
+                    className="flex-1 px-3 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-[#121821] text-slate-900 dark:text-[#E5E7EB] focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none"
                   />
                   <div className="w-36 relative">
-                    <span className="absolute left-2.5 top-1.5 text-xs text-slate-400">₹</span>
+                    <span className="absolute left-2.5 top-1.5 text-xs text-slate-400 dark:text-[#707A87]">₹</span>
                     <input
                       type="number"
                       min="0"
                       value={item.amount}
                       onChange={(e) => handleUpdateAllowance(item.id, 'amount', e.target.value)}
-                      className="w-full pl-6 pr-3 py-1.5 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none"
+                      className="w-full pl-6 pr-3 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-[#121821] text-slate-900 dark:text-[#E5E7EB] focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none"
                     />
                   </div>
                   <button
                     type="button"
                     onClick={() => handleRemoveAllowance(item.id)}
-                    className="p-1.5 text-slate-400 hover:text-red-600 rounded-lg hover:bg-red-50"
+                    className="p-1.5 text-slate-400 hover:text-red-600 rounded-lg hover:bg-red-50 dark:hover:bg-red-500/10"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
               ))}
               {allowances.length === 0 && (
-                <p className="text-xs text-slate-400 italic">No additional allowances added.</p>
+                <p className="text-xs text-slate-400 dark:text-[#707A87] italic">No additional allowances added.</p>
               )}
             </div>
           </div>
 
           {/* Deductions Section */}
-          <div className="pt-4 border-t border-slate-100">
+          <div className="pt-4 border-t border-slate-100 dark:border-white/[0.06]">
             <div className="flex items-center justify-between mb-3">
-              <h4 className="text-xs font-bold text-red-900 uppercase tracking-wider">
+              <h4 className="text-xs font-bold text-red-900 dark:text-red-400 uppercase tracking-wider">
                 3. Itemized Deductions (PF, Tax, PT)
               </h4>
               <button
                 type="button"
                 onClick={handleAddDeduction}
-                className="flex items-center gap-1 px-2.5 py-1 bg-red-50 hover:bg-red-100 text-red-700 text-xs font-semibold rounded-lg transition-colors"
+                className="flex items-center gap-1 px-2.5 py-1 bg-red-50 dark:bg-red-500/10 hover:bg-red-100 dark:hover:bg-red-500/20 text-red-700 dark:text-red-400 text-xs font-semibold rounded-lg transition-colors"
               >
                 <Plus className="w-3.5 h-3.5" /> Add Deduction
               </button>
@@ -270,62 +270,62 @@ export const SalaryStructureModal: React.FC<SalaryStructureModalProps> = ({
                     value={item.label}
                     onChange={(e) => handleUpdateDeduction(item.id, 'label', e.target.value)}
                     placeholder="Deduction Title"
-                    className="flex-1 px-3 py-1.5 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-red-500/20 focus:border-red-500 outline-none"
+                    className="flex-1 px-3 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-[#121821] text-slate-900 dark:text-[#E5E7EB] focus:ring-2 focus:ring-red-500/20 focus:border-red-500 outline-none"
                   />
                   <div className="w-36 relative">
-                    <span className="absolute left-2.5 top-1.5 text-xs text-slate-400">₹</span>
+                    <span className="absolute left-2.5 top-1.5 text-xs text-slate-400 dark:text-[#707A87]">₹</span>
                     <input
                       type="number"
                       min="0"
                       value={item.amount}
                       onChange={(e) => handleUpdateDeduction(item.id, 'amount', e.target.value)}
-                      className="w-full pl-6 pr-3 py-1.5 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-red-500/20 focus:border-red-500 outline-none"
+                      className="w-full pl-6 pr-3 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-[#121821] text-slate-900 dark:text-[#E5E7EB] focus:ring-2 focus:ring-red-500/20 focus:border-red-500 outline-none"
                     />
                   </div>
                   <button
                     type="button"
                     onClick={() => handleRemoveDeduction(item.id)}
-                    className="p-1.5 text-slate-400 hover:text-red-600 rounded-lg hover:bg-red-50"
+                    className="p-1.5 text-slate-400 hover:text-red-600 rounded-lg hover:bg-red-50 dark:hover:bg-red-500/10"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
               ))}
               {deductions.length === 0 && (
-                <p className="text-xs text-slate-400 italic">No deductions added.</p>
+                <p className="text-xs text-slate-400 dark:text-[#707A87] italic">No deductions added.</p>
               )}
             </div>
           </div>
 
           {/* Live Summary Footer Card */}
-          <div className="p-4 bg-slate-900 text-white rounded-2xl space-y-2 shadow-lg">
-            <div className="flex items-center justify-between text-xs text-slate-300">
+          <div className="p-4 bg-slate-900 dark:bg-[#121821] border border-transparent dark:border-white/[0.08] text-white rounded-2xl space-y-2 shadow-lg">
+            <div className="flex items-center justify-between text-xs text-slate-300 dark:text-[#A7B0BC]">
               <span>Gross Salary:</span>
               <span className="font-semibold text-emerald-400">{formatCurrency(grossSalary)}</span>
             </div>
-            <div className="flex items-center justify-between text-xs text-slate-300">
+            <div className="flex items-center justify-between text-xs text-slate-300 dark:text-[#A7B0BC]">
               <span>Total Deductions:</span>
               <span className="font-semibold text-red-400">-{formatCurrency(totalDeductions)}</span>
             </div>
-            <div className="pt-2 border-t border-slate-700 flex items-center justify-between text-sm font-extrabold">
+            <div className="pt-2 border-t border-slate-700 dark:border-white/[0.08] flex items-center justify-between text-sm font-extrabold">
               <span className="text-white flex items-center gap-1.5">
-                <Calculator className="w-4 h-4 text-indigo-400" /> Live Calculated Net Pay:
+                <Calculator className="w-4 h-4 text-[#36abf8]" /> Live Calculated Net Pay:
               </span>
               <span className="text-emerald-400 text-base">{formatCurrency(netSalary)} / month</span>
             </div>
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+          <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100 dark:border-white/[0.06]">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-semibold text-slate-600 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors"
+              className="px-4 py-2 text-xs font-semibold text-slate-600 dark:text-[#E5E7EB] border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-[#121821] rounded-xl hover:bg-slate-50 dark:hover:bg-[#1B2531] transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-xs transition-colors"
+              className="px-4 py-2 text-xs font-semibold text-white bg-[#0c8fe9] hover:bg-[#0070c7] rounded-xl shadow-xs transition-colors"
             >
               Save Salary Structure
             </button>
