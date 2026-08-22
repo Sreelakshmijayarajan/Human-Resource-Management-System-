@@ -7,6 +7,9 @@ import { StateToolbar } from './components/dev/StateToolbar';
 import { useLoginForm } from './hooks/useLoginForm';
 import { DashboardLayout } from './components/layout/DashboardLayout';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
+import { HRDataProvider } from './context/HRDataContext';
+import { ToastProvider } from './context/ToastContext';
+import { ToastContainer } from './components/ui/Toast';
 
 // Employee pages
 import { EmployeeDashboard } from './pages/employee/EmployeeDashboard';
@@ -26,6 +29,8 @@ import { ReportsPage } from './pages/hr/ReportsPage';
 import { HRNotificationsPage } from './pages/hr/HRNotificationsPage';
 import { RoleAccessPage } from './pages/hr/RoleAccessPage';
 import { HRSettingsPage } from './pages/hr/HRSettingsPage';
+import { EmployeeProfilePage } from './pages/hr/employees/EmployeeProfilePage';
+import { EmployeeAttendanceDetailPage } from './pages/hr/attendance/EmployeeAttendanceDetailPage';
 import { UserRole } from './types/auth';
 
 const LoginPage: React.FC = () => {
@@ -166,11 +171,31 @@ export const AppRoutes: React.FC = () => {
         }
       />
       <Route
+        path="/hr/employees/:id"
+        element={
+          <ProtectedRoute allowedRole="hr_admin">
+            <DashboardLayout role="hr_admin">
+              <EmployeeProfilePage />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/hr/attendance"
         element={
           <ProtectedRoute allowedRole="hr_admin">
             <DashboardLayout role="hr_admin">
               <AttendanceRecordsPage />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/hr/attendance/:employeeId"
+        element={
+          <ProtectedRoute allowedRole="hr_admin">
+            <DashboardLayout role="hr_admin">
+              <EmployeeAttendanceDetailPage />
             </DashboardLayout>
           </ProtectedRoute>
         }
@@ -264,11 +289,16 @@ export const AppRoutes: React.FC = () => {
 
 export const App: React.FC = () => {
   return (
-    <AppProvider>
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
-    </AppProvider>
+    <ToastProvider>
+      <HRDataProvider>
+        <AppProvider>
+          <BrowserRouter>
+            <AppRoutes />
+            <ToastContainer />
+          </BrowserRouter>
+        </AppProvider>
+      </HRDataProvider>
+    </ToastProvider>
   );
 };
 

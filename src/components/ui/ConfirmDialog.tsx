@@ -1,46 +1,58 @@
 import React, { useEffect } from 'react';
 import { AlertTriangle, X } from 'lucide-react';
+import { cn } from './StatusBadge';
 
 interface ConfirmDialogProps {
   isOpen: boolean;
   title: string;
   message: string;
   confirmText?: string;
+  confirmLabel?: string;
   cancelText?: string;
+  cancelLabel?: string;
   variant?: 'danger' | 'primary' | 'success';
+  isDestructive?: boolean;
   isLoading?: boolean;
   onConfirm: () => void;
-  onClose: () => void;
+  onClose?: () => void;
+  onCancel?: () => void;
 }
 
 export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   isOpen,
   title,
   message,
-  confirmText = 'Confirm',
-  cancelText = 'Cancel',
-  variant = 'primary',
+  confirmText,
+  confirmLabel,
+  cancelText,
+  cancelLabel,
+  variant,
+  isDestructive = false,
   isLoading = false,
   onConfirm,
   onClose,
+  onCancel,
 }) => {
+  const handleClose = () => {
+    if (onClose) onClose();
+    if (onCancel) onCancel();
+  };
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
-        onClose();
+        handleClose();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
-  const btnVariants = {
-    danger: 'bg-red-600 hover:bg-red-700 text-white focus:ring-red-500',
-    primary: 'bg-indigo-600 hover:bg-indigo-700 text-white focus:ring-indigo-500',
-    success: 'bg-emerald-600 hover:bg-emerald-700 text-white focus:ring-emerald-500',
-  };
+  const resolvedConfirmText = confirmText || confirmLabel || 'Confirm';
+  const resolvedCancelText = cancelText || cancelLabel || 'Cancel';
+  const isDanger = variant === 'danger' || isDestructive;
 
   return (
     <div
@@ -53,20 +65,21 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3">
               <div
-                className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
-                  variant === 'danger'
+                className={cn(
+                  'w-10 h-10 rounded-xl flex items-center justify-center shrink-0',
+                  isDanger
                     ? 'bg-red-50 text-red-600'
                     : variant === 'success'
                     ? 'bg-emerald-50 text-emerald-600'
                     : 'bg-indigo-50 text-indigo-600'
-                }`}
+                )}
               >
                 <AlertTriangle className="w-5 h-5" />
               </div>
               <h3 className="text-lg font-bold text-slate-900">{title}</h3>
             </div>
             <button
-              onClick={onClose}
+              onClick={handleClose}
               className="p-1 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors"
               aria-label="Close modal"
             >
@@ -79,19 +92,26 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
           <div className="mt-6 flex items-center justify-end gap-3">
             <button
               type="button"
-              onClick={onClose}
+              onClick={handleClose}
               disabled={isLoading}
               className="px-4 py-2 text-sm font-semibold text-slate-700 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors disabled:opacity-50"
             >
-              {cancelText}
+              {resolvedCancelText}
             </button>
             <button
               type="button"
               onClick={onConfirm}
               disabled={isLoading}
-              className={`px-4 py-2 text-sm font-semibold rounded-xl shadow-xs transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 ${btnVariants[variant]}`}
+              className={cn(
+                'px-4 py-2 text-sm font-semibold text-white rounded-xl shadow-xs transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50',
+                isDanger
+                  ? 'bg-red-600 hover:bg-red-700 focus:ring-red-500'
+                  : variant === 'success'
+                  ? 'bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-500'
+                  : 'bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500'
+              )}
             >
-              {isLoading ? 'Processing...' : confirmText}
+              {isLoading ? 'Processing...' : resolvedConfirmText}
             </button>
           </div>
         </div>

@@ -1,23 +1,24 @@
 import React, { useEffect } from 'react';
-import { CheckCircle2, AlertCircle, Info, X } from 'lucide-react';
+import { CheckCircle2, AlertCircle, Info, XCircle, X } from 'lucide-react';
+import { cn } from './StatusBadge';
 
 export interface ToastMessage {
   id: string;
   type: 'success' | 'error' | 'info';
-  title: string;
-  message?: string;
+  title?: string;
+  message: string;
 }
 
 interface ToastProps {
-  toast: ToastMessage | null;
-  onDismiss: () => void;
+  toast?: ToastMessage | null;
+  onDismiss?: () => void;
 }
 
 export const Toast: React.FC<ToastProps> = ({ toast, onDismiss }) => {
   useEffect(() => {
     if (!toast) return;
     const timer = setTimeout(() => {
-      onDismiss();
+      if (onDismiss) onDismiss();
     }, 4000);
     return () => clearTimeout(timer);
   }, [toast, onDismiss]);
@@ -39,21 +40,27 @@ export const Toast: React.FC<ToastProps> = ({ toast, onDismiss }) => {
   return (
     <div className="fixed bottom-5 right-5 z-50 animate-slide-up max-w-md">
       <div
-        className={`flex items-start gap-3 p-4 rounded-2xl border shadow-xl backdrop-blur-md transition-all ${borders[toast.type]}`}
+        className={cn('flex items-start gap-3 p-4 rounded-2xl border shadow-xl backdrop-blur-md transition-all', borders[toast.type])}
       >
         {icons[toast.type]}
         <div className="flex-1 pr-2">
-          <p className="text-sm font-bold tracking-tight">{toast.title}</p>
+          {toast.title && <p className="text-sm font-bold tracking-tight">{toast.title}</p>}
           {toast.message && <p className="text-xs opacity-90 mt-0.5">{toast.message}</p>}
         </div>
-        <button
-          onClick={onDismiss}
-          className="p-1 rounded-lg hover:bg-black/5 text-slate-500 transition-colors"
-          aria-label="Dismiss toast"
-        >
-          <X className="w-4 h-4" />
-        </button>
+        {onDismiss && (
+          <button
+            onClick={onDismiss}
+            className="p-1 rounded-lg hover:bg-black/5 text-slate-500 transition-colors"
+            aria-label="Dismiss toast"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        )}
       </div>
     </div>
   );
+};
+
+export const ToastContainer: React.FC = () => {
+  return null;
 };
