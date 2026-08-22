@@ -1,3 +1,4 @@
+import React from 'react';
 import { 
   LayoutDashboard, 
   UserRound, 
@@ -6,7 +7,12 @@ import {
   WalletCards, 
   Bell, 
   Users, 
-  FileText 
+  Calendar,
+  FileText,
+  DollarSign,
+  BarChart3,
+  Shield,
+  Settings
 } from 'lucide-react';
 import { UserRole } from '../types/auth';
 
@@ -14,7 +20,7 @@ export interface NavItemConfig {
   id: string;
   label: string;
   route: string;
-  icon: React.ElementType;
+  icon: React.ComponentType<{ className?: string }>;
   badgeKey?: 'notifications' | 'pendingLeave';
 }
 
@@ -68,33 +74,51 @@ export const hrNavItems: NavItemConfig[] = [
   },
   {
     id: 'employees',
-    label: 'Employees',
+    label: 'Employee Management',
     route: '/hr/employees',
     icon: Users,
   },
   {
     id: 'hr-attendance',
-    label: 'Attendance Records',
+    label: 'Attendance',
     route: '/hr/attendance',
-    icon: Clock,
+    icon: Calendar,
   },
   {
     id: 'hr-leave',
-    label: 'Leave Approvals',
+    label: 'Leave Management',
     route: '/hr/leave',
-    icon: CalendarDays,
+    icon: FileText,
   },
   {
     id: 'hr-payroll',
-    label: 'Payroll Management',
+    label: 'Payroll',
     route: '/hr/payroll',
-    icon: WalletCards,
+    icon: DollarSign,
   },
   {
     id: 'reports',
-    label: 'Reports & Docs',
+    label: 'Reports & Analytics',
     route: '/hr/reports',
-    icon: FileText,
+    icon: BarChart3,
+  },
+  {
+    id: 'hr-notifications',
+    label: 'Notifications',
+    route: '/hr/notifications',
+    icon: Bell,
+  },
+  {
+    id: 'roles',
+    label: 'Role & Access',
+    route: '/hr/roles',
+    icon: Shield,
+  },
+  {
+    id: 'settings',
+    label: 'Settings',
+    route: '/hr/settings',
+    icon: Settings,
   },
 ];
 

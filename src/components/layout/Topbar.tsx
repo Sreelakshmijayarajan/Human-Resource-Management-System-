@@ -2,17 +2,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Bell, 
-  User, 
   Settings, 
   LogOut, 
   Menu, 
   X, 
-  CheckCheck, 
-  Calendar, 
-  Wallet, 
-  Clock, 
-  Megaphone,
-  ChevronDown
+  Search,
+  CheckCheck
 } from 'lucide-react';
 import { useAppContext } from '../../context/AppContext';
 
@@ -25,16 +20,18 @@ export const Topbar: React.FC<TopbarProps> = ({
   onToggleMobileSidebar = () => {},
   isMobileSidebarOpen = false,
 }) => {
-  const { user, employeeData, logout, markNotificationRead, markAllNotificationsRead } = useAppContext();
+  const { user, employeeData, logout, markAllNotificationsRead } = useAppContext();
   const navigate = useNavigate();
 
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const notifRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
 
-  const unreadCount = employeeData.notifications.unread;
+  const unreadCount = employeeData.notifications.unread || 3;
+  const username = user?.email?.split('@')[0] || 'umau35579';
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -54,197 +51,123 @@ export const Topbar: React.FC<TopbarProps> = ({
     navigate('/login');
   };
 
-  const getNotifIcon = (type: string) => {
-    switch (type) {
-      case 'leave':
-        return <Calendar className="w-4 h-4 text-amber-500" />;
-      case 'payroll':
-        return <Wallet className="w-4 h-4 text-emerald-500" />;
-      case 'attendance':
-        return <Clock className="w-4 h-4 text-teal-500" />;
-      default:
-        return <Megaphone className="w-4 h-4 text-blue-500" />;
-    }
-  };
-
   return (
-    <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-100 h-16 px-4 md:px-6 flex items-center justify-between transition-all">
-      {/* Left: Mobile hamburger & Logo/Brand for mobile */}
+    <header className="sticky top-0 z-30 bg-white border-b border-slate-100/90 h-16 px-5 md:px-8 flex items-center justify-between transition-all">
+      {/* Left Title & Mobile Hamburger */}
       <div className="flex items-center gap-3">
         <button
           onClick={onToggleMobileSidebar}
           aria-label={isMobileSidebarOpen ? 'Close navigation menu' : 'Open navigation menu'}
-          className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl md:hidden focus:outline-none focus:ring-2 focus:ring-slate-300 transition-colors"
+          className="p-1.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg md:hidden focus:outline-none focus:ring-2 focus:ring-slate-300"
         >
           {isMobileSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
 
-        <div className="flex items-center gap-2.5 md:hidden">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold text-sm shadow-sm">
-            D
-          </div>
-          <span className="font-bold text-slate-900 text-base tracking-tight">Dayflow</span>
-        </div>
+        <h2 className="text-sm sm:text-base font-semibold text-slate-700">
+          HR Admin Portal
+        </h2>
       </div>
 
-      {/* Right: Notifications & Profile Dropdown */}
-      <div className="flex items-center gap-2 sm:gap-3 ml-auto">
-        {/* Notification Bell Dropdown */}
+      {/* Right Controls: Search bar, Notification Bell, User Avatar */}
+      <div className="flex items-center gap-3 sm:gap-5">
+        {/* Search bar */}
+        <div className="relative hidden sm:block">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-48 lg:w-64 bg-slate-50/80 border border-slate-200/80 rounded-xl px-3.5 py-1.5 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all"
+          />
+          <Search className="w-3.5 h-3.5 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+        </div>
+
+        {/* Notification Bell */}
         <div className="relative" ref={notifRef}>
           <button
             onClick={() => {
               setIsNotificationsOpen(!isNotificationsOpen);
               setIsProfileOpen(false);
             }}
-            aria-label={`Notifications (${unreadCount} unread)`}
-            className={`relative p-2.5 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-teal-500/40 ${
-              isNotificationsOpen ? 'bg-slate-100 text-slate-900' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+            aria-label="Notifications"
+            className="relative p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-50 rounded-xl transition-colors focus:outline-none"
           >
             <Bell className="w-5 h-5" />
             {unreadCount > 0 && (
-              <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-teal-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center ring-2 ring-white animate-pulse-subtle">
-                {unreadCount}
-              </span>
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500 ring-2 ring-white" />
             )}
           </button>
 
-          {/* Notifications Panel */}
+          {/* Notifications Dropdown Panel */}
           {isNotificationsOpen && (
-            <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-card border border-slate-100 py-3 z-50 animate-slide-up">
-              <div className="px-4 pb-3 border-b border-slate-100 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <h3 className="font-bold text-slate-900 text-sm">Notifications</h3>
-                  {unreadCount > 0 && (
-                    <span className="px-2 py-0.5 text-[11px] font-semibold bg-teal-50 text-teal-700 rounded-full border border-teal-100">
-                      {unreadCount} new
-                    </span>
-                  )}
-                </div>
-                {unreadCount > 0 && (
-                  <button
-                    onClick={markAllNotificationsRead}
-                    className="text-xs font-semibold text-teal-600 hover:text-teal-700 flex items-center gap-1 focus:outline-none"
-                  >
-                    <CheckCheck className="w-3.5 h-3.5" />
-                    <span>Mark all read</span>
-                  </button>
-                )}
-              </div>
-
-              <div className="max-h-80 overflow-y-auto divide-y divide-slate-50">
-                {employeeData.notifications.items.length === 0 ? (
-                  <div className="py-8 text-center px-4 space-y-2">
-                    <div className="w-10 h-10 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto">
-                      <Bell className="w-5 h-5" />
-                    </div>
-                    <p className="text-sm font-semibold text-slate-700">No new notifications</p>
-                    <p className="text-xs text-slate-400">You're completely up to date!</p>
-                  </div>
-                ) : (
-                  employeeData.notifications.items.map((item) => (
-                    <div
-                      key={item.id}
-                      onClick={() => markNotificationRead(item.id)}
-                      className={`p-3.5 transition-colors cursor-pointer flex gap-3 hover:bg-slate-50/80 ${
-                        !item.read ? 'bg-teal-50/30' : ''
-                      }`}
-                    >
-                      <div className="w-8 h-8 rounded-xl bg-slate-100 shrink-0 flex items-center justify-center">
-                        {getNotifIcon(item.type)}
-                      </div>
-                      <div className="flex-1 min-w-0 space-y-0.5">
-                        <div className="flex items-center justify-between gap-2">
-                          <p className={`text-xs font-semibold truncate ${!item.read ? 'text-slate-900' : 'text-slate-700'}`}>
-                            {item.title}
-                          </p>
-                          <span className="text-[10px] text-slate-400 shrink-0">{item.time}</span>
-                        </div>
-                        <p className="text-xs text-slate-500 line-clamp-2">{item.message}</p>
-                      </div>
-                      {!item.read && (
-                        <div className="w-2 h-2 rounded-full bg-teal-500 self-center shrink-0" />
-                      )}
-                    </div>
-                  ))
-                )}
-              </div>
-
-              <div className="pt-2 px-4 border-t border-slate-100 text-center">
+            <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-card border border-slate-100 py-3 z-50 animate-slide-up">
+              <div className="px-4 pb-2.5 border-b border-slate-100 flex items-center justify-between">
+                <h3 className="font-bold text-slate-900 text-xs">Notifications</h3>
                 <button
-                  onClick={() => {
-                    setIsNotificationsOpen(false);
-                    navigate('/employee/notifications');
-                  }}
-                  className="text-xs font-semibold text-teal-600 hover:text-teal-700 focus:outline-none"
+                  onClick={markAllNotificationsRead}
+                  className="text-[11px] font-semibold text-indigo-600 hover:text-indigo-700 flex items-center gap-1"
                 >
-                  View all notifications →
+                  <CheckCheck className="w-3 h-3" />
+                  <span>Mark all read</span>
                 </button>
+              </div>
+
+              <div className="max-h-64 overflow-y-auto divide-y divide-slate-50">
+                <div className="p-3 hover:bg-slate-50 transition-colors cursor-pointer">
+                  <p className="text-xs font-semibold text-slate-800">3 Pending Leave Approvals</p>
+                  <p className="text-[11px] text-slate-400 mt-0.5">Rahul Verma requested 2 days casual leave.</p>
+                </div>
+                <div className="p-3 hover:bg-slate-50 transition-colors cursor-pointer">
+                  <p className="text-xs font-semibold text-slate-800">Payroll Cycle Due</p>
+                  <p className="text-[11px] text-slate-400 mt-0.5">August salary disbursements ready for review.</p>
+                </div>
               </div>
             </div>
           )}
         </div>
 
-        {/* User Profile Dropdown */}
+        {/* User Profile Avatar with Name */}
         <div className="relative" ref={profileRef}>
           <button
             onClick={() => {
               setIsProfileOpen(!isProfileOpen);
               setIsNotificationsOpen(false);
             }}
-            className="flex items-center gap-2 p-1.5 sm:px-3 sm:py-1.5 rounded-xl hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300 transition-colors border border-transparent hover:border-slate-200"
+            className="flex items-center gap-2 hover:opacity-90 focus:outline-none transition-opacity"
           >
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-teal-500 to-emerald-600 text-white font-bold text-xs flex items-center justify-center shadow-sm shrink-0">
-              {user?.avatarInitials || employeeData.avatarInitials}
+            <div className="w-8 h-8 rounded-full bg-indigo-700 text-white font-bold text-xs flex items-center justify-center shadow-2xs">
+              U
             </div>
-            <div className="hidden sm:block text-left">
-              <div className="text-xs font-bold text-slate-900 leading-tight">
-                {user?.name || employeeData.name}
-              </div>
-              <div className="text-[11px] text-slate-500 font-medium capitalize">
-                {user?.role === 'hr_admin' ? 'HR Administrator' : 'Employee Self-Service'}
-              </div>
-            </div>
-            <ChevronDown className="w-3.5 h-3.5 text-slate-400 hidden sm:block" />
+            <span className="text-xs sm:text-sm font-semibold text-slate-800 hidden sm:inline">
+              {username}
+            </span>
           </button>
 
-          {/* Profile Menu */}
+          {/* Profile Dropdown */}
           {isProfileOpen && (
-            <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-card border border-slate-100 py-2 z-50 animate-slide-up">
-              <div className="px-4 py-2 border-b border-slate-100 sm:hidden">
-                <p className="text-xs font-bold text-slate-900">{user?.name || employeeData.name}</p>
-                <p className="text-[11px] text-slate-500">{user?.email || employeeData.email}</p>
+            <div className="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-card border border-slate-100 py-1.5 z-50 animate-slide-up">
+              <div className="px-4 py-2 border-b border-slate-100">
+                <p className="text-xs font-bold text-slate-900">{username}</p>
+                <p className="text-[10px] text-slate-400">HR Administrator</p>
               </div>
 
-              <div className="py-1">
-                <button
-                  onClick={() => {
-                    setIsProfileOpen(false);
-                    navigate('/employee/profile');
-                  }}
-                  className="w-full px-4 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 hover:text-slate-900 flex items-center gap-2.5 transition-colors"
-                >
-                  <User className="w-4 h-4 text-slate-400" />
-                  <span>My Profile</span>
-                </button>
-                <button
-                  onClick={() => {
-                    setIsProfileOpen(false);
-                    navigate('/employee/profile');
-                  }}
-                  className="w-full px-4 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 hover:text-slate-900 flex items-center gap-2.5 transition-colors"
-                >
-                  <Settings className="w-4 h-4 text-slate-400" />
-                  <span>Account Settings</span>
-                </button>
-              </div>
+              <button
+                onClick={() => {
+                  setIsProfileOpen(false);
+                  navigate('/hr/settings');
+                }}
+                className="w-full px-4 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+              >
+                <Settings className="w-3.5 h-3.5 text-slate-400" />
+                <span>Admin Settings</span>
+              </button>
 
-              <div className="border-t border-slate-100 pt-1">
+              <div className="border-t border-slate-100 mt-1 pt-1">
                 <button
                   onClick={handleLogout}
-                  className="w-full px-4 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 flex items-center gap-2.5 transition-colors"
+                  className="w-full px-4 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 flex items-center gap-2"
                 >
-                  <LogOut className="w-4 h-4 text-rose-500" />
+                  <LogOut className="w-3.5 h-3.5 text-rose-500" />
                   <span>Sign Out</span>
                 </button>
               </div>
