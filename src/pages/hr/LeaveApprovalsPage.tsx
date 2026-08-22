@@ -48,7 +48,7 @@ export const LeaveApprovalsPage: React.FC = () => {
   const [deletingPolicy, setDeletingPolicy] = useState<LeavePolicy | null>(null);
 
   const showToast = (type: 'success' | 'error' | 'info', title: string, message?: string) => {
-    setToast({ id: `toast-${Date.now()}`, type, title, message });
+    setToast({ id: `toast-${Date.now()}`, type, title, message: message || '' });
   };
 
   // Filtered requests

@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import { CheckCircle2, AlertCircle, Info, XCircle, X } from 'lucide-react';
+import { CheckCircle2, AlertCircle, Info, X } from 'lucide-react';
 import { cn } from './StatusBadge';
 
 export interface ToastMessage {
   id: string;
   type: 'success' | 'error' | 'info';
   title?: string;
-  message: string;
+  message?: string;
 }
 
 interface ToastProps {

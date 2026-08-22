@@ -33,7 +33,7 @@ export const ReportsPage: React.FC = () => {
   const [toast, setToast] = useState<ToastMessage | null>(null);
 
   const showToast = (type: 'success' | 'error' | 'info', title: string, message?: string) => {
-    setToast({ id: `toast-${Date.now()}`, type, title, message });
+    setToast({ id: `toast-${Date.now()}`, type, title, message: message || '' });
   };
 
   const formatCurrency = (val: number) => `₹${val.toLocaleString('en-IN')}`;
