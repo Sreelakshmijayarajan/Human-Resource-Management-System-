@@ -215,7 +215,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             disabled={isFormDisabled}
             className="w-full text-sm font-bold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/35"
           >
-            Sign In to Dashboard
+            Login
           </Button>
         </div>
 
