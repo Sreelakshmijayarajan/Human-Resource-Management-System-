@@ -17,7 +17,7 @@ import { StatCard } from '../../components/ui/StatCard';
 import { DashboardSkeleton } from '../../components/ui/Skeletons';
 
 export const AttendancePage: React.FC = () => {
-  const { attendanceHistory } = useAppContext();
+  const { user, attendanceHistory } = useAppContext();
   const navigate = useNavigate();
 
   const [viewMode, setViewMode] = useState<'calendar' | 'list'>('calendar');
@@ -53,7 +53,9 @@ export const AttendancePage: React.FC = () => {
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
-            <h1 className="text-2xl font-extrabold text-slate-900">My Attendance</h1>
+            <h1 className="text-2xl font-extrabold text-slate-900">
+              {user?.firstName ? `${user.firstName}'s Attendance` : 'My Attendance'}
+            </h1>
             <p className="text-xs text-slate-500">Track daily check-ins, check-outs, and monthly work logs.</p>
           </div>
         </div>

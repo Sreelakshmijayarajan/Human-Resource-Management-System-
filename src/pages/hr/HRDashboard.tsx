@@ -8,13 +8,19 @@ import {
 import { StatCard } from '../../components/dashboard/StatCard';
 import { ModuleCard } from '../../components/dashboard/ModuleCard';
 import { hrModules } from '../../config/hrModules';
+import { useAppContext } from '../../context/AppContext';
 
 export const HRDashboard: React.FC = () => {
+  const { user } = useAppContext();
+
   return (
     <div className="space-y-8 animate-fade-in max-w-7xl mx-auto pb-8">
       {/* Greeting Subtitle */}
       <div>
-        <p className="text-sm sm:text-base text-slate-500 font-medium">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+          Welcome back, {user?.firstName || 'Admin'}
+        </h1>
+        <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 font-medium mt-1">
           Here's what's happening in your organization today.
         </p>
       </div>

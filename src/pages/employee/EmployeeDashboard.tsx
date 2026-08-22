@@ -90,7 +90,7 @@ export const EmployeeDashboard: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-100">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-            {getGreeting()}, {user?.firstName || employeeData.firstName || 'Sanjay'}
+            {getGreeting()}, {user?.firstName || employeeData.firstName || 'User'}
           </h1>
           <p className="text-xs sm:text-sm font-medium text-slate-500 mt-1 flex items-center gap-2">
             <span>{todayFormatted}</span>

@@ -19,7 +19,7 @@ import { StatusBadge } from '../../components/ui/StatusBadge';
 import { ProfilePhotoModal } from '../../components/employee/ProfilePhotoModal';
 
 export const ProfilePage: React.FC = () => {
-  const { profile, updateProfileDetails, addProfileDocument, deleteProfileDocument } = useAppContext();
+  const { user, profile, updateProfileDetails, addProfileDocument, deleteProfileDocument } = useAppContext();
   const navigate = useNavigate();
   const { showToast } = useToast();
 
@@ -162,7 +162,7 @@ export const ProfilePage: React.FC = () => {
               </div>
 
               <div>
-                <h2 className="text-2xl font-extrabold text-slate-900">{profile.name}</h2>
+                <h2 className="text-2xl font-extrabold text-slate-900">{user?.firstName || profile.firstName || profile.name}</h2>
                 <p className="text-sm font-bold text-teal-600">{profile.designation}</p>
                 <p className="text-xs text-slate-400 font-medium mt-0.5">
                   {profile.department} • Employee ID: <span className="font-bold text-slate-700">{profile.id}</span>
@@ -270,10 +270,10 @@ export const ProfilePage: React.FC = () => {
               <div className="space-y-3">
                 <div className="p-3.5 bg-slate-50/80 rounded-xl border border-slate-100 relative group">
                   <div className="flex items-center justify-between text-xs font-medium text-slate-500 mb-1">
-                    <span>Full Legal Name</span>
+                    <span>First Name</span>
                     <Lock className="w-3.5 h-3.5 text-slate-400" />
                   </div>
-                  <span className="text-sm font-bold text-slate-800">{profile.name}</span>
+                  <span className="text-sm font-bold text-slate-800">{user?.firstName || profile.firstName}</span>
                 </div>
 
                 <div className="p-3.5 bg-slate-50/80 rounded-xl border border-slate-100 relative group">
@@ -289,7 +289,7 @@ export const ProfilePage: React.FC = () => {
                     <span>Work Email</span>
                     <Lock className="w-3.5 h-3.5 text-slate-400" />
                   </div>
-                  <span className="text-sm font-bold text-slate-800">{profile.email}</span>
+                  <span className="text-sm font-bold text-slate-800">{user?.email || profile.email}</span>
                 </div>
 
                 <p className="text-[11px] text-slate-400 italic">

@@ -14,7 +14,7 @@ interface MyPayslipDetailModalProps {
 export const MyPayslipDetailModal: React.FC<MyPayslipDetailModalProps> = ({
   isOpen,
   payslip,
-  employeeName = 'Sanjay Jayarajan',
+  employeeName = 'Employee',
   department = 'Engineering',
   designation = 'Senior Tech Lead',
   onClose,

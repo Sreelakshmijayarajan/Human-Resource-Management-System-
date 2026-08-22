@@ -18,9 +18,12 @@ import { Toast, ToastMessage } from '../../components/ui/Toast';
 import { ApplyLeaveModal } from '../../components/employee/leave/ApplyLeaveModal';
 import { MyLeaveDetailModal } from '../../components/employee/leave/MyLeaveDetailModal';
 
+import { useAppContext } from '../../context/AppContext';
+
 type LeaveTab = 'pending' | 'approved' | 'rejected' | 'all';
 
 export const LeavePage: React.FC = () => {
+  const { user } = useAppContext();
   const navigate = useNavigate();
   const [balances, setBalances] = useState<MyLeaveBalance[]>(initialMyLeaveBalances);
   const [requests, setRequests] = useState<MyLeaveRequest[]>(initialMyLeaveRequests);
@@ -108,7 +111,7 @@ export const LeavePage: React.FC = () => {
           </button>
           <div>
             <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
-              My Leave Portal <Sparkles className="w-5 h-5 text-teal-500 fill-teal-500/20" />
+              {user?.firstName ? `${user.firstName}'s Leave Portal` : 'My Leave Portal'} <Sparkles className="w-5 h-5 text-teal-500 fill-teal-500/20" />
             </h1>
             <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
               Track your annual leave quotas, submit time-off requests, and monitor approval statuses.

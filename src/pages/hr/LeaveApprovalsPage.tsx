@@ -23,10 +23,12 @@ import { LeaveDetailModal } from '../../components/leave/LeaveDetailModal';
 import { LeavePolicyCard } from '../../components/leave/LeavePolicyCard';
 import { LeavePolicyModal } from '../../components/leave/LeavePolicyModal';
 import { TableSkeleton } from '../../components/ui/Skeletons';
+import { useAppContext } from '../../context/AppContext';
 
 type ActiveTab = 'pending' | 'approved' | 'rejected' | 'all' | 'policies';
 
 export const LeaveApprovalsPage: React.FC = () => {
+  const { user } = useAppContext();
   const [requests, setRequests] = useState<LeaveRequest[]>(initialLeaveRequests);
   const [policies, setPolicies] = useState<LeavePolicy[]>(initialLeavePolicies);
   const [activeTab, setActiveTab] = useState<ActiveTab>('pending');
@@ -93,7 +95,7 @@ export const LeaveApprovalsPage: React.FC = () => {
   // Handlers
   const handleApprove = (id: string) => {
     setRequests((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, status: 'approved', approvedBy: 'Uma Umamaheshwari' } : r))
+      prev.map((r) => (r.id === id ? { ...r, status: 'approved', approvedBy: user?.firstName || 'HR Admin' } : r))
     );
     setApproveConfirmId(null);
     showToast('success', 'Leave Approved', 'The employee leave request has been successfully approved.');

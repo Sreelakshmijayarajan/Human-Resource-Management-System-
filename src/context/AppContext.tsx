@@ -6,6 +6,8 @@ import { EmployeeProfile, ProfileDocument, initialEmployeeProfile } from '../dat
 import { MyAttendanceRecord, initialMyAttendance } from '../data/mockMyAttendance';
 import { ActivityItem, mockActivityFeed } from '../data/mockActivityFeed';
 
+import { extractFirstNameFromEmail } from '../utils/nameUtils';
+
 interface AuthUser {
   name: string;
   firstName: string;
@@ -21,7 +23,7 @@ interface AppContextValue {
   attendanceHistory: MyAttendanceRecord[];
   activityFeed: ActivityItem[];
   isAuthenticated: boolean;
-  login: (email: string, role: UserRole, name?: string) => void;
+  login: (email: string, role: UserRole) => void;
   logout: () => void;
   updateAttendance: (status: AttendanceStatus, time?: string) => void;
   updateProfileDetails: (updates: Partial<EmployeeProfile>) => void;
@@ -34,32 +36,92 @@ interface AppContextValue {
 const AppContext = createContext<AppContextValue | null>(null);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<AuthUser | null>(null);
-  const [employeeData, setEmployeeData] = useState<EmployeeData>(mockEmployeeData);
-  const [profile, setProfile] = useState<EmployeeProfile>(initialEmployeeProfile);
+  const [user, setUser] = useState<AuthUser | null>(() => {
+    try {
+      const saved = localStorage.getItem('dayflow_auth_user');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && parsed.email) {
+          const firstName = extractFirstNameFromEmail(parsed.email);
+          return {
+            ...parsed,
+            firstName,
+            name: firstName,
+            avatarInitials: firstName.slice(0, 2).toUpperCase(),
+          };
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    return null;
+  });
+
+  const [employeeData, setEmployeeData] = useState<EmployeeData>(() => {
+    const defaultName = user ? user.firstName : mockEmployeeData.name;
+    return {
+      ...mockEmployeeData,
+      name: defaultName,
+      firstName: defaultName,
+      email: user ? user.email : mockEmployeeData.email,
+    };
+  });
+
+  const [profile, setProfile] = useState<EmployeeProfile>(() => {
+    const defaultName = user ? user.firstName : initialEmployeeProfile.name;
+    return {
+      ...initialEmployeeProfile,
+      name: defaultName,
+      firstName: defaultName,
+      email: user ? user.email : initialEmployeeProfile.email,
+    };
+  });
+
   const [attendanceHistory, setAttendanceHistory] = useState<MyAttendanceRecord[]>(initialMyAttendance);
   const [activityFeed, setActivityFeed] = useState<ActivityItem[]>(mockActivityFeed);
 
-  const login = useCallback((email: string, role: UserRole, name?: string) => {
-    const displayName = name || mockEmployeeData.name;
-    const initials = displayName
-      .split(' ')
-      .map((n) => n[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
+  const login = useCallback((email: string, role: UserRole) => {
+    const firstName = extractFirstNameFromEmail(email);
+    const initials = firstName.slice(0, 2).toUpperCase();
 
-    setUser({
-      name: displayName,
-      firstName: displayName.split(' ')[0],
+    const newUser: AuthUser = {
       email,
+      firstName,
+      name: firstName,
       role,
       avatarInitials: initials,
-    });
+    };
+
+    setUser(newUser);
+    try {
+      localStorage.setItem('dayflow_auth_user', JSON.stringify(newUser));
+    } catch (e) {
+      console.error(e);
+    }
+
+    setEmployeeData((prev) => ({
+      ...prev,
+      name: firstName,
+      firstName: firstName,
+      email: email,
+      avatarInitials: initials,
+    }));
+
+    setProfile((prev) => ({
+      ...prev,
+      name: firstName,
+      firstName: firstName,
+      email: email,
+    }));
   }, []);
 
   const logout = useCallback(() => {
     setUser(null);
+    try {
+      localStorage.removeItem('dayflow_auth_user');
+    } catch (e) {
+      console.error(e);
+    }
   }, []);
 
   const updateAttendance = useCallback((status: AttendanceStatus, time?: string) => {

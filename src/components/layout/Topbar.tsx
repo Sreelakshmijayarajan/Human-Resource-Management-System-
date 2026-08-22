@@ -33,8 +33,8 @@ export const Topbar: React.FC<TopbarProps> = ({
 
   const isEmployee = user?.role === 'employee';
   const unreadCount = employeeData.notifications?.unread ?? 0;
-  const username = user?.name || (isEmployee ? 'Sanjay Jayarajan' : 'Uma Umamaheshwari');
-  const userInitials = user?.avatarInitials || (isEmployee ? 'SJ' : 'UU');
+  const username = user?.firstName || 'User';
+  const userInitials = user?.avatarInitials || username.slice(0, 2).toUpperCase();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

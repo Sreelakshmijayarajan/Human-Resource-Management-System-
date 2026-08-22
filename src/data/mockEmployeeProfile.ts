@@ -10,6 +10,7 @@ export interface ProfileDocument {
 export interface EmployeeProfile {
   id: string;
   name: string;
+  firstName?: string;
   designation: string;
   department: string;
   employmentType: string;
