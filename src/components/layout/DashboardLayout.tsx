@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Sidebar } from './Sidebar';
 import { Topbar } from './Topbar';
 import { UserRole } from '../../types/auth';
+import { AIChatbotWidget } from '../chat/AIChatbotWidget';
 
 interface DashboardLayoutProps {
   children?: React.ReactNode;
@@ -12,7 +13,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, role
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex transition-colors duration-200">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex transition-colors duration-200 relative">
       {/* Sidebar */}
       <Sidebar
         role={role}
@@ -38,6 +39,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, role
           Dayflow HRMS &copy; 2026. Self-Service Portal for Enterprise Employees.
         </footer>
       </div>
+
+      {/* Floating Dayflow AI Assistant Chatbot */}
+      <AIChatbotWidget />
     </div>
   );
 };
+
