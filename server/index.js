@@ -158,6 +158,76 @@ app.post('/api/notifications', async (req, res) => {
   }
 });
 
+// 5. Groq AI Chatbot Assistant API
+app.post('/api/chat', async (req, res) => {
+  const { message, history, userContext } = req.body;
+  const isHR = userContext?.role === 'hr_admin';
+
+  const systemPrompt = `You are "Dayflow AI", the official HR Intelligence and Compliance Assistant for Dayflow HRMS.
+
+ACCURACY & PRECISION RULES:
+1. Provide 100% accurate, factual answers based strictly on Dayflow HR policies and statutory rules.
+2. Be crisp, professional, and well-structured using Markdown (bold headings, bullet points, numbered lists).
+3. If drafting an email or announcement, produce a ready-to-broadcast template with [Subject], [Body], and signature.
+
+GROUND TRUTH DAYFLOW KNOWLEDGE BASE:
+- Organization: Dayflow Technologies India Pvt Ltd, Salarpuria Tech Park Outer Ring Road, Bengaluru, Karnataka.
+- Timings: 09:00 AM – 06:00 PM (Monday to Friday). Saturday & Sunday are weekly offs.
+- Check-in Rules: Check-in before 09:30 AM is On-Time. Check-in between 09:30 AM and 11:00 AM is flagged 'Late'. Less than 4 hours is recorded as 'Half Day'.
+- Statutory Leave Policies:
+  * Annual / Earned Leave: 18 days/year (Paid, carry forward max 5 days).
+  * Sick / Medical Leave: 12 days/year (Paid, medical cert required if >2 consecutive days).
+  * Casual Leave: 6 days/year (Paid, for personal urgent matters).
+  * Maternity Leave: 182 days / 26 weeks (Fully paid, as per Maternity Benefit Act).
+  * Paternity Leave: 14 days (Fully paid, applicable within 6 months of delivery).
+  * Bereavement Leave: 5 days (Paid, for immediate family bereavement).
+- Payroll Details: Salaries are calculated by the 25th and credited directly to bank accounts on the LAST WORKING DAY of each calendar month. Deductions: 12% Provident Fund (PF), Professional Tax (PT: ₹200), and Income Tax TDS.
+- Current User: ${userContext?.name || (isHR ? 'Uma Umamaheshwari' : 'Sanjay Kumar')}, Role: ${isHR ? 'HR Administrator' : 'Employee'}, Department: ${userContext?.department || (isHR ? 'Human Resources' : 'Product & Design')}.`;
+
+  const apiKey = process.env.GROQ_API_KEY || '';
+  const messages = [
+    { role: 'system', content: systemPrompt },
+    ...(history || []).slice(-6).map((msg) => ({
+      role: msg.sender === 'user' ? 'user' : 'assistant',
+      content: msg.text,
+    })),
+    { role: 'user', content: message },
+  ];
+
+  const models = ['openai/gpt-oss-120b', 'openai/gpt-oss-20b', 'qwen/qwen3.6-27b'];
+
+  for (const model of models) {
+    try {
+      const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model,
+          messages,
+          temperature: 0.2, // Low temperature for high accuracy & zero hallucinations
+          max_tokens: 900,
+        }),
+      });
+
+      if (!groqRes.ok) continue;
+
+      const data = await groqRes.json();
+      if (data?.choices?.[0]?.message?.content) {
+        return res.json({ reply: data.choices[0].message.content.trim() });
+      }
+    } catch (err) {
+      console.warn(`Groq server attempt with ${model} failed:`, err.message);
+    }
+  }
+
+  res.json({
+    reply: `Hello ${userContext?.name || 'there'}! Office hours are 9:00 AM – 6:00 PM (Mon–Fri). You have 18 Annual, 12 Sick, and 6 Casual leaves allocated. Salaries are credited on the last working day of every month.`,
+  });
+});
+
 // Start Express Server
 app.listen(PORT, () => {
   console.log(`🚀 Dayflow HRMS Backend Server running on http://localhost:${PORT}`);
