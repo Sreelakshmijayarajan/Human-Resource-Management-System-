@@ -14,6 +14,11 @@ import { LeavePage } from './pages/employee/LeavePage';
 import { PayrollPage } from './pages/employee/PayrollPage';
 import { NotificationsPage } from './pages/employee/NotificationsPage';
 import { HRDashboard } from './pages/hr/HRDashboard';
+import { EmployeeManagementPage } from './pages/hr/EmployeeManagementPage';
+import { AttendanceRecordsPage } from './pages/hr/AttendanceRecordsPage';
+import { LeaveApprovalsPage } from './pages/hr/LeaveApprovalsPage';
+import { PayrollManagementPage } from './pages/hr/PayrollManagementPage';
+import { ReportsPage } from './pages/hr/ReportsPage';
 import { UserRole } from './types/auth';
 
 const LoginPage: React.FC = () => {
@@ -143,16 +148,11 @@ export const AppRoutes: React.FC = () => {
           </ProtectedRoute>
         }
       />
-      <Route
-        path="/hr/*"
-        element={
-          <ProtectedRoute allowedRole="hr_admin">
-            <DashboardLayout role="hr_admin">
-              <HRDashboard />
-            </DashboardLayout>
-          </ProtectedRoute>
-        }
-      />
+      <Route path="/hr/employees" element={<ProtectedRoute allowedRole="hr_admin"><DashboardLayout role="hr_admin"><EmployeeManagementPage /></DashboardLayout></ProtectedRoute>} />
+      <Route path="/hr/attendance" element={<ProtectedRoute allowedRole="hr_admin"><DashboardLayout role="hr_admin"><AttendanceRecordsPage /></DashboardLayout></ProtectedRoute>} />
+      <Route path="/hr/leave" element={<ProtectedRoute allowedRole="hr_admin"><DashboardLayout role="hr_admin"><LeaveApprovalsPage /></DashboardLayout></ProtectedRoute>} />
+      <Route path="/hr/payroll" element={<ProtectedRoute allowedRole="hr_admin"><DashboardLayout role="hr_admin"><PayrollManagementPage /></DashboardLayout></ProtectedRoute>} />
+      <Route path="/hr/reports" element={<ProtectedRoute allowedRole="hr_admin"><DashboardLayout role="hr_admin"><ReportsPage /></DashboardLayout></ProtectedRoute>} />
 
       {/* Default fallback */}
       <Route path="*" element={<Navigate to="/login" replace />} />
