@@ -2,6 +2,9 @@ export * from './auth';
 export * from './leave';
 export * from './payroll';
 export * from './reports';
+export * from './employeeLeave';
+export * from './employeePayroll';
+export * from './employeeNotification';
 
 export interface NavItem {
   label: string;

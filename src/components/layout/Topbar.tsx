@@ -31,8 +31,10 @@ export const Topbar: React.FC<TopbarProps> = ({
   const notifRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
 
-  const unreadCount = employeeData.notifications.unread || 3;
-  const username = user?.email?.split('@')[0] || 'umau35579';
+  const isEmployee = user?.role === 'employee';
+  const unreadCount = employeeData.notifications?.unread ?? 0;
+  const username = user?.name || (isEmployee ? 'Sanjay Jayarajan' : 'Uma Umamaheshwari');
+  const userInitials = user?.avatarInitials || (isEmployee ? 'SJ' : 'UU');
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -65,7 +67,7 @@ export const Topbar: React.FC<TopbarProps> = ({
         </button>
 
         <h2 className="text-sm sm:text-base font-semibold text-slate-700 dark:text-slate-200">
-          HR Admin Portal
+          {isEmployee ? 'Dayflow Employee Workspace' : 'HR Admin Portal'}
         </h2>
       </div>
 
@@ -90,8 +92,12 @@ export const Topbar: React.FC<TopbarProps> = ({
         <div className="relative" ref={notifRef}>
           <button
             onClick={() => {
-              setIsNotificationsOpen(!isNotificationsOpen);
-              setIsProfileOpen(false);
+              if (isEmployee) {
+                navigate('/employee/notifications');
+              } else {
+                setIsNotificationsOpen(!isNotificationsOpen);
+                setIsProfileOpen(false);
+              }
             }}
             aria-label="Notifications"
             className="relative p-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-colors focus:outline-none"
@@ -102,8 +108,8 @@ export const Topbar: React.FC<TopbarProps> = ({
             )}
           </button>
 
-          {/* Notifications Dropdown Panel */}
-          {isNotificationsOpen && (
+          {/* Notifications Dropdown Panel (for HR) */}
+          {!isEmployee && isNotificationsOpen && (
             <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-slate-900 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800 py-3 z-50 animate-slide-up">
               <div className="px-4 pb-2.5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
                 <h3 className="font-bold text-slate-900 dark:text-slate-100 text-xs">Notifications</h3>
@@ -139,8 +145,8 @@ export const Topbar: React.FC<TopbarProps> = ({
             }}
             className="flex items-center gap-2 hover:opacity-90 focus:outline-none transition-opacity"
           >
-            <div className="w-8 h-8 rounded-full bg-indigo-700 text-white font-bold text-xs flex items-center justify-center shadow-2xs">
-              U
+            <div className={`w-8 h-8 rounded-full ${isEmployee ? 'bg-teal-600' : 'bg-indigo-700'} text-white font-bold text-xs flex items-center justify-center shadow-2xs`}>
+              {userInitials}
             </div>
             <span className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 hidden sm:inline">
               {username}
@@ -152,18 +158,20 @@ export const Topbar: React.FC<TopbarProps> = ({
             <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-900 rounded-2xl shadow-card border border-slate-100 dark:border-slate-800 py-1.5 z-50 animate-slide-up">
               <div className="px-4 py-2 border-b border-slate-100 dark:border-slate-800">
                 <p className="text-xs font-bold text-slate-900 dark:text-slate-100">{username}</p>
-                <p className="text-[10px] text-slate-400 dark:text-slate-500">HR Administrator</p>
+                <p className="text-[10px] text-slate-400 dark:text-slate-500">
+                  {isEmployee ? 'Software Engineer' : 'HR Administrator'}
+                </p>
               </div>
 
               <button
                 onClick={() => {
                   setIsProfileOpen(false);
-                  navigate('/hr/settings');
+                  navigate(isEmployee ? '/employee/profile' : '/hr/settings');
                 }}
                 className="w-full px-4 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-2"
               >
                 <Settings className="w-3.5 h-3.5 text-slate-400" />
-                <span>Admin Settings</span>
+                <span>{isEmployee ? 'My Profile' : 'Admin Settings'}</span>
               </button>
 
               <div className="border-t border-slate-100 dark:border-slate-800 mt-1 pt-1">
