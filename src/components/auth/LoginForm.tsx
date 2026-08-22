@@ -7,6 +7,7 @@ import { PasswordInput } from '../ui/PasswordInput';
 import { Checkbox } from '../ui/Checkbox';
 import { Button } from '../ui/Button';
 import { UserRole } from '../../types/auth';
+import { FlipFadeText } from '../ui/flip-fade-text';
 
 export interface LoginFormProps {
   formHook: ReturnType<typeof useLoginForm>;
@@ -79,7 +80,13 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           <span>Dayflow HR Management Portal</span>
         </div>
         <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-          Welcome back!
+          <FlipFadeText
+            words={['Welcome back!']}
+            loop={false}
+            letterDuration={0.45}
+            staggerDelay={0.04}
+            textClassName="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight"
+          />
         </h2>
         <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-normal">
           Select a role or use quick 1-click demo access below.
