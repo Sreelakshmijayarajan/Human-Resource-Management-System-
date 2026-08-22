@@ -6,15 +6,14 @@ import {
   CalendarDays, 
   WalletCards, 
   Bell, 
-  CheckCircle2, 
-  CalendarCheck,
-  FileCheck
+  FileCheck,
+  TrendingUp
 } from 'lucide-react';
 import { useAppContext } from '../../context/AppContext';
 import { StatusCard } from '../../components/dashboard/StatusCard';
-import { ModuleCard } from '../../components/dashboard/ModuleCard';
 import { DashboardSkeleton } from '../../components/ui/Skeletons';
-import { Button } from '../../components/ui/Button';
+import { CheckInOutCard } from '../../components/employee/CheckInOutCard';
+import { ActivityFeed } from '../../components/employee/ActivityFeed';
 
 export const employeeModulesConfig = [
   {
@@ -33,7 +32,7 @@ export const employeeModulesConfig = [
   },
   {
     id: 'leave',
-    title: 'Leave',
+    title: 'Leave Management',
     description: 'Apply for time off, check leave balance, and track approvals',
     icon: CalendarDays,
     route: '/employee/leave',
@@ -55,15 +54,12 @@ export const employeeModulesConfig = [
 ];
 
 export const EmployeeDashboard: React.FC = () => {
-  const { user, employeeData, updateAttendance } = useAppContext();
+  const { user, employeeData, activityFeed } = useAppContext();
   const navigate = useNavigate();
-
   const [isLoading, setIsLoading] = useState(true);
-  const [isProcessingCheckAction, setIsProcessingCheckAction] = useState(false);
-  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 400);
+    const timer = setTimeout(() => setIsLoading(false), 350);
     return () => clearTimeout(timer);
   }, []);
 
@@ -81,30 +77,6 @@ export const EmployeeDashboard: React.FC = () => {
     year: 'numeric',
   });
 
-  const attendance = employeeData.attendance;
-
-  const handleCheckInToggle = () => {
-    setIsProcessingCheckAction(true);
-    const nowTime = new Date().toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true,
-    });
-
-    setTimeout(() => {
-      if (attendance.status === 'not_checked_in') {
-        updateAttendance('checked_in', nowTime);
-        setFeedbackMessage(`Checked in successfully at ${nowTime}`);
-      } else if (attendance.status === 'checked_in') {
-        updateAttendance('checked_out', nowTime);
-        setFeedbackMessage(`Checked out successfully at ${nowTime}`);
-      }
-      setIsProcessingCheckAction(false);
-
-      setTimeout(() => setFeedbackMessage(null), 4000);
-    }, 800);
-  };
-
   if (isLoading) {
     return <DashboardSkeleton />;
   }
@@ -113,128 +85,88 @@ export const EmployeeDashboard: React.FC = () => {
   const leavePercentage = Math.round((used / total) * 100);
 
   return (
-    <div className="space-y-8 animate-fade-in">
-      {/* Personalized Header */}
+    <div className="space-y-8 animate-fade-in pb-8">
+      {/* Personalized Greeting Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-100">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-            {getGreeting()}, {user?.firstName || employeeData.firstName}
+            {getGreeting()}, {user?.firstName || employeeData.firstName || 'Sanjay'}
           </h1>
           <p className="text-xs sm:text-sm font-medium text-slate-500 mt-1 flex items-center gap-2">
             <span>{todayFormatted}</span>
             <span className="text-slate-300">•</span>
-            <span className="text-teal-700 font-semibold bg-teal-50 px-2 py-0.5 rounded-md text-xs">
-              Here's your workday at a glance.
+            <span className="text-teal-700 font-semibold bg-teal-50 border border-teal-200/60 px-2.5 py-0.5 rounded-lg text-xs">
+              Here's your personal workday snapshot.
             </span>
           </p>
         </div>
-
-        {/* Feedback Alert Toast if just checked in/out */}
-        {feedbackMessage && (
-          <div className="flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold rounded-xl animate-slide-up shadow-sm">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-            <span>{feedbackMessage}</span>
-          </div>
-        )}
       </div>
 
-      {/* Quick Status Row (4 Cards) */}
+      {/* Prominent Check In / Check Out Card (Shared Component) */}
+      <section aria-label="Today Shift Check In Out">
+        <CheckInOutCard />
+      </section>
+
+      {/* Quick Status Row (3 Cards) */}
       <section aria-label="Daily Status Summary" className="space-y-3">
         <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-          Daily Overview
+          Personal Status Overview
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* Card 1: Attendance Status */}
-          <StatusCard
-            title="Attendance"
-            subtitle="Today's Log"
-            icon={Clock}
-            iconBgColor={
-              attendance.status === 'checked_in'
-                ? 'bg-teal-50 text-teal-600'
-                : attendance.status === 'checked_out'
-                ? 'bg-blue-50 text-blue-600'
-                : 'bg-slate-100 text-slate-500'
-            }
-            value={
-              <div className="flex flex-col">
-                <span className="text-lg sm:text-xl font-extrabold text-slate-900">
-                  {attendance.status === 'checked_in'
-                    ? 'Checked In'
-                    : attendance.status === 'checked_out'
-                    ? 'Checked Out'
-                    : 'Not Checked In'}
-                </span>
-                <span className="text-xs font-semibold text-teal-600 mt-0.5">
-                  {attendance.status === 'checked_in'
-                    ? `Since ${attendance.checkInTime}`
-                    : attendance.status === 'checked_out'
-                    ? `Out at ${attendance.checkOutTime}`
-                    : 'Ready for shift'}
-                </span>
-              </div>
-            }
-            action={
-              attendance.status === 'checked_out' ? (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold bg-slate-100 text-slate-600 rounded-lg">
-                  <CalendarCheck className="w-3.5 h-3.5" /> Done
-                </span>
-              ) : (
-                <Button
-                  size="sm"
-                  variant={attendance.status === 'checked_in' ? 'secondary' : 'primary'}
-                  isLoading={isProcessingCheckAction}
-                  loadingText="Saving..."
-                  onClick={handleCheckInToggle}
-                  className={
-                    attendance.status === 'not_checked_in'
-                      ? '!bg-teal-600 hover:!bg-teal-700 focus:!ring-teal-500 shadow-teal-500/20 text-white font-bold px-4'
-                      : '!bg-slate-200 hover:!bg-slate-300 text-slate-800 font-bold px-4'
-                  }
-                >
-                  {attendance.status === 'not_checked_in' ? 'Check In' : 'Check Out'}
-                </Button>
-              )
-            }
-            footer={
-              <div className="flex items-center justify-between text-[11px]">
-                <span className="text-slate-400">Shift: 09:00 AM - 06:00 PM</span>
-                <button
-                  onClick={() => navigate('/employee/attendance')}
-                  className="font-semibold text-teal-600 hover:text-teal-700 focus:outline-none"
-                >
-                  View log →
-                </button>
-              </div>
-            }
-          />
-
-          {/* Card 2: Leave Balance */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {/* Card 1: Leave Balance */}
           <StatusCard
             title="Leave Balance"
             subtitle="Annual Allowance"
             icon={CalendarDays}
-            iconBgColor="bg-amber-50"
-            iconTextColor="text-amber-600"
+            iconBgColor="bg-teal-50"
+            iconTextColor="text-teal-600"
             value={
               <div className="flex items-baseline gap-1.5">
-                <span className="text-2xl font-extrabold text-slate-900">{remaining}</span>
+                <span className="text-3xl font-extrabold text-slate-900">{remaining}</span>
                 <span className="text-xs font-semibold text-slate-500">days remaining</span>
               </div>
             }
             footer={
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between text-[11px] font-medium text-slate-500">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-xs font-semibold text-slate-500">
                   <span>Used {used} / {total} days</span>
-                  <span className="font-bold text-amber-600">{100 - leavePercentage}% available</span>
+                  <span className="font-bold text-teal-700">{100 - leavePercentage}% left</span>
                 </div>
-                <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-amber-400 to-amber-500 rounded-full transition-all duration-500"
+                    className="h-full bg-gradient-to-r from-teal-500 to-emerald-500 rounded-full transition-all duration-500"
                     style={{ width: `${leavePercentage}%` }}
                   />
                 </div>
+              </div>
+            }
+          />
+
+          {/* Card 2: This Month's Attendance % */}
+          <StatusCard
+            title="Attendance Rate"
+            subtitle="Current Month"
+            icon={Clock}
+            iconBgColor="bg-emerald-50"
+            iconTextColor="text-emerald-600"
+            value={
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-extrabold text-slate-900">96.4%</span>
+                <span className="inline-flex items-center gap-0.5 px-2 py-0.5 text-xs font-bold bg-emerald-50 text-emerald-700 rounded-lg border border-emerald-200">
+                  <TrendingUp className="w-3 h-3" /> +2.1%
+                </span>
+              </div>
+            }
+            footer={
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-400 font-medium">21 of 22 shifts logged</span>
+                <button
+                  onClick={() => navigate('/employee/attendance')}
+                  className="font-bold text-teal-600 hover:text-teal-700 focus:outline-none"
+                >
+                  View log →
+                </button>
               </div>
             }
           />
@@ -248,11 +180,13 @@ export const EmployeeDashboard: React.FC = () => {
             iconTextColor="text-indigo-600"
             value={
               employeeData.pendingLeaveRequests > 0 ? (
-                <div className="flex items-baseline gap-1.5">
-                  <span className="text-2xl font-extrabold text-slate-900">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-3xl font-extrabold text-slate-900">
                     {employeeData.pendingLeaveRequests}
                   </span>
-                  <span className="text-xs font-semibold text-indigo-600">pending review</span>
+                  <span className="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-lg border border-indigo-100">
+                    pending review
+                  </span>
                 </div>
               ) : (
                 <span className="text-base font-bold text-slate-700">No pending requests</span>
@@ -261,100 +195,74 @@ export const EmployeeDashboard: React.FC = () => {
             action={
               <button
                 onClick={() => navigate('/employee/leave')}
-                className="px-2.5 py-1 text-xs font-semibold text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition-colors"
+                className="px-3 py-1 text-xs font-bold text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-xl transition-colors"
               >
                 View requests
               </button>
             }
             footer={
-              <div className="flex items-center justify-between text-[11px]">
-                <span className="text-slate-400">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-400 font-medium">
                   {employeeData.pendingLeaveRequests > 0 ? 'Submitted Aug 20' : "You're all caught up."}
                 </span>
                 <button
                   onClick={() => navigate('/employee/leave')}
-                  className="font-semibold text-indigo-600 hover:text-indigo-700 focus:outline-none"
+                  className="font-bold text-indigo-600 hover:text-indigo-700 focus:outline-none"
                 >
                   Apply Leave +
                 </button>
               </div>
             }
           />
-
-          {/* Card 4: Latest Payslip */}
-          <StatusCard
-            title="Latest Payslip"
-            subtitle="Salary Statement"
-            icon={WalletCards}
-            iconBgColor="bg-emerald-50"
-            iconTextColor="text-emerald-600"
-            value={
-              <div className="flex flex-col">
-                <span className="text-lg font-bold text-slate-900">
-                  {employeeData.latestPayslip.month} {employeeData.latestPayslip.year}
-                </span>
-                <span className="text-xs font-semibold text-emerald-600">
-                  {employeeData.latestPayslip.available ? 'Ready to download' : 'Processing'}
-                </span>
-              </div>
-            }
-            action={
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => navigate('/employee/payroll')}
-                className="!text-xs font-bold border-slate-200 hover:border-emerald-300 hover:bg-emerald-50/50 hover:text-emerald-700"
-              >
-                View
-              </Button>
-            }
-            footer={
-              <div className="flex items-center justify-between text-[11px] text-slate-400">
-                <span>Direct Deposit</span>
-                <span className="font-semibold text-slate-600">Confidential</span>
-              </div>
-            }
-          />
         </div>
       </section>
 
-      {/* Module Grid Section */}
-      <section aria-label="Employee Workspace Modules" className="space-y-4 pt-2">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-lg font-bold text-slate-900 tracking-tight">Your workspace</h2>
-            <p className="text-xs text-slate-500">Everything you need for your workday self-service.</p>
+      {/* Two Column Layout: Activity Feed & Quick Links */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        {/* Left Column: Recent Activity Feed (2 Cols on LG) */}
+        <div className="lg:col-span-2">
+          <ActivityFeed activities={activityFeed} />
+        </div>
+
+        {/* Right Column: Quick Navigation Links */}
+        <div className="space-y-4">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            Module Quick Access
+          </h2>
+
+          <div className="space-y-3">
+            {employeeModulesConfig.map((module) => {
+              const Icon = module.icon;
+              return (
+                <button
+                  key={module.id}
+                  onClick={() => navigate(module.route)}
+                  className="w-full text-left bg-white p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-teal-200 transition-all flex items-center justify-between group"
+                >
+                  <div className="flex items-center gap-3.5">
+                    <div className="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center font-bold group-hover:bg-teal-600 group-hover:text-white transition-colors">
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold text-slate-900 group-hover:text-teal-700 transition-colors">
+                        {module.title}
+                      </h3>
+                      <p className="text-xs text-slate-500 font-medium line-clamp-1">
+                        {module.description}
+                      </p>
+                    </div>
+                  </div>
+                  <span className="text-slate-300 group-hover:text-teal-600 group-hover:translate-x-1 transition-all">
+                    →
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* 3 Columns Desktop, 2 Columns Tablet, 1 Column Mobile */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {employeeModulesConfig.map((module) => {
-            const badgeValue =
-              module.id === 'notifications'
-                ? employeeData.notifications.unread
-                : module.id === 'leave'
-                ? employeeData.pendingLeaveRequests
-                : undefined;
-
-            return (
-              <ModuleCard
-                key={module.id}
-                title={module.title}
-                description={module.description}
-                icon={module.icon}
-                route={module.route}
-                badge={badgeValue && badgeValue > 0 ? `${badgeValue} ${module.id === 'leave' ? 'pending' : 'new'}` : undefined}
-                badgeColor={
-                  module.id === 'notifications'
-                    ? 'bg-teal-50 text-teal-700 border-teal-200'
-                    : 'bg-indigo-50 text-indigo-700 border-indigo-200'
-                }
-              />
-            );
-          })}
-        </div>
-      </section>
+      </div>
     </div>
   );
 };
