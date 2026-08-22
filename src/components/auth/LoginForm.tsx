@@ -62,16 +62,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({
 
   const handleRoleChange = (newRole: UserRole) => {
     handleChange('role', newRole);
-    // Auto populate demo credentials based on selected role if fields are empty
-    if (!values.email || values.email === 'umau35579@dayflow.io' || values.email === 'sanjay.kumar@dayflow.io') {
-      if (newRole === 'hr_admin') {
-        handleChange('email', 'umau35579@dayflow.io');
-        if (!values.password) handleChange('password', 'password123');
-      } else {
-        handleChange('email', 'sanjay.kumar@dayflow.io');
-        if (!values.password) handleChange('password', 'password123');
-      }
-    }
   };
 
   const handleForgotPassword = (e: React.MouseEvent) => {
