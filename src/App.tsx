@@ -186,7 +186,27 @@ export const AppRoutes: React.FC = () => {
         }
       />
       <Route
+        path="/hr/leave/*"
+        element={
+          <ProtectedRoute allowedRole="hr_admin">
+            <DashboardLayout role="hr_admin">
+              <LeaveApprovalsPage />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/hr/payroll"
+        element={
+          <ProtectedRoute allowedRole="hr_admin">
+            <DashboardLayout role="hr_admin">
+              <PayrollManagementPage />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/hr/payroll/*"
         element={
           <ProtectedRoute allowedRole="hr_admin">
             <DashboardLayout role="hr_admin">

@@ -1,128 +1,377 @@
-import React from 'react';
-import { Download, WalletCards, TrendingUp, Users, CheckCircle2 } from 'lucide-react';
-
-interface PayrollEntry {
-  id: string;
-  name: string;
-  initials: string;
-  avatarColor: string;
-  department: string;
-  basicSalary: number;
-  allowances: number;
-  deductions: number;
-  netPay: number;
-  status: 'processed' | 'pending' | 'on_hold';
-}
-
-const payrollData: PayrollEntry[] = [
-  { id: 'E001', name: 'Sanjay Kumar', initials: 'SK', avatarColor: 'bg-blue-500', department: 'Product & Design', basicSalary: 85000, allowances: 15000, deductions: 12000, netPay: 88000, status: 'processed' },
-  { id: 'E002', name: 'Priya Sharma', initials: 'PS', avatarColor: 'bg-purple-500', department: 'Engineering', basicSalary: 92000, allowances: 18000, deductions: 14500, netPay: 95500, status: 'processed' },
-  { id: 'E003', name: 'Rahul Verma', initials: 'RV', avatarColor: 'bg-emerald-500', department: 'Human Resources', basicSalary: 70000, allowances: 10000, deductions: 10000, netPay: 70000, status: 'on_hold' },
-  { id: 'E004', name: 'Ananya Iyer', initials: 'AI', avatarColor: 'bg-pink-500', department: 'Analytics', basicSalary: 78000, allowances: 12000, deductions: 11000, netPay: 79000, status: 'processed' },
-  { id: 'E005', name: 'Dev Patel', initials: 'DP', avatarColor: 'bg-amber-500', department: 'Engineering', basicSalary: 88000, allowances: 16000, deductions: 13000, netPay: 91000, status: 'pending' },
-  { id: 'E006', name: 'Meera Nair', initials: 'MN', avatarColor: 'bg-cyan-500', department: 'Product & Design', basicSalary: 72000, allowances: 11000, deductions: 10500, netPay: 72500, status: 'processed' },
-  { id: 'E007', name: 'Arjun Singh', initials: 'AS', avatarColor: 'bg-indigo-500', department: 'Engineering', basicSalary: 95000, allowances: 20000, deductions: 15000, netPay: 100000, status: 'processed' },
-  { id: 'E008', name: 'Kavitha Reddy', initials: 'KR', avatarColor: 'bg-rose-500', department: 'Finance', basicSalary: 110000, allowances: 25000, deductions: 18000, netPay: 117000, status: 'pending' },
-];
-
-const statusCfg = {
-  processed: { label: 'Processed', className: 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200' },
-  pending: { label: 'Pending', className: 'bg-amber-50 text-amber-700 ring-1 ring-amber-200' },
-  on_hold: { label: 'On Hold', className: 'bg-red-50 text-red-600 ring-1 ring-red-200' },
-};
-
-const fmt = (n: number) => '\u20b9' + n.toLocaleString('en-IN');
+import React, { useState, useMemo } from 'react';
+import {
+  DollarSign,
+  Clock,
+  Calendar,
+  Search,
+  Filter,
+  CheckCircle2,
+  Edit3,
+  Eye,
+  ChevronLeft,
+  ChevronRight,
+  Sparkles,
+  Zap,
+} from 'lucide-react';
+import { initialPayrollRecords } from '../../data/mockPayroll';
+import { PayrollRecord } from '../../types/payroll';
+import { StatusBadge } from '../../components/ui/StatusBadge';
+import { Toast, ToastMessage } from '../../components/ui/Toast';
+import { GeneratePayslipsModal } from '../../components/payroll/GeneratePayslipsModal';
+import { SalaryStructureModal } from '../../components/payroll/SalaryStructureModal';
+import { PayslipViewModal } from '../../components/payroll/PayslipViewModal';
+import { TableSkeleton } from '../../components/ui/Skeletons';
 
 export const PayrollManagementPage: React.FC = () => {
-  const month = 'August 2026';
-  const totalNet = payrollData.reduce((s, e) => s + e.netPay, 0);
-  const processed = payrollData.filter(e => e.status === 'processed').length;
+  const [records, setRecords] = useState<PayrollRecord[]>(initialPayrollRecords);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedDept, setSelectedDept] = useState('all');
+  const [selectedStatus, setSelectedStatus] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 7;
 
-  const summaryCards = [
-    { label: 'Total Disbursement', value: fmt(totalNet), icon: WalletCards, color: 'text-indigo-600', bg: 'bg-indigo-50' },
-    { label: 'Avg Net Pay', value: fmt(Math.round(totalNet / payrollData.length)), icon: TrendingUp, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-    { label: 'Employees', value: String(payrollData.length), icon: Users, color: 'text-blue-600', bg: 'bg-blue-50' },
-    { label: 'Processed', value: processed + '/' + payrollData.length, icon: CheckCircle2, color: 'text-purple-600', bg: 'bg-purple-50' },
-  ];
+  const [isLoading] = useState(false);
+  const [toast, setToast] = useState<ToastMessage | null>(null);
+
+  // Modals state
+  const [isGenerateModalOpen, setIsGenerateModalOpen] = useState(false);
+  const [editingRecord, setEditingRecord] = useState<PayrollRecord | null>(null);
+  const [viewingPayslipRecord, setViewingPayslipRecord] = useState<PayrollRecord | null>(null);
+
+  const showToast = (type: 'success' | 'error' | 'info', title: string, message?: string) => {
+    setToast({ id: `toast-${Date.now()}`, type, title, message });
+  };
+
+  // Filtered records
+  const filteredRecords = useMemo(() => {
+    return records.filter((rec) => {
+      if (searchQuery.trim()) {
+        const query = searchQuery.toLowerCase();
+        const matchesName = rec.employeeName.toLowerCase().includes(query);
+        const matchesDept = rec.department.toLowerCase().includes(query);
+        const matchesDesig = rec.designation.toLowerCase().includes(query);
+        if (!matchesName && !matchesDept && !matchesDesig) return false;
+      }
+      if (selectedDept !== 'all' && rec.department !== selectedDept) return false;
+      if (selectedStatus !== 'all' && rec.status !== selectedStatus) return false;
+      return true;
+    });
+  }, [records, searchQuery, selectedDept, selectedStatus]);
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredRecords.length / itemsPerPage) || 1;
+  const paginatedRecords = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return filteredRecords.slice(start, start + itemsPerPage);
+  }, [filteredRecords, currentPage]);
+
+  // Stats calculation
+  const totalMonthlyPayroll = records.reduce((acc, curr) => acc + curr.netSalary, 0);
+  const employeesPaidCount = records.filter((r) => r.status === 'paid').length;
+  const pendingPayslipsCount = records.filter((r) => r.status === 'pending').length;
+
+  const formatCurrency = (val: number) => `₹${val.toLocaleString('en-IN')}`;
+
+  // Handlers
+  const handleBatchGenerateComplete = (count: number, month: string) => {
+    setRecords((prev) =>
+      prev.map((r) => ({
+        ...r,
+        status: 'paid',
+        lastPayslipDate: '2026-08-31',
+      }))
+    );
+    setIsGenerateModalOpen(false);
+    showToast(
+      'success',
+      'Payslips Generated!',
+      `Successfully processed ${count} employee payslips for ${month}.`
+    );
+  };
+
+  const handleSaveStructure = (updatedRecord: PayrollRecord) => {
+    setRecords((prev) =>
+      prev.map((r) => (r.id === updatedRecord.id ? updatedRecord : r))
+    );
+    setEditingRecord(null);
+    showToast(
+      'success',
+      'Salary Structure Updated',
+      `Recalculated Net Pay for ${updatedRecord.employeeName}: ${formatCurrency(updatedRecord.netSalary)}`
+    );
+  };
+
+  const departments = ['all', 'Engineering', 'Human Resources', 'Marketing', 'Finance', 'Design', 'Analytics', 'Sales', 'Product', 'Quality Assurance', 'Operations'];
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-6 animate-fade-in pb-12">
+      {/* Page Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Payroll Management</h1>
-          <p className="text-sm text-slate-500 mt-1">{'Salary structures, payslips and disbursement for ' + month}</p>
+          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
+            Payroll Management <Sparkles className="w-5 h-5 text-emerald-500 fill-emerald-500/20" />
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-500 mt-1">
+            Configure employee compensation structures, recalculate allowances, and generate payslips.
+          </p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2.5 bg-slate-800 hover:bg-slate-900 text-white text-sm font-semibold rounded-xl transition-colors shadow-sm">
-          <Download className="w-4 h-4" /> Export Payroll
+
+        <button
+          onClick={() => setIsGenerateModalOpen(true)}
+          className="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl shadow-sm transition-all"
+        >
+          <Zap className="w-4 h-4 fill-white/20" /> Generate Batch Payslips
         </button>
       </div>
 
+      {/* Top Stat Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {summaryCards.map(s => (
-          <div key={s.label} className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 flex items-center gap-4">
-            <div className={'w-10 h-10 rounded-xl ' + s.bg + ' ' + s.color + ' flex items-center justify-center flex-shrink-0'}>
-              <s.icon className="w-5 h-5" />
-            </div>
-            <div>
-              <p className="text-xs font-semibold text-slate-400">{s.label}</p>
-              <p className="text-lg font-extrabold text-slate-900 mt-0.5">{s.value}</p>
-            </div>
+        <div className="bg-white rounded-2xl border border-slate-100/90 shadow-xs p-4 flex items-center justify-between">
+          <div>
+            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Monthly Payroll</span>
+            <p className="text-2xl font-extrabold text-slate-900 mt-1">{formatCurrency(totalMonthlyPayroll)}</p>
           </div>
-        ))}
+          <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+            <DollarSign className="w-5 h-5" />
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl border border-slate-100/90 shadow-xs p-4 flex items-center justify-between">
+          <div>
+            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Employees Paid</span>
+            <p className="text-2xl font-extrabold text-emerald-600 mt-1">{employeesPaidCount} / {records.length}</p>
+          </div>
+          <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+            <CheckCircle2 className="w-5 h-5" />
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl border border-slate-100/90 shadow-xs p-4 flex items-center justify-between">
+          <div>
+            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Pending Payslips</span>
+            <p className="text-2xl font-extrabold text-amber-600 mt-1">{pendingPayslipsCount}</p>
+          </div>
+          <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+            <Clock className="w-5 h-5" />
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl border border-slate-100/90 shadow-xs p-4 flex items-center justify-between">
+          <div>
+            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Next Payroll Date</span>
+            <p className="text-base font-extrabold text-slate-800 mt-1">Aug 31, 2026</p>
+          </div>
+          <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+            <Calendar className="w-5 h-5" />
+          </div>
+        </div>
       </div>
 
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-        <div className="px-5 py-4 border-b border-slate-100">
-          <h3 className="font-semibold text-slate-900">{'Payroll Register — ' + month}</h3>
+      {/* Filter Bar */}
+      <div className="bg-white rounded-2xl border border-slate-100/90 shadow-xs p-4 flex flex-col md:flex-row items-center justify-between gap-3">
+        {/* Search Input */}
+        <div className="relative w-full md:w-80">
+          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+          <input
+            type="text"
+            placeholder="Search employee, designation, department..."
+            value={searchQuery}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setCurrentPage(1);
+            }}
+            className="w-full pl-9 pr-3 py-2 text-xs sm:text-sm bg-slate-50 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+          />
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-slate-100 bg-slate-50">
-                <th className="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wide">Employee</th>
-                <th className="text-right px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wide hidden sm:table-cell">Basic</th>
-                <th className="text-right px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wide hidden md:table-cell">Allowances</th>
-                <th className="text-right px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wide hidden md:table-cell">Deductions</th>
-                <th className="text-right px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wide">Net Pay</th>
-                <th className="text-left px-5 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wide">Status</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-50">
-              {payrollData.map(emp => (
-                <tr key={emp.id} className="hover:bg-slate-50/60 transition-colors">
-                  <td className="px-5 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className={'w-9 h-9 rounded-xl ' + emp.avatarColor + ' text-white text-xs font-bold flex items-center justify-center'}>
-                        {emp.initials}
-                      </div>
-                      <div>
-                        <p className="font-semibold text-slate-900">{emp.name}</p>
-                        <p className="text-xs text-slate-500">{emp.department}</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-5 py-4 text-right hidden sm:table-cell text-slate-600">{fmt(emp.basicSalary)}</td>
-                  <td className="px-5 py-4 text-right hidden md:table-cell text-emerald-600">+{fmt(emp.allowances)}</td>
-                  <td className="px-5 py-4 text-right hidden md:table-cell text-red-500">-{fmt(emp.deductions)}</td>
-                  <td className="px-5 py-4 text-right font-bold text-slate-900">{fmt(emp.netPay)}</td>
-                  <td className="px-5 py-4">
-                    <span className={'inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ' + statusCfg[emp.status].className}>
-                      {statusCfg[emp.status].label}
-                    </span>
-                  </td>
-                </tr>
+
+        {/* Filter Dropdowns */}
+        <div className="flex items-center gap-2 w-full md:w-auto overflow-x-auto">
+          <div className="flex items-center gap-1.5 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200 text-xs">
+            <Filter className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+            <span className="text-slate-500 font-medium shrink-0">Dept:</span>
+            <select
+              value={selectedDept}
+              onChange={(e) => {
+                setSelectedDept(e.target.value);
+                setCurrentPage(1);
+              }}
+              className="bg-transparent text-slate-800 font-semibold focus:outline-none text-xs cursor-pointer"
+            >
+              {departments.map((d) => (
+                <option key={d} value={d}>
+                  {d === 'all' ? 'All Departments' : d}
+                </option>
               ))}
-            </tbody>
-            <tfoot>
-              <tr className="border-t-2 border-slate-200 bg-slate-50">
-                <td className="px-5 py-4 font-bold text-slate-700" colSpan={4}>Total Payroll</td>
-                <td className="px-5 py-4 text-right font-extrabold text-indigo-700 text-base">{fmt(totalNet)}</td>
-                <td className="px-5 py-4"></td>
-              </tr>
-            </tfoot>
-          </table>
+            </select>
+          </div>
+
+          <div className="flex items-center gap-1.5 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200 text-xs">
+            <span className="text-slate-500 font-medium shrink-0">Status:</span>
+            <select
+              value={selectedStatus}
+              onChange={(e) => {
+                setSelectedStatus(e.target.value);
+                setCurrentPage(1);
+              }}
+              className="bg-transparent text-slate-800 font-semibold focus:outline-none text-xs cursor-pointer capitalize"
+            >
+              <option value="all">All Statuses</option>
+              <option value="paid">Paid</option>
+              <option value="pending">Pending</option>
+            </select>
+          </div>
         </div>
       </div>
+
+      {/* Payroll Records Table */}
+      <div className="bg-white rounded-2xl border border-slate-100/90 shadow-xs overflow-hidden">
+        {isLoading ? (
+          <TableSkeleton rows={7} />
+        ) : paginatedRecords.length > 0 ? (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-slate-50/80 border-b border-slate-100 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                  <th className="py-3.5 px-4">Employee</th>
+                  <th className="py-3.5 px-4">Department & Designation</th>
+                  <th className="py-3.5 px-4">Gross Salary</th>
+                  <th className="py-3.5 px-4">Net Salary</th>
+                  <th className="py-3.5 px-4">Last Payslip</th>
+                  <th className="py-3.5 px-4">Status</th>
+                  <th className="py-3.5 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 text-xs text-slate-700 font-medium">
+                {paginatedRecords.map((rec) => (
+                  <tr key={rec.id} className="hover:bg-slate-50/60 transition-colors">
+                    {/* Employee Avatar + Name */}
+                    <td className="py-3.5 px-4">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-9 h-9 rounded-xl ${rec.avatarColor} text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs`}>
+                          {rec.avatarInitials}
+                        </div>
+                        <div>
+                          <p className="font-bold text-slate-900">{rec.employeeName}</p>
+                          <p className="text-[11px] text-slate-400">{rec.employeeId.toUpperCase()}</p>
+                        </div>
+                      </div>
+                    </td>
+
+                    {/* Department & Designation */}
+                    <td className="py-3.5 px-4">
+                      <p className="font-semibold text-slate-800">{rec.designation}</p>
+                      <p className="text-[11px] text-slate-400">{rec.department}</p>
+                    </td>
+
+                    {/* Gross Salary */}
+                    <td className="py-3.5 px-4 font-semibold text-slate-700">
+                      {formatCurrency(rec.grossSalary)}
+                    </td>
+
+                    {/* Net Salary */}
+                    <td className="py-3.5 px-4 font-extrabold text-emerald-600">
+                      {formatCurrency(rec.netSalary)}
+                    </td>
+
+                    {/* Last Payslip */}
+                    <td className="py-3.5 px-4 text-slate-500 whitespace-nowrap">
+                      {rec.lastPayslipDate}
+                    </td>
+
+                    {/* Status */}
+                    <td className="py-3.5 px-4">
+                      <StatusBadge status={rec.status} size="sm" />
+                    </td>
+
+                    {/* Row Actions */}
+                    <td className="py-3.5 px-4 text-right">
+                      <div className="flex items-center justify-end gap-1.5">
+                        <button
+                          onClick={() => setViewingPayslipRecord(rec)}
+                          className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:text-indigo-600 bg-slate-100 hover:bg-indigo-50 rounded-xl transition-all"
+                          title="View Payslip"
+                        >
+                          <Eye className="w-3.5 h-3.5" /> Payslip
+                        </button>
+                        <button
+                          onClick={() => setEditingRecord(rec)}
+                          className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:text-emerald-700 bg-slate-100 hover:bg-emerald-50 rounded-xl transition-all"
+                          title="Edit Structure"
+                        >
+                          <Edit3 className="w-3.5 h-3.5" /> Structure
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          /* Empty State */
+          <div className="py-16 text-center text-slate-400 space-y-3">
+            <div className="w-14 h-14 mx-auto rounded-2xl bg-slate-50 flex items-center justify-center">
+              <DollarSign className="w-8 h-8 text-slate-300" />
+            </div>
+            <h4 className="text-sm font-bold text-slate-700">No payroll records match filters</h4>
+            <p className="text-xs text-slate-400 max-w-sm mx-auto">
+              Try adjusting your search query or department/status filters.
+            </p>
+          </div>
+        )}
+
+        {/* Pagination Controls */}
+        {filteredRecords.length > itemsPerPage && (
+          <div className="p-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+            <span>
+              Showing {Math.min((currentPage - 1) * itemsPerPage + 1, filteredRecords.length)} to{' '}
+              {Math.min(currentPage * itemsPerPage, filteredRecords.length)} of {filteredRecords.length} employees
+            </span>
+            <div className="flex items-center gap-1">
+              <button
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((p) => p - 1)}
+                className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-40"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <span className="px-3 font-semibold text-slate-800">
+                {currentPage} / {totalPages}
+              </span>
+              <button
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage((p) => p + 1)}
+                className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-40"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Modals */}
+      <GeneratePayslipsModal
+        isOpen={isGenerateModalOpen}
+        onGenerateComplete={handleBatchGenerateComplete}
+        onClose={() => setIsGenerateModalOpen(false)}
+      />
+
+      <SalaryStructureModal
+        isOpen={Boolean(editingRecord)}
+        record={editingRecord}
+        onSave={handleSaveStructure}
+        onClose={() => setEditingRecord(null)}
+      />
+
+      <PayslipViewModal
+        isOpen={Boolean(viewingPayslipRecord)}
+        record={viewingPayslipRecord}
+        onClose={() => setViewingPayslipRecord(null)}
+      />
+
+      {/* Toast Notification */}
+      <Toast toast={toast} onDismiss={() => setToast(null)} />
     </div>
   );
 };

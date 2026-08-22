@@ -47,7 +47,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             const isActive =
               item.route === '/hr/dashboard'
                 ? location.pathname === '/hr' || location.pathname === '/hr/dashboard'
-                : location.pathname === item.route;
+                : location.pathname === item.route || location.pathname.startsWith(item.route + '/');
 
             return (
               <NavLink

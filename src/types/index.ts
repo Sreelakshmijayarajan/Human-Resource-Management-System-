@@ -1,4 +1,7 @@
 export * from './auth';
+export * from './leave';
+export * from './payroll';
+export * from './reports';
 
 export interface NavItem {
   label: string;
