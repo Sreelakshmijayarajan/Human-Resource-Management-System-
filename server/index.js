@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import pool from './db.js';
+import { initializeDatabase } from './initDb.js';
 
 dotenv.config();
 
@@ -10,6 +11,9 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
+
+// Auto initialize tables on start
+initializeDatabase();
 
 // Health Check Endpoint
 app.get('/api/health', async (req, res) => {
@@ -73,7 +77,7 @@ app.post('/api/auth/login', async (req, res) => {
 // 2. Employees Routes
 app.get('/api/employees', async (req, res) => {
   try {
-    const [employees] = await pool.query('SELECT * FROM employees ORDER BY created_at DESC');
+    const [employees] = await pool.query('SELECT * FROM employees');
     res.json(employees);
   } catch (err) {
     res.status(500).json({ error: err.message });
