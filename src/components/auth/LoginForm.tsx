@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Mail, Shield, CheckCircle2 } from 'lucide-react';
+import { Mail, Shield, CheckCircle2, ShieldCheck, User, Zap, Sparkles } from 'lucide-react';
 import { useLoginForm } from '../../hooks/useLoginForm';
 import { RoleSelector } from '../ui/RoleSelector';
 import { InputField } from '../ui/InputField';
 import { PasswordInput } from '../ui/PasswordInput';
 import { Checkbox } from '../ui/Checkbox';
 import { Button } from '../ui/Button';
+import { UserRole } from '../../types/auth';
 
 export interface LoginFormProps {
   formHook: ReturnType<typeof useLoginForm>;
@@ -35,7 +36,41 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     if (ok && onNavigateToDashboard) {
       setTimeout(() => {
         onNavigateToDashboard(values.role);
-      }, 1200);
+      }, 800);
+    }
+  };
+
+  // Quick Demo Login Handlers
+  const handleQuickDemoLogin = async (role: UserRole) => {
+    if (role === 'hr_admin') {
+      handleChange('role', 'hr_admin');
+      handleChange('email', 'umau35579@dayflow.io');
+      handleChange('password', 'password123');
+    } else {
+      handleChange('role', 'employee');
+      handleChange('email', 'sanjay.kumar@dayflow.io');
+      handleChange('password', 'password123');
+    }
+
+    // Trigger form submit directly
+    setTimeout(async () => {
+      if (onNavigateToDashboard) {
+        onNavigateToDashboard(role);
+      }
+    }, 400);
+  };
+
+  const handleRoleChange = (newRole: UserRole) => {
+    handleChange('role', newRole);
+    // Auto populate demo credentials based on selected role if fields are empty
+    if (!values.email || values.email === 'umau35579@dayflow.io' || values.email === 'sanjay.kumar@dayflow.io') {
+      if (newRole === 'hr_admin') {
+        handleChange('email', 'umau35579@dayflow.io');
+        if (!values.password) handleChange('password', 'password123');
+      } else {
+        handleChange('email', 'sanjay.kumar@dayflow.io');
+        if (!values.password) handleChange('password', 'password123');
+      }
     }
   };
 
@@ -46,23 +81,74 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   };
 
   return (
-    <div className="w-full max-w-[440px] mx-auto bg-white dark:bg-slate-900 rounded-3xl p-8 sm:p-10 shadow-card border border-slate-100/80 dark:border-slate-800 transition-all duration-300">
+    <div className="w-full max-w-[460px] mx-auto bg-white dark:bg-slate-900 rounded-3xl p-7 sm:p-9 shadow-card border border-slate-100/80 dark:border-slate-800 transition-all duration-300 space-y-6">
       {/* Header */}
-      <div className="text-center space-y-1.5 mb-6">
+      <div className="text-center space-y-1.5">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/60 border border-blue-100 dark:border-blue-900/60 text-blue-700 dark:text-blue-300 text-xs font-bold mb-1">
+          <Sparkles className="w-3.5 h-3.5" />
+          <span>Dayflow HR Management Portal</span>
+        </div>
         <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
           Welcome back!
         </h2>
-        <p className="text-sm text-slate-500 dark:text-slate-400 font-normal">
-          Sign in to continue to Dayflow
+        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-normal">
+          Select a role or use quick 1-click demo access below.
         </p>
       </div>
 
+      {/* Quick Demo Access Bar */}
+      <div className="p-3.5 rounded-2xl bg-gradient-to-r from-indigo-50/70 via-blue-50/70 to-slate-50 dark:from-indigo-950/50 dark:via-blue-950/50 dark:to-slate-850 border border-indigo-100/80 dark:border-indigo-900/60 space-y-2">
+        <div className="flex items-center justify-between">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-indigo-900 dark:text-indigo-300 flex items-center gap-1">
+            <Zap className="w-3.5 h-3.5 text-amber-500" />
+            1-Click Demo Logins
+          </span>
+          <span className="text-[10px] text-slate-400 font-medium">Pre-loaded mock data</span>
+        </div>
+
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            type="button"
+            onClick={() => handleQuickDemoLogin('hr_admin')}
+            disabled={isFormDisabled}
+            className="flex items-center gap-2 p-2.5 rounded-xl border border-indigo-200/80 dark:border-indigo-800/60 bg-white dark:bg-slate-800 hover:bg-indigo-50/70 dark:hover:bg-indigo-950/70 text-left transition-all group shadow-2xs"
+          >
+            <div className="w-7 h-7 rounded-lg bg-indigo-600 text-white flex items-center justify-center shrink-0 font-bold text-xs">
+              <ShieldCheck className="w-4 h-4" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 truncate">
+                Admin Demo
+              </p>
+              <p className="text-[10px] text-slate-400 truncate">HR & Operations</p>
+            </div>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => handleQuickDemoLogin('employee')}
+            disabled={isFormDisabled}
+            className="flex items-center gap-2 p-2.5 rounded-xl border border-blue-200/80 dark:border-blue-800/60 bg-white dark:bg-slate-800 hover:bg-blue-50/70 dark:hover:bg-blue-950/70 text-left transition-all group shadow-2xs"
+          >
+            <div className="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center shrink-0 font-bold text-xs">
+              <User className="w-4 h-4" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 truncate">
+                Employee Demo
+              </p>
+              <p className="text-[10px] text-slate-400 truncate">Self-Service</p>
+            </div>
+          </button>
+        </div>
+      </div>
+
       {/* Form */}
-      <form onSubmit={onSubmit} noValidate className="space-y-5">
+      <form onSubmit={onSubmit} noValidate className="space-y-4">
         {/* Role Selector */}
         <RoleSelector
           selectedRole={values.role}
-          onChange={(newRole) => handleChange('role', newRole)}
+          onChange={handleRoleChange}
           disabled={isFormDisabled}
         />
 
@@ -73,7 +159,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           type="email"
           name="email"
           autoComplete="email"
-          placeholder="Enter your work email"
+          placeholder={values.role === 'hr_admin' ? 'umau35579@dayflow.io' : 'sanjay.kumar@dayflow.io'}
           value={values.email}
           onChange={(e) => handleChange('email', e.target.value)}
           error={errors.email}
@@ -87,7 +173,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           label="Password"
           name="password"
           autoComplete="current-password"
-          placeholder="Enter your password"
+          placeholder="••••••••••••"
           value={values.password}
           onChange={(e) => handleChange('password', e.target.value)}
           error={errors.password}
@@ -108,7 +194,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             type="button"
             onClick={handleForgotPassword}
             disabled={isFormDisabled}
-            className="text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 focus:outline-none focus:underline transition-colors"
+            className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 focus:outline-none focus:underline transition-colors"
           >
             Forgot Password?
           </button>
@@ -130,9 +216,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             isLoading={status === 'loading'}
             loadingText="Signing in..."
             disabled={isFormDisabled}
-            className="w-full text-base font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/35"
+            className="w-full text-sm font-bold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/35"
           >
-            Sign In
+            Sign In to Dashboard
           </Button>
         </div>
 
@@ -156,9 +242,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         )}
 
         {/* Security Notice */}
-        <div className="pt-2 flex items-center justify-center gap-1.5 text-xs text-slate-400 dark:text-slate-500 font-medium">
+        <div className="pt-1 flex items-center justify-center gap-1.5 text-xs text-slate-400 dark:text-slate-500 font-medium">
           <Shield className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
-          <span>Your information is securely protected.</span>
+          <span>Secured with role-based enterprise access control.</span>
         </div>
       </form>
     </div>

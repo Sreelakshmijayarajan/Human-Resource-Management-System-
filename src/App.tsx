@@ -46,7 +46,10 @@ const LoginPage: React.FC = () => {
 
   const handleNavigateToDashboard = (role: string) => {
     const selectedRole = role as UserRole;
-    login(formHook.values.email || 'umau35579@dayflow.io', selectedRole, selectedRole === 'hr_admin' ? 'Uma Umamaheshwari' : 'Sanjay Kumar');
+    const defaultEmail = selectedRole === 'hr_admin' ? 'umau35579@dayflow.io' : 'sanjay.kumar@dayflow.io';
+    const displayName = selectedRole === 'hr_admin' ? 'Uma Umamaheshwari' : 'Sanjay Kumar';
+    
+    login(formHook.values.email || defaultEmail, selectedRole, displayName);
     if (selectedRole === 'hr_admin') {
       navigate('/hr');
     } else {
