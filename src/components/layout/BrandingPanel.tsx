@@ -22,20 +22,20 @@ export const BrandingPanel: React.FC = () => {
               <path d="M4 12h5" />
             </svg>
           </div>
-          <span className="text-2xl font-bold tracking-tight text-slate-900">
+          <span className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
             Dayflow
           </span>
         </div>
 
         {/* Tagline & Description */}
         <div className="space-y-3">
-          <h1 className="text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+          <h1 className="text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
             Simplifying Work.{' '}
-            <span className="text-blue-600 block sm:inline">
+            <span className="text-blue-600 dark:text-blue-400 block sm:inline">
               Empowering People.
             </span>
           </h1>
-          <p className="text-slate-500 text-sm md:text-base leading-relaxed max-w-md">
+          <p className="text-slate-500 dark:text-slate-400 text-sm md:text-base leading-relaxed max-w-md">
             A smart HR management platform for managing employees, attendance, leaves, payroll and workplace operations in one place.
           </p>
         </div>

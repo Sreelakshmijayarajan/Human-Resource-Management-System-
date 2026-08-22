@@ -22,17 +22,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
     <div className="flex flex-col h-full justify-between p-4 sm:p-5">
       <div className="space-y-6">
         {/* Mobile Header with close button */}
-        <div className="flex items-center justify-between md:hidden px-2 pb-2 border-b border-slate-100">
+        <div className="flex items-center justify-between md:hidden px-2 pb-2 border-b border-slate-100 dark:border-slate-800">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-sm">
               D
             </div>
-            <span className="font-bold text-slate-900 text-base tracking-tight">Dayflow</span>
+            <span className="font-bold text-slate-900 dark:text-white text-base tracking-tight">Dayflow</span>
           </div>
 
           <button
             onClick={onCloseMobile}
-            className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg"
+            className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg"
             aria-label="Close menu"
           >
             <X className="w-5 h-5" />
@@ -56,15 +56,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 onClick={onCloseMobile}
                 className={`flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 group ${
                   isActive
-                    ? 'bg-indigo-50/80 text-indigo-700 font-semibold shadow-2xs'
-                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                    ? 'bg-indigo-50/80 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 font-semibold shadow-2xs'
+                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100'
                 }`}
               >
                 <Icon
                   className={`w-4 h-4 shrink-0 transition-colors ${
                     isActive
-                      ? 'text-indigo-600'
-                      : 'text-slate-400 group-hover:text-slate-600'
+                      ? 'text-indigo-600 dark:text-indigo-400'
+                      : 'text-slate-400 dark:text-slate-500 group-hover:text-slate-600 dark:group-hover:text-slate-300'
                   }`}
                 />
                 <span className="truncate">{item.label}</span>
@@ -75,7 +75,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Footer info */}
-      <div className="pt-4 border-t border-slate-100/80 px-2 text-xs text-slate-400 font-medium">
+      <div className="pt-4 border-t border-slate-100/80 dark:border-slate-800 px-2 text-xs text-slate-400 dark:text-slate-500 font-medium">
         © 2026 Dayflow HRMS
       </div>
     </div>
@@ -84,7 +84,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   return (
     <>
       {/* Desktop Sidebar (Persistent) */}
-      <aside className="hidden md:block w-64 bg-white border-r border-slate-100/90 shrink-0 h-screen sticky top-0 z-20">
+      <aside className="hidden md:block w-64 bg-white dark:bg-slate-900 border-r border-slate-100/90 dark:border-slate-800 shrink-0 h-screen sticky top-0 z-20 transition-colors duration-200">
         {renderNavContent()}
       </aside>
 
@@ -92,14 +92,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {isMobileOpen && (
         <div
           onClick={onCloseMobile}
-          className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 md:hidden animate-fade-in"
+          className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 md:hidden animate-fade-in"
           aria-hidden="true"
         />
       )}
 
       {/* Mobile Sidebar Drawer */}
       <aside
-        className={`fixed top-0 left-0 bottom-0 w-72 bg-white z-50 md:hidden shadow-2xl transition-transform duration-300 ease-out ${
+        className={`fixed top-0 left-0 bottom-0 w-72 bg-white dark:bg-slate-900 z-50 md:hidden shadow-2xl transition-transform duration-300 ease-out ${
           isMobileOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >

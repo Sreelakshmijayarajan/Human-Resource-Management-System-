@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrandingPanel } from './BrandingPanel';
+import { ThemeToggle } from '../ui/ThemeToggle';
 
 export interface AuthLayoutProps {
   children: React.ReactNode;
@@ -7,14 +8,19 @@ export interface AuthLayoutProps {
 
 export const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
   return (
-    <main className="min-h-screen w-full flex flex-col justify-between bg-[#f8fafd] selection:bg-blue-500 selection:text-white">
+    <main className="min-h-screen w-full flex flex-col justify-between bg-[#f8fafd] dark:bg-[#0b0f17] selection:bg-blue-500 selection:text-white relative transition-colors duration-200">
+      {/* Floating Theme Toggle in corner */}
+      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-30">
+        <ThemeToggle />
+      </div>
+
       {/* Split screen content container */}
       <div className="flex-1 flex items-stretch">
         <div className="w-full max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 min-h-[calc(100vh-60px)]">
           {/* Left Branding Column (Hidden on mobile / small screens, visible on lg+) */}
           <section
             aria-label="Product Information"
-            className="hidden lg:flex lg:col-span-6 xl:col-span-7 items-center justify-center p-6 xl:p-12 border-r border-slate-200/50 bg-gradient-to-br from-blue-50/30 via-white to-slate-50/50"
+            className="hidden lg:flex lg:col-span-6 xl:col-span-7 items-center justify-center p-6 xl:p-12 border-r border-slate-200/50 dark:border-slate-800 bg-gradient-to-br from-blue-50/30 via-white to-slate-50/50 dark:from-slate-900/40 dark:via-slate-950 dark:to-slate-900/60 transition-colors duration-200"
           >
             <BrandingPanel />
           </section>
@@ -40,7 +46,7 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
                   <path d="M4 12h5" />
                 </svg>
               </div>
-              <span className="text-xl font-bold tracking-tight text-slate-900">
+              <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
                 Dayflow
               </span>
             </div>
@@ -49,7 +55,7 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
             {children}
 
             {/* Mobile Footer */}
-            <div className="lg:hidden text-center text-xs text-slate-400 mt-6 font-medium">
+            <div className="lg:hidden text-center text-xs text-slate-400 dark:text-slate-500 mt-6 font-medium">
               © 2026 Dayflow. All rights reserved.
             </div>
           </section>

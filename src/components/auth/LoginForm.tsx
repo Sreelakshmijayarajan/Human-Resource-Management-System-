@@ -46,13 +46,13 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   };
 
   return (
-    <div className="w-full max-w-[440px] mx-auto bg-white rounded-3xl p-8 sm:p-10 shadow-card border border-slate-100/80 transition-all duration-300">
+    <div className="w-full max-w-[440px] mx-auto bg-white dark:bg-slate-900 rounded-3xl p-8 sm:p-10 shadow-card border border-slate-100/80 dark:border-slate-800 transition-all duration-300">
       {/* Header */}
       <div className="text-center space-y-1.5 mb-6">
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+        <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
           Welcome back!
         </h2>
-        <p className="text-sm text-slate-500 font-normal">
+        <p className="text-sm text-slate-500 dark:text-slate-400 font-normal">
           Sign in to continue to Dayflow
         </p>
       </div>
@@ -108,7 +108,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             type="button"
             onClick={handleForgotPassword}
             disabled={isFormDisabled}
-            className="text-xs sm:text-sm font-semibold text-blue-600 hover:text-blue-700 focus:outline-none focus:underline transition-colors"
+            className="text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 focus:outline-none focus:underline transition-colors"
           >
             Forgot Password?
           </button>
@@ -116,7 +116,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
 
         {/* Forgot password notification badge if clicked */}
         {forgotPasswordNotice && (
-          <div className="p-2.5 rounded-xl bg-blue-50 border border-blue-100 text-xs text-blue-800 animate-slide-up text-center">
+          <div className="p-2.5 rounded-xl bg-blue-50 dark:bg-blue-950/50 border border-blue-100 dark:border-blue-900 text-xs text-blue-800 dark:text-blue-300 animate-slide-up text-center">
             Password reset instructions are provisioned directly by your HR Administrator.
           </div>
         )}
@@ -141,14 +141,14 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           <div
             data-testid="success-banner"
             role="status"
-            className="flex items-center justify-between p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm font-medium animate-slide-up"
+            className="flex items-center justify-between p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs sm:text-sm font-medium animate-slide-up"
           >
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
               <span>Login successful! Redirecting...</span>
             </div>
             {redirectUrl && (
-              <span className="text-[11px] font-mono font-semibold bg-emerald-100/80 px-2 py-0.5 rounded text-emerald-900">
+              <span className="text-[11px] font-mono font-semibold bg-emerald-100/80 dark:bg-emerald-900/60 px-2 py-0.5 rounded text-emerald-900 dark:text-emerald-200">
                 {redirectUrl}
               </span>
             )}
@@ -156,8 +156,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         )}
 
         {/* Security Notice */}
-        <div className="pt-2 flex items-center justify-center gap-1.5 text-xs text-slate-400 font-medium">
-          <Shield className="w-3.5 h-3.5 text-slate-400" />
+        <div className="pt-2 flex items-center justify-center gap-1.5 text-xs text-slate-400 dark:text-slate-500 font-medium">
+          <Shield className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
           <span>Your information is securely protected.</span>
         </div>
       </form>

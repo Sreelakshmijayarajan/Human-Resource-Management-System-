@@ -1,15 +1,16 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { AppProvider, useAppContext } from './context/AppContext';
+import { ThemeProvider } from './context/ThemeContext';
+import { HRDataProvider } from './context/HRDataContext';
+import { ToastProvider } from './context/ToastContext';
+import { ToastContainer } from './components/ui/Toast';
 import { AuthLayout } from './components/layout/AuthLayout';
 import { LoginForm } from './components/auth/LoginForm';
 import { StateToolbar } from './components/dev/StateToolbar';
 import { useLoginForm } from './hooks/useLoginForm';
 import { DashboardLayout } from './components/layout/DashboardLayout';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
-import { HRDataProvider } from './context/HRDataContext';
-import { ToastProvider } from './context/ToastContext';
-import { ToastContainer } from './components/ui/Toast';
 
 // Employee pages
 import { EmployeeDashboard } from './pages/employee/EmployeeDashboard';
@@ -289,16 +290,18 @@ export const AppRoutes: React.FC = () => {
 
 export const App: React.FC = () => {
   return (
-    <ToastProvider>
-      <HRDataProvider>
-        <AppProvider>
-          <BrowserRouter>
-            <AppRoutes />
-            <ToastContainer />
-          </BrowserRouter>
-        </AppProvider>
-      </HRDataProvider>
-    </ToastProvider>
+    <ThemeProvider>
+      <ToastProvider>
+        <HRDataProvider>
+          <AppProvider>
+            <BrowserRouter>
+              <AppRoutes />
+              <ToastContainer />
+            </BrowserRouter>
+          </AppProvider>
+        </HRDataProvider>
+      </ToastProvider>
+    </ThemeProvider>
   );
 };
 

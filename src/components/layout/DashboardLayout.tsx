@@ -12,7 +12,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, role
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 flex">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex transition-colors duration-200">
       {/* Sidebar */}
       <Sidebar
         role={role}
@@ -34,7 +34,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, role
         </main>
 
         {/* Footer */}
-        <footer className="py-4 px-6 text-center text-xs text-slate-400 border-t border-slate-100 bg-white/50">
+        <footer className="py-4 px-6 text-center text-xs text-slate-400 dark:text-slate-500 border-t border-slate-100 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50">
           Dayflow HRMS &copy; 2026. Self-Service Portal for Enterprise Employees.
         </footer>
       </div>

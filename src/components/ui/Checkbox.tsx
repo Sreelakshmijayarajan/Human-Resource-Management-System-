@@ -38,15 +38,15 @@ export const Checkbox: React.FC<CheckboxProps> = ({
             ${
               checked
                 ? 'bg-blue-600 border-blue-600 text-white shadow-sm'
-                : 'border-slate-300 bg-white group-hover:border-slate-400 peer-focus-visible:ring-2 peer-focus-visible:ring-blue-400 peer-focus-visible:ring-offset-1'
+                : 'border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 group-hover:border-slate-400 dark:group-hover:border-slate-600 peer-focus-visible:ring-2 peer-focus-visible:ring-blue-400 peer-focus-visible:ring-offset-1'
             }
-            ${disabled ? 'bg-slate-100 border-slate-200' : ''}
+            ${disabled ? 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700' : ''}
           `}
         >
           {checked && <Check className="w-3 h-3 stroke-[3]" aria-hidden="true" />}
         </div>
       </div>
-      <span className="text-slate-600 group-hover:text-slate-900 transition-colors font-medium">
+      <span className="text-slate-600 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white transition-colors font-medium">
         {label}
       </span>
     </label>
